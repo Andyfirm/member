@@ -1,0 +1,70 @@
+<template>
+  <div id="onlineClass">
+    <my-select @change="getOnlineClass"></my-select>
+    <ul class="classBox">
+      <li v-for="item of classList" :key="item.classId">
+        <router-link :to="{name: 'classDetails',query: {classId: item.classId, money: item.price}}"><img :src="'/static/images/zxbb/'+ item.imgurl" alt=""></router-link>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import select from '../public/select'
+export default {
+  name: 'onlineClass',
+  components: {
+    mySelect: select
+  },
+  data() {
+    return {
+      classList: [],
+      shopNumOrigin: null,
+      shopNum: window.localStorage.getItem('shopNum'),
+      token: window.localStorage.getItem('token')
+    }
+  },
+  created() {
+    this.getOnlineClass()
+  },
+  activated() {
+    if (this.shopNumOrigin !== window.localStorage.getItem('shopNum')) {
+      this.getOnlineClass()
+    }
+  },
+  methods: {
+    async getOnlineClass() {
+      let shopNum = window.localStorage.getItem('shopNum')
+      if (this.shopNumOrigin === shopNum) return
+      this.classList = []
+      const { data: res } = await this.$http.get('homepageresp/TrainingClass', {
+        params: { shopNum, token: this.token }
+      })
+      if (res) {
+        this.classList = res
+        this.shopNumOrigin = window.localStorage.getItem('shopNum')
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+#onlineClass {
+  width: 100%;
+}
+.classBox {
+  width: 100%;
+}
+.classBox li {
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 44.8%;
+  background-color: #efefef;
+  border-radius: 8px;
+}
+.classBox li img {
+  width: 100%;
+}
+</style>

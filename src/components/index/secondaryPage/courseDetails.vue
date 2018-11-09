@@ -1,0 +1,119 @@
+<template>
+  <div id="courseDetails">
+    <div class="content_box">
+      <div class="content_top">
+        <div class="imgBox"><img :src="'/static/images/sjkc/' + imgUrl" alt=""></div>
+        <div class="text_right">
+          <p>项目：{{courseName}}</p>
+          <p>授课老师：<i>{{teacher}}</i></p>
+          <p>课程价格：<i>{{actualPrice}}</i></p>
+        </div>
+      </div>
+      <div class="content_btom">
+        <h6>班级介绍：</h6>
+        <p>{{courseDetails}}</p>
+      </div>
+    </div>
+    <router-link :to="{name: 'orderDetails', query: {id, type: 'course'}}"><button id="btn">购买课程</button></router-link>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'courseDetails',
+  data() {
+    return {
+      courseName: '',
+      teacher: '',
+      actualPrice: '',
+      courseDetails: '',
+      imgUrl: '',
+      id: this.$route.query.id,
+      token: window.localStorage.getItem('token')
+    }
+  },
+  created() {
+    this.getCourseDetails()
+  },
+  methods: {
+    async getCourseDetails() {
+      const { data: res } = await this.$http.get('homepageresp/GetEJtDeById', {
+        params: { id: this.id, token: this.token }
+      })
+      if (res) {
+        this.courseName = res.infI.name
+        this.teacher = res.ejt.name
+        this.actualPrice = res.actualPrice
+        this.courseDetails = res.courseDetails
+        this.imgUrl = res.infPTClassInfo.imgurl
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+#courseDetails {
+  width: 100%;
+}
+.content_box {
+  padding: 0.4rem 0.2rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+.content_top {
+  overflow: hidden;
+  padding-bottom: 0.36rem;
+}
+.imgBox {
+  overflow: hidden;
+  float: left;
+  width: 2.28rem;
+  height: 2.28rem;
+  background-color: #efefef;
+  border-radius: 8px;
+}
+.imgBox img {
+  width: 100%;
+}
+.text_right {
+  float: right;
+  width: 61%;
+}
+.text_right p {
+  font-size: 0.28rem;
+  color: #888;
+  margin-bottom: 0.4rem;
+}
+.text_right i {
+  color: #7ecef4;
+  font-style: normal;
+}
+.content_btom {
+  padding-left: 0.02rem;
+}
+.content_btom h6,
+.content_btom p {
+  color: #999;
+  font-size: 0.32rem;
+}
+.content_btom h6 {
+  font-weight: 500;
+  margin-bottom: 0.16rem;
+}
+.content_btom p {
+  text-indent: 0.63rem;
+  line-height: 0.52rem;
+}
+#btn {
+  outline: none;
+  border: 0;
+  width: 100%;
+  padding: 0.34rem 0;
+  margin-top: 0.4rem;
+  font-size: 0.32rem;
+  color: #fff;
+  background-color: #7ecef4;
+  border-radius: 8px;
+}
+</style>
