@@ -31,27 +31,24 @@ export default {
     return {
       ticketList: [],
       shopNumOrigin: null,
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
-  created() {
-    this.getTickList()
-  },
   activated() {
-    if (this.shopNumOrigin !== window.localStorage.getItem('shopNum')) {
+    if (this.shopNumOrigin !== window.sessionStorage.getItem('shopNum')) {
       this.getTickList()
     }
   },
   methods: {
     async getTickList() {
-      let shopNum = window.localStorage.getItem('shopNum')
+      let shopNum = window.sessionStorage.getItem('shopNum')
       if (shopNum === this.shopNumOrigin) return
       const { data: res } = await this.$http.get('homepageresp/TickByShopNum', {
         params: { shopNum, token: this.token }
       })
       if (res) {
         this.ticketList = res.tbWxTickList
-        this.shopNumOrigin = window.localStorage.getItem('shopNum')
+        this.shopNumOrigin = window.sessionStorage.getItem('shopNum')
       }
     },
     purchase(id) {

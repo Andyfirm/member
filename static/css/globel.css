@@ -87,9 +87,6 @@ a {
 .mint-toast-text {
   font-size: 0.28rem !important;
 }
-.mint-toast.is-placemiddle {
-  top: 80% !important;
-}
 .mint-toast {
   background-color: rgba(0, 0, 0, 0.6) !important;
 }

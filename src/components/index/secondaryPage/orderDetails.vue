@@ -33,7 +33,7 @@ export default {
       money: 0,
       type: this.$route.query.type,
       id: this.$route.query.id,
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {
@@ -74,9 +74,9 @@ export default {
         dataObj.count = this.number
         dataObj.money = this.orderPrice
         dataObj.shortName = this.data.shortName
-        dataObj.shopnum = window.localStorage.getItem('shopNum')
+        dataObj.shopnum = window.sessionStorage.getItem('shopNum')
       }
-      dataObj.token = window.localStorage.getItem('token')
+      dataObj.token = window.sessionStorage.getItem('token')
       this.setSubmittedData(dataObj)
       this.$router.push({ name: 'confirmPayment' })
     },

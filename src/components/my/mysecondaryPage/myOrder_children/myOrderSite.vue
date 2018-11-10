@@ -40,8 +40,8 @@ export default {
     return {
       mySiteList: [],
       init: null,
-      shopNum: window.localStorage.getItem('shopNum'),
-      token: window.localStorage.getItem('token')
+      shopNum: window.sessionStorage.getItem('shopNum'),
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {

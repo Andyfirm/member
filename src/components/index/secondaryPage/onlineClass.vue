@@ -20,21 +20,21 @@ export default {
     return {
       classList: [],
       shopNumOrigin: null,
-      shopNum: window.localStorage.getItem('shopNum'),
-      token: window.localStorage.getItem('token')
+      shopNum: window.sessionStorage.getItem('shopNum'),
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {
     this.getOnlineClass()
   },
   activated() {
-    if (this.shopNumOrigin !== window.localStorage.getItem('shopNum')) {
+    if (this.shopNumOrigin !== window.sessionStorage.getItem('shopNum')) {
       this.getOnlineClass()
     }
   },
   methods: {
     async getOnlineClass() {
-      let shopNum = window.localStorage.getItem('shopNum')
+      let shopNum = window.sessionStorage.getItem('shopNum')
       if (this.shopNumOrigin === shopNum) return
       this.classList = []
       const { data: res } = await this.$http.get('homepageresp/TrainingClass', {
@@ -42,7 +42,7 @@ export default {
       })
       if (res) {
         this.classList = res
-        this.shopNumOrigin = window.localStorage.getItem('shopNum')
+        this.shopNumOrigin = window.sessionStorage.getItem('shopNum')
       }
     }
   }

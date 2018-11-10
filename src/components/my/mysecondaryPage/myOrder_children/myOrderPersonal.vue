@@ -44,17 +44,17 @@ export default {
   name: 'myOrderPersonal',
   data() {
     return {
-      init: null,
+      init: null
     }
   },
   created() {
     window.sessionStorage.setItem('myOrderShow', 'myOrderPersonal')
   },
   methods: {
-      orderShow() {
+    orderShow() {
       window.sessionStorage.setItem('orderShow', 'orderPersonal')
-      this.$router.push({name: 'orderPersonal'})
-    },
+      this.$router.push({ name: 'orderPersonal' })
+    }
   }
 }
 </script>

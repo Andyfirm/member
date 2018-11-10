@@ -9,12 +9,12 @@ export default {
   },
   // 改变选择分店名称
   getshopNumVuex(state, shopNumVuex) {
-    state.shopNumVuex = localStorage.getItem('shopName') || shopNumVuex
+    state.shopNumVuex = window.sessionStorage.getItem('shopName') || shopNumVuex
   },
   // 过滤出选择的分店数据，如果没有选择，则默认为获取时默认的显示数据
   getindexListShow(state, ArrshopNum) {
     let indexListShow = state.indexList.filter(item => {
-      return item.name === localStorage.getItem('shopName')
+      return item.name === window.sessionStorage.getItem('shopName')
     })
     if (indexListShow.length > 0) {
       state.indexListShow = indexListShow

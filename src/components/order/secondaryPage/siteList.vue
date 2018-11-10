@@ -306,7 +306,7 @@ export default {
       shortname: this.$route.query.shortname,
       name: this.$route.query.name,
       shopNum: this.$route.query.shopNum,
-      token: window.localStorage.getItem('token'),
+      token: window.sessionStorage.getItem('token'),
       siteList: [],
       startDate: new Date(),
       pickerValue: '',

@@ -29,7 +29,7 @@ export default {
       courseDetails: '',
       imgUrl: '',
       id: this.$route.query.id,
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {

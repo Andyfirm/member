@@ -31,14 +31,18 @@ import fiancoDetails from '@/components/my/mysecondaryPage/fiancoDetails'
 import messageBoard from '@/components/my/mysecondaryPage/messageBoard'
 import realNameCard from '@/components/realNameCard/realNameCard'
 import siteList from '@/components/order/secondaryPage/siteList'
+import login from '@/components/login/login'
+import forgetpassword from '@/components/login/forgetpassword'
+import register from '@/components/login/register'
 
 Vue.use(Router)
 
 export default new Router({
   linkActiveClass: 'myactive',
   routes: [
+    { path: '/', redirect: '/login' },
     {
-      path: '/',
+      path: '/index',
       name: 'index',
       component: index,
       meta: {
@@ -135,7 +139,31 @@ export default new Router({
         keepAlive: true
       }
     },
-    { path: '/siteList', name: 'siteList', component: siteList }
+    { path: '/siteList', name: 'siteList', component: siteList },
+    {
+      path: '/login',
+      name: 'login',
+      component: login,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/forgetpassword',
+      name: 'forgetpassword',
+      component: forgetpassword,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register,
+      meta: {
+        keepAlive: true
+      }
+    }
   ],
   scrollBehavior(to, from, savedPosition) {
     console.log(savedPosition)

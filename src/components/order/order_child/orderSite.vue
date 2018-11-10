@@ -30,11 +30,11 @@ export default {
     return {
       siteList: [],
       originShopNum: null,
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   activated() {
-    let shopnum = window.localStorage.getItem('shopNum')
+    let shopnum = window.sessionStorage.getItem('shopNum')
     if (this.originShopNum !== shopnum) {
       this.getSiteList()
     }
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     async getSiteList() {
-      let shopnum = window.localStorage.getItem('shopNum')
+      let shopnum = window.sessionStorage.getItem('shopNum')
       if (this.originShopNum === shopnum) return
       const { data: res } = await this.$http.get('condabout/project', {
         params: { shopnum, token: this.token }

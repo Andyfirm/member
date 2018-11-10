@@ -40,6 +40,7 @@ Axios.interceptors.response.use(
         position: 'middle',
         duration: 5000
       })
+      router.push({name: 'login'})
       return
     }
     return res

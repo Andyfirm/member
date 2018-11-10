@@ -23,7 +23,7 @@ export default {
       detailsObj: {},
       money: this.$route.query.money,
       classId: this.$route.query.classId,
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {

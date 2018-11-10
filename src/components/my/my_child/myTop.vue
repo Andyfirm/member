@@ -10,7 +10,7 @@
       </li>
       <li class="call">手机号：{{infa.mobile}}</li>
       <li class="huiji">会籍顾问：王晓辉</li>
-      <li class="closeButton"></li>
+      <li class="closeButton" @click="closeEsc"></li>
     </ul>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       infa: {},
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {
@@ -36,6 +36,19 @@ export default {
       if (res.msg === 'success') {
         this.infa = res.data.infa
       }
+    },
+    closeEsc() {
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您确定要退出吗',
+        showCancelButton: true,
+        confirmButtonText: '退出',
+        cancelButtonText: '取消'
+      }).then(action => {
+        if (action === 'confirm') {
+          this.$router.push({ name: 'login' })
+        }
+      })
     }
   }
 }

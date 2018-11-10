@@ -38,11 +38,11 @@ export default {
     return {
       leagueList: [],
       originShopNum: null,
-      token: window.localStorage.getItem('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   activated() {
-    let shopnum = window.localStorage.getItem('shopNum')
+    let shopnum = window.sessionStorage.getItem('shopNum')
     if (this.originShopNum !== shopnum) {
       this.getLeagueList()
     }
@@ -50,8 +50,8 @@ export default {
   },
   methods: {
     async getLeagueList() {
-      let shopnum = window.localStorage.getItem('shopNum')
-      let shopName = window.localStorage.getItem('shopName')
+      let shopnum = window.sessionStorage.getItem('shopNum')
+      let shopName = window.sessionStorage.getItem('shopName')
       if (this.originShopNum === shopnum) return
       const { data: res } = await this.$http.get('condabout/league', {
         params: { shopnum, shopName, token: this.token }

@@ -41,8 +41,8 @@ export default {
   },
   methods: {
     async getPersonalList(ischange) {
-      let shopnum = window.localStorage.getItem('shopNum')
-      let token = window.localStorage.getItem('token')
+      let shopnum = window.sessionStorage.getItem('shopNum')
+      let token = window.sessionStorage.getItem('token')
       if (ischange === '1' && this.originShopNum === shopnum) return
       const { data: res } = await this.$http.get('condabout/searchprivate', {
         params: { shopnum, token }

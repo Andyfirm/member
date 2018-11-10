@@ -48,15 +48,15 @@ export default {
     }
   },
   activated() {
-    let shopNum = window.localStorage.getItem('shopNum')
+    let shopNum = window.sessionStorage.getItem('shopNum')
     if (shopNum !== this.originShopNum) {
       this.getCardList()
     }
   },
   methods: {
     async getCardList() {
-      let shopNum = window.localStorage.getItem('shopNum')
-      let token = window.localStorage.getItem('token')
+      let shopNum = window.sessionStorage.getItem('shopNum')
+      let token = window.sessionStorage.getItem('token')
       const { data: res } = await this.$http.get('homepageresp/getCardsBySN', {
         params: { shopNum, token }
       })
@@ -84,8 +84,8 @@ export default {
       const dataObj = {
         kId: id,
         money,
-        shopNum: window.localStorage.getItem('shopNum'),
-        token: window.localStorage.getItem('token')
+        shopNum: window.sessionStorage.getItem('shopNum'),
+        token: window.sessionStorage.getItem('token')
       }
       this.setSubmittedData(dataObj)
       if (this.state === 1) {

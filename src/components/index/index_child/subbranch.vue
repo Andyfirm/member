@@ -31,11 +31,11 @@ export default {
       var domLi = this.$refs.li
       var icon = this.$refs.select_icon
       if (el.innerHTML) {
-        window.localStorage.setItem('shopName', el.innerHTML)
+        window.sessionStorage.setItem('shopName', el.innerHTML)
         let itemTrue = this.indexList.filter(item => {
           return item.name === el.innerHTML
         })
-        window.localStorage.setItem('shopNum', itemTrue[0].shopNum)
+        window.sessionStorage.setItem('shopNum', itemTrue[0].shopNum)
         this.getshopNumVuex(itemTrue[0].shopNum)
         this.getindexListShow()
       }

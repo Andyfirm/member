@@ -32,8 +32,8 @@ export default {
       seconds: 0,
       cardList: [],
       i: 0,
-      shopNum: window.localStorage.getItem('shopNum'),
-      token: window.localStorage.getItem('token')
+      shopNum: window.sessionStorage.getItem('shopNum'),
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {

@@ -35,7 +35,8 @@ export default {
       info: '',
       cgimgurl: '',
       venue_name: '',
-      tbShopTrue: {}
+      tbShopTrue: {},
+      token: window.sessionStorage.get('token')
     }
   },
   mounted() {
@@ -43,11 +44,9 @@ export default {
   },
   methods: {
     async loadIndex() {
-      let token = 'oQc9-jqBcb53o8R0s9yr1ydyeVZY'
-      window.localStorage.setItem('token', token)
       const { data: res } = await this.$http.get('homepageresp/getVenue', {
         params: {
-          token
+          token: this.token
         }
       })
       if (res.msg === 'success') {
@@ -67,8 +66,8 @@ export default {
         // 将默认分店名称保存到vuex中
         this.getshopNumVuex(ArrshopNum[0].name)
         // 将过滤出的默认的分店保存到本地
-        localStorage.setItem('shopName', ArrshopNum[0].name)
-        localStorage.setItem('shopNum', ArrshopNum[0].shopNum)
+        window.sessionStorage.setItem('shopName', ArrshopNum[0].name)
+        window.sessionStorage.setItem('shopNum', ArrshopNum[0].shopNum)
       }
     },
     ...mapMutations(['getcgjjInfo', 'getshopNumVuex', 'getindexList', 'getindexListShow'])

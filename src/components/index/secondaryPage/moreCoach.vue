@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      token: localStorage.getItem('token'),
+      token: sessionStorage.getItem('token'),
       originalShopName: null,
       list: []
     }
@@ -40,7 +40,7 @@ export default {
   methods: {
     // 获取数据
     async getList() {
-      let shopNum = window.localStorage.getItem('shopNum')
+      let shopNum = window.sessionStorage.getItem('shopNum')
       if (this.originalShopName === this.shopNumVuex) return
       const { data: res } = await this.$http.get('homepageresp/GetEJtByShopNum', {
         params: { shopNum, token: this.token, state: true }
@@ -48,7 +48,7 @@ export default {
       if (res) {
         this.list = res
         console.log(res)
-        this.originalShopName = window.localStorage.getItem('shopName')
+        this.originalShopName = window.sessionStorage.getItem('shopName')
       }
     },
     // 点击进入下级页面
