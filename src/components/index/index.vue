@@ -36,7 +36,7 @@ export default {
       cgimgurl: '',
       venue_name: '',
       tbShopTrue: {},
-      token: window.sessionStorage.get('token')
+      token: window.sessionStorage.getItem('token')
     }
   },
   mounted() {

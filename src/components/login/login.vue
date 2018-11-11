@@ -62,7 +62,7 @@ export default {
         params: { userName: this.userName, passWord: this.pwd, token: this.token }
       })
       console.log(res)
-      this.$router.push({ name: 'index' })
+      if (res.msg === 'success') this.$router.push({ name: 'index' })
     }
   }
 }

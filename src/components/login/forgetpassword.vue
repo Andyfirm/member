@@ -1,5 +1,5 @@
 <template>
-  <div id="forgetpassword">
+  <div id="register">
     <div class="beark">
       <router-link :to="{name: 'login'}">
         <p>上一步</p>
@@ -8,23 +8,32 @@
     <div class="wrap loginPage">
       <section>
         <div class="wrapper" id="phone">
-          <input type="text" id="tel1" placeholder="请输入您的手机号" maxlength="11">
+          <input type="text" id="tel1" placeholder="请输入您的手机号" maxlength="11" v-model="mobile" @blur="verifyMobile">
         </div>
         <div class="wrapper2">
           <div class="ident2">
-            <input type="number" pattern="[0-9]*" id="verCode" style="margin-left:0px !important;" placeholder="请输入验证码">
-            <div class="ident3">
-              <input type="button" id="yzm1" value="获取验证码">
+            <input type="number" pattern="[0-9]*" id="verCode" style="margin-left:0px !important;" placeholder="请输入验证码" v-model="verCode" @blur="setVerCode">
+            <!-- 初始状态 -->
+            <div class="ident3" v-if="buttonState==='init'">
+              <input type="button" id="yzm1" value="获取验证码" @click="sendMessage">
+            </div>
+            <!-- 发送验证码后 -->
+            <div class="ident3 buttonBan" v-else-if="buttonState==='ban'">
+              <input type="button" id="yzm1" :value="count + 's后重新获取'">
+            </div>
+            <!-- 重新发送 -->
+            <div class="ident3" v-else-if="buttonState==='open'">
+              <input type="button" id="yzm1" value="重新发送验证码" @click="sendMessage">
             </div>
           </div>
         </div>
         <div class="wrapper" id="passTiShi1">
-          <input type="password" id="pwd1" placeholder="请输入您的密码">
+          <input type="password" id="pwd1" placeholder="请输入您的密码" v-model="pwd1" @focus="focusPwd" @blur="blurPwd">
         </div>
         <div class="wrapper" id="passTiShi2">
-          <input type="password" id="repwd1" placeholder="请再次输入您的密码">
+          <input type="password" id="repwd1" placeholder="请再次输入您的密码" v-model="pwd2" @blur="blurpassPwd">
         </div>
-        <button id="register">立即重置</button>
+        <button id="register" @click="reset">立即重置</button>
         <input type="hidden" id="loginResult" value="">
       </section>
     </div>
@@ -35,7 +44,131 @@
 export default {
   name: 'forgetpassword',
   data() {
-    return {}
+    return {
+      mobile: null,
+      verCode: null,
+      sendcode: null,
+      pwd1: '',
+      pwd2: '',
+      passMobile: false,
+      passPwd1: false,
+      passPwd2: false,
+      buttonState: 'init',
+      count: 60
+    }
+  },
+  methods: {
+    // 验证手机号是否正确
+    verifyMobile() {
+      let telReg = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/
+      if (!telReg.test(this.mobile)) {
+        this.$toast('请输入正确的手机号码')
+        this.passMobile = false
+        return false
+      } else {
+        this.passMobile = true
+      }
+    },
+    // 获取验证码
+    async sendMessage() {
+      this.count = 59
+      this.verifyMobile()
+      const { data: res } = await this.$http.get('memberLogin/mobileIfExit', {
+        params: { mobile: this.mobile }
+      })
+      console.log(res)
+      if (res.msg === 'success') {
+        this.$toast('该手机号尚未注册')
+        this.passMobile = false
+        return
+      }
+      const { data: res1 } = await this.$http.get('memberLogin/code', {
+        params: { mobile: this.mobile, sign: 1 }
+      })
+      console.log(res1)
+      if (res1.msg === 'success') {
+        this.$toast('验证码发送成功')
+        this.sendcode = res1.data
+      } else {
+        this.$toast('验证码发送失败')
+        return
+      }
+      this.buttonState = 'ban'
+      let InterValObj = window.setInterval(() => {
+        if (this.count === '01') {
+          clearInterval(InterValObj)
+          this.buttonState = 'open'
+          this.verCode = null
+        } else {
+          this.count--
+          this.count = this.count >= 10 ? this.count : '0' + this.count
+        }
+      }, 1000)
+    },
+    // 提示输入验证码
+    setVerCode() {
+      if (!this.verCode) {
+        this.$toast('请输入验证码')
+      }
+    },
+    // 提示密码位数
+    focusPwd() {
+      this.$toast('密码长度必须为5-12位之间')
+    },
+    blurPwd() {
+      if (this.pwd1.length <= 4 || this.pwd1.length > 12 || !this.pwd1) {
+        this.$toast('密码格式错误')
+        this.passPwd1 = false
+      } else {
+        this.passPwd1 = true
+      }
+    },
+    // 确认密码校验
+    blurpassPwd() {
+      if (this.pwd1 !== this.pwd2) {
+        this.$toast('两次密码输入不一致')
+        return
+      }
+      if (this.pwd2.length <= 4 || this.pwd2.length > 12 || !this.pwd2) {
+        this.$toast('密码格式错误')
+        this.passPwd2 = false
+      } else {
+        this.passPwd2 = true
+      }
+    },
+    // 开始重置
+    async reset() {
+      if (this.verCode !== this.sendcode) {
+        return this.$toast('验证码填写有误')
+      }
+      if (!this.passMobile || !this.verCode || !this.passPwd1 || !this.passPwd2) {
+        return this.$toast('表单信息填写有误，请重新填写')
+      }
+      const { data: res } = await this.$http.get('memberLogin/updateusers', {
+        params: {
+          mobile: this.mobile,
+          password: this.pwd1,
+          token: window.sessionStorage.getItem('token')
+        }
+      })
+      console.log(res)
+      if (res.msg === 'success') {
+        this.$toast('恭喜您重置成功，正在为您自动跳转!')
+        setTimeout(() => {
+          const { data: res1 } = this.$http.get('memberLogin/logined', {
+            params: {
+              userName: this.mobile,
+              passWord: this.pwd1,
+              token: window.sessionStorage.getItem('token')
+            }
+          })
+          if (res1.msg === 'success') return this.$router.push({ name: 'index' })
+          this.$router.push({ name: 'login' })
+        }, 2000)
+      } else {
+        this.$toast('重置失败')
+      }
+    }
   }
 }
 </script>
@@ -159,5 +292,11 @@ section #register {
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
   color: #ccc;
+}
+.buttonBan {
+  background-color: #cbcbcb;
+}
+.buttonBan input {
+  color: #999;
 }
 </style>

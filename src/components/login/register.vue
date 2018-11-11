@@ -19,7 +19,7 @@
             </div>
             <!-- 发送验证码后 -->
             <div class="ident3 buttonBan" v-else-if="buttonState==='ban'">
-              <input type="button" id="yzm1" :value="count + 's获取验证码'">
+              <input type="button" id="yzm1" :value="count + 's后重新获取'">
             </div>
             <!-- 重新发送 -->
             <div class="ident3" v-else-if="buttonState==='open'">
@@ -71,6 +71,7 @@ export default {
     },
     // 获取验证码
     async sendMessage() {
+      this.count = 59
       this.verifyMobile()
       const { data: res } = await this.$http.get('memberLogin/mobileIfExit', {
         params: { mobile: this.mobile }
@@ -94,12 +95,13 @@ export default {
       }
       this.buttonState = 'ban'
       let InterValObj = window.setInterval(() => {
-        if (this.count === 0) {
+        if (this.count === '01') {
           clearInterval(InterValObj)
           this.buttonState = 'open'
           this.verCode = null
         } else {
           this.count--
+          this.count = this.count >= 10 ? this.count : '0' + this.count
         }
       }, 1000)
     },
@@ -153,6 +155,17 @@ export default {
       console.log(res)
       if (res.msg === 'success') {
         this.$toast('恭喜您注册成功，正在为您自动跳转!')
+        setTimeout(() => {
+          const { data: res1 } = this.$http.get('memberLogin/logined', {
+            params: {
+              userName: this.mobile,
+              passWord: this.pwd1,
+              token: window.sessionStorage.getItem('token')
+            }
+          })
+          if (res1.msg === 'success') return this.$router.push({ name: 'index' })
+          this.$router.push({ name: 'login' })
+        }, 2000)
       } else {
         this.$toast('注册失败')
       }
