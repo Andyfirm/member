@@ -18,7 +18,7 @@
           <!-- 人数已满 -->
           <button v-else-if="(item.maxRenShu-item.shangkerenshu) == 0" style="background-color:#ccc;border: 0px;outline: none;">人数已满</button>
           <!-- 课程详情 -->
-          <button>课程详情</button>
+          <router-link :to="{name: 'groupCourseDetails',query: {id:item.id,showStatus: item.showStatus}}"><button>课程详情</button></router-link>
         </div>
       </li>
     </ul>

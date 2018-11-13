@@ -20,235 +20,18 @@
       <div class="left_opcity"></div>
       <div class="date_left" ref="leftdate_y">
         <ul>
-          <li>09:00</li>
-          <li>10:00</li>
-          <li>11:00</li>
-          <li>12:00</li>
-          <li>13:00</li>
-          <li>14:00</li>
-          <li>15:00</li>
-          <li>16:00</li>
-          <li>17:00</li>
-          <li>18:00</li>
-          <li>19:00</li>
-          <li>20:00</li>
-          <li>21:00</li>
-          <li>22:00</li>
+          <li v-for="(item,index) of dateList" :key="index">{{item.slice(0,5)}}</li>
         </ul>
       </div>
       <div class="sitename_top" ref="top_x">
         <ul>
-          <li>足球场1</li>
-          <li>足球场2</li>
-          <li>足球场3</li>
-          <li>足球场4</li>
-          <li>足球场5</li>
-          <li>足球场6</li>
-          <li>足球场7</li>
-          <li>足球场8</li>
-          <li>足球场9</li>
-          <li>足球场10</li>
-          <li>足球场11</li>
-          <li>足球场12</li>
-          <li>足球场13</li>
+          <li v-for="(item,index) of siteList" :key="index">{{item.projectName.name}}</li>
         </ul>
       </div>
       <div class="sitecontent" ref="scroll_top">
         <div class="sitecontentWrap" ref="scroll_left">
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-          </ul>
-          <ul>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
-            <li>￥50</li>
+          <ul v-for="(item,index) of siteList" :key="index">
+            <li v-for="(item1, index1) of item.projectInfo" :key="index1" :class="{colorTwo: item1.state === 1, colorOne:item1.state === 4,colorThree:item1.state === 3 }" @click="select(item1.state,index,index1)">￥{{item1.money}}</li>
           </ul>
         </div>
       </div>
@@ -308,6 +91,8 @@ export default {
       shopNum: this.$route.query.shopNum,
       token: window.sessionStorage.getItem('token'),
       siteList: [],
+      dateList: [],
+      selectList: [],
       startDate: new Date(),
       pickerValue: '',
       isKey: '',
@@ -339,6 +124,7 @@ export default {
       leftdateY.scrollTop = yNumber
     },
     async getSiteList(key, index) {
+      this.selectList = []
       this.current = index || 0
       let dateymd = this.$moment(key).format('YYYY-MM-DD') || this.$moment().format('YYYY-MM-DD')
       this.isKey = dateymd
@@ -351,6 +137,10 @@ export default {
         }
       })
       console.log(res)
+      if (res.msg === 'success') {
+        this.siteList = res.data.placeArray
+        this.dateList = res.data.times
+      }
     },
     // 横向日历
     transverse() {
@@ -422,6 +212,39 @@ export default {
     },
     openPicker() {
       this.$refs.picker.open()
+    },
+    // 选择
+    select(state, index, index1) {
+      if (state === 4) return this.$toast('该场次已出售或正在维护中...')
+      if (state === 1) {
+        // 可选择
+        if (this.selectList.length >= 4) return this.$toast('一次最多可选择4个时间段！')
+        // 时间距离判断
+        let starttime = this.siteList[index].projectInfo[index1].starttime
+        let str = this.isKey.replace(/-/g, '/')
+        let activeDate = `${str} ${starttime}`
+        let dateIngTime = new Date().getTime()
+        let activeDateTime = new Date(activeDate).getTime()
+        if (activeDateTime - dateIngTime <= 0) return this.$toast('预约时间已过！')
+        if (activeDateTime - dateIngTime <= 1800000) this.$toast('您距离本场次已不足30分钟')
+        // 存下选择的数据对象
+        this.siteList[index].projectInfo[index1].state = 3
+        let obj = this.siteList[index].projectInfo[index1] // 开始、结束、money
+        obj.shortname = this.siteList[index].projectName.shortname // eg:wq3
+        obj.name = this.siteList[index].projectName.name // eg:网球
+        obj.stagetype = this.siteList[index].projectName.stagetype // eg:网球
+        obj.id = this.siteList[index].projectName.id
+        this.selectList.push(obj)
+      }
+      if (state === 3) {
+        // 已选择
+        let starttime = this.siteList[index].projectInfo[index1].starttime
+        let name = this.siteList[index].projectName.name
+        this.siteList[index].projectInfo[index1].state = 1
+        this.selectList = this.selectList.filter(item => {
+          return (item.name !== name || item.starttime !== starttime)
+        })
+      }
     }
   },
   computed: {
@@ -440,8 +263,7 @@ export default {
 <style scoped>
 #siteList {
   width: 100%;
-  padding-top: 1.04rem;
-  /* padding-bottom: 0.4rem; */
+  padding-top: 1.14rem;
 }
 .date_topWrap {
   position: fixed;
@@ -512,6 +334,7 @@ export default {
   width: 32px;
   height: 300px;
   padding-top: 12px;
+  padding-bottom: 28px;
 }
 .date_left li {
   font-size: 12px;
@@ -561,7 +384,7 @@ export default {
 .sitecontent ul li {
   width: 55px;
   height: 24px;
-  background-color: #7ecef4;
+  line-height: 24px;
   font-size: 12px;
   color: #fff;
   text-align: center;
@@ -689,5 +512,16 @@ button {
   display: flex;
   text-align: center;
   justify-content: center;
+}
+.colorOne {
+  background-color: #e5e5e5;
+}
+
+.colorTwo {
+  background-color: #49bf5d;
+}
+
+.colorThree {
+  background-color: #7ecef4;
 }
 </style>

@@ -31,6 +31,8 @@ import fiancoDetails from '@/components/my/mysecondaryPage/fiancoDetails'
 import messageBoard from '@/components/my/mysecondaryPage/messageBoard'
 import realNameCard from '@/components/realNameCard/realNameCard'
 import siteList from '@/components/order/secondaryPage/siteList'
+import coachScheduling from '@/components/order/secondaryPage/coachScheduling'
+import groupCourseDetails from '@/components/order/secondaryPage/groupCourseDetails'
 import login from '@/components/login/login'
 import forgetpassword from '@/components/login/forgetpassword'
 import register from '@/components/login/register'
@@ -160,6 +162,22 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: register,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/coachScheduling',
+      name: 'coachScheduling',
+      component: coachScheduling,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/groupCourseDetails',
+      name: 'groupCourseDetails',
+      component: groupCourseDetails,
       meta: {
         keepAlive: true
       }

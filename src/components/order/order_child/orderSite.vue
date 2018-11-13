@@ -47,8 +47,8 @@ export default {
       const { data: res } = await this.$http.get('condabout/project', {
         params: { shopnum, token: this.token }
       })
-      if (res) {
-        this.siteList = res
+      if (res.msg === 'success') {
+        this.siteList = res.data
         this.originShopNum = shopnum
       }
     },

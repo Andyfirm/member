@@ -1,6 +1,7 @@
 <template>
   <div id="orderLeague">
     <order-top></order-top>
+    <!-- "1"为自定义的标识符，证明是自定义触发的状态 -->
     <my-select @change="getPersonalList('1')"></my-select>
     <ul>
       <li v-for="item of personalList" :key="item.id">
@@ -11,7 +12,7 @@
           <p>购买次数：<i>{{item.teachtime}}</i></p>
           <p>剩余次数：<i>{{item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum)}}</i></p>
           <!-- 可预约 -->
-          <button v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0">预约课程</button>
+          <router-link :to="{name: 'coachScheduling', query: {id: item.id}}"  v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"><button>预约课程</button></router-link>
           <!-- 不可预约 -->
           <button v-else style="background-color: #ccc;border: 0px;outline: none;">预约课程</button>
         </div>

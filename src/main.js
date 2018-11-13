@@ -21,13 +21,17 @@ Vue.component('swipe', Swipe)
 Vue.component('swipe-item', SwipeItem)
 
 Vue.use(Mint)
-Axios.defaults.baseURL = 'https://www.easyserp.com/member-weixinpay/'
+Axios.defaults.baseURL = 'http://192.168.1.180/weixinPay/'
 Vue.prototype.$http = Axios
 Vue.prototype.qs = qs
 Vue.prototype.$moment = Moment
 Vue.config.productionTip = false
 
 Axios.interceptors.request.use(config => {
+  if (router.match(location).hash === '#/login') {
+    Mint.Indicator.open('正在登录...')
+    return config
+  }
   Mint.Indicator.open('正在加载...')
   return config
 })
@@ -40,7 +44,7 @@ Axios.interceptors.response.use(
         position: 'middle',
         duration: 5000
       })
-      router.push({name: 'login'})
+      router.push({ name: 'login' })
       return
     }
     return res

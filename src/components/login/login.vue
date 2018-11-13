@@ -36,7 +36,7 @@ export default {
     }
   },
   created() {
-    let token = 'oQc9-jqBcb53o8R0s9yr1ydyeVZY'
+    let token = 'oQc9-jhcSgZI4ovA5r8kk7fhOMb8'
     window.sessionStorage.setItem('token', token)
     this.token = token
   },
@@ -58,7 +58,7 @@ export default {
         this.$toast('密码格式不正确，请重填')
         return
       }
-      const { data: res } = this.$http.get('memberLogin/logined', {
+      const { data: res } = await this.$http.get('memberLogin/logined', {
         params: { userName: this.userName, passWord: this.pwd, token: this.token }
       })
       console.log(res)

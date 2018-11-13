@@ -54,7 +54,8 @@ export default {
       passPwd1: false,
       passPwd2: false,
       buttonState: 'init',
-      count: 59
+      count: 60,
+      token: window.sessionStorage.getItem('token')
     }
   },
   methods: {
@@ -74,7 +75,7 @@ export default {
       this.count = 59
       this.verifyMobile()
       const { data: res } = await this.$http.get('memberLogin/mobileIfExit', {
-        params: { mobile: this.mobile }
+        params: { mobile: this.mobile, token: this.token }
       })
       console.log(res)
       if (res.msg === 'fail') {
@@ -83,7 +84,7 @@ export default {
         return
       }
       const { data: res1 } = await this.$http.get('memberLogin/sendVerificationCode', {
-        params: { mobile: this.mobile, sign: 1 }
+        params: { mobile: this.mobile, sign: 1, token: this.token }
       })
       console.log(res1)
       if (res1.msg === 'success') {
@@ -149,18 +150,18 @@ export default {
           mobile: this.mobile,
           password: this.pwd1,
           code: this.verCode,
-          token: window.sessionStorage.getItem('token')
+          token: this.token
         }
       })
       console.log(res)
       if (res.msg === 'success') {
         this.$toast('恭喜您注册成功，正在为您自动跳转!')
-        setTimeout(() => {
-          const { data: res1 } = this.$http.get('memberLogin/logined', {
+        setTimeout(async() => {
+          const { data: res1 } = await this.$http.get('memberLogin/logined', {
             params: {
               userName: this.mobile,
               passWord: this.pwd1,
-              token: window.sessionStorage.getItem('token')
+              token: this.token
             }
           })
           if (res1.msg === 'success') return this.$router.push({ name: 'index' })
