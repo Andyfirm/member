@@ -141,7 +141,14 @@ export default new Router({
         keepAlive: true
       }
     },
-    { path: '/siteList', name: 'siteList', component: siteList },
+    {
+      path: '/siteList',
+      name: 'siteList',
+      component: siteList,
+      meta: {
+        keepAlive: true
+      }
+    },
     {
       path: '/login',
       name: 'login',

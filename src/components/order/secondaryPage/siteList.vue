@@ -1,5 +1,5 @@
 <template>
-  <div id="siteList">
+  <div id="siteList" v-show="siteList.length > 0">
     <div class="date_topWrap">
       <div class="date_top">
         <ul>
@@ -55,33 +55,22 @@
     <p class="tishi">友情提示:一次最多选择4个时间段</p>
     <div class="selected">
       <ul v-if="selected">
-        <li>
-          <span>￥80</span>
-          <p>12:00-13:00</p>
-        </li>
-        <li>
-          <span>￥80</span>
-          <p>12:00-13:00</p>
-        </li>
-        <li>
-          <span>￥80</span>
-          <p>12:00-13:00</p>
-        </li>
-        <li>
-          <span>￥80</span>
-          <p>12:00-13:00</p>
+        <li v-for="(item,index) of selectList" :key="index">
+          <span>￥{{item.money}}</span>
+          <p>{{item.starttime}}-{{item.endtime}}</p>
         </li>
       </ul>
       <p v-else class="placeholder">请选择预约时间段</p>
     </div>
-    <div class="money">共计：￥200</div>
+    <div class="money">共计：￥{{money}}</div>
     <div class="btnBox">
-      <button>预约场地</button>
+      <button @click="message">预约场地</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'siteList',
   data() {
@@ -136,8 +125,8 @@ export default {
           token: this.token
         }
       })
-      console.log(res)
       if (res.msg === 'success') {
+        if (res.data.length === 0) return this.$toast('暂无可用数据')
         this.siteList = res.data.placeArray
         this.dateList = res.data.times
       }
@@ -220,6 +209,7 @@ export default {
         // 可选择
         if (this.selectList.length >= 4) return this.$toast('一次最多可选择4个时间段！')
         // 时间距离判断
+        this.selected = true
         let starttime = this.siteList[index].projectInfo[index1].starttime
         let str = this.isKey.replace(/-/g, '/')
         let activeDate = `${str} ${starttime}`
@@ -233,7 +223,6 @@ export default {
         obj.shortname = this.siteList[index].projectName.shortname // eg:wq3
         obj.name = this.siteList[index].projectName.name // eg:网球
         obj.stagetype = this.siteList[index].projectName.stagetype // eg:网球
-        obj.id = this.siteList[index].projectName.id
         this.selectList.push(obj)
       }
       if (state === 3) {
@@ -242,10 +231,70 @@ export default {
         let name = this.siteList[index].projectName.name
         this.siteList[index].projectInfo[index1].state = 1
         this.selectList = this.selectList.filter(item => {
-          return (item.name !== name || item.starttime !== starttime)
+          return item.name !== name || item.starttime !== starttime
         })
+        if (this.selectList.length === 0) this.selected = false
       }
-    }
+    },
+    // 弹框
+    message() {
+      let len = this.selectList.length
+      if (len === 0) return this.$toast('请您至少选择一个场地后再预约！')
+      var str = this.isKey + '日'
+      for (let i = 0; i < len; i++) {
+        str +=
+          '<p>' +
+          this.selectList[i].starttime +
+          '-' +
+          this.selectList[i].endtime +
+          ' ' +
+          this.selectList[i].name +
+          '</p>'
+      }
+      this.$messagebox({
+        title: '您已选择以下场地',
+        message: str,
+        showCancelButton: true,
+        confirmButtonText: '预约',
+        cancelButtonText: '取消'
+      }).then(action => {
+        if (action === 'confirm') {
+          this.submit()
+        }
+      })
+    },
+    // 开始提交
+    submit() {
+      let fieldinfo = ''
+      for (let i = 0; i < this.selectList.length; i++) {
+        fieldinfo +=
+          this.isKey +
+          '#' +
+          this.selectList[i].starttime +
+          '-' +
+          this.selectList[i].endtime +
+          '#' +
+          this.selectList[i].shortname +
+          '#' +
+          this.selectList[i].money +
+          '#' +
+          this.selectList[i].name +
+          '#' +
+          this.name +
+          '#' +
+          this.selectList[i].money +
+          '/'
+      }
+      const dataObj = {
+        type: this.name,
+        money: this.money,
+        shopnum: this.shopNum,
+        token: this.token,
+        fieldinfo
+      }
+      this.setSubmittedData(dataObj)
+    },
+    ...mapMutations(['setSubmittedData'])
   },
   computed: {
     endDateNumber() {
@@ -255,6 +304,14 @@ export default {
       } else {
         return today.setYear(today.getYear() + 1)
       }
+    },
+    money() {
+      let money = 0
+      for (let i = 0; i < this.selectList.length; i++) {
+        money += this.selectList[i].money
+        console.log(money)
+      }
+      return money.toFixed(2)
     }
   }
 }

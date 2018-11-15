@@ -3,7 +3,11 @@
     <order-top></order-top>
     <!-- "1"为自定义的标识符，证明是自定义触发的状态 -->
     <my-select @change="getPersonalList('1')"></my-select>
-    <ul>
+    <div class="initBox" v-if="init==='null'" @click="orderShow">
+      <img src="/static/images/icon/init.png" alt="">
+      <p>您还没有购买任何私教，赶快点我去购买吧</p>
+    </div>
+    <ul v-if="init==='block'">
       <li v-for="item of personalList" :key="item.id">
         <div class="imgBox_l"><img :src="'/static/images/sjkc/' + item.infPTClassInfo.imgurl" alt=""></div>
         <div class="content_r">
@@ -12,7 +16,7 @@
           <p>购买次数：<i>{{item.teachtime}}</i></p>
           <p>剩余次数：<i>{{item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum)}}</i></p>
           <!-- 可预约 -->
-          <router-link :to="{name: 'coachScheduling', query: {id: item.id}}"  v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"><button>预约课程</button></router-link>
+          <router-link :to="{name: 'coachScheduling', query: {id: item.id}}" v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"><button>预约课程</button></router-link>
           <!-- 不可预约 -->
           <button v-else style="background-color: #ccc;border: 0px;outline: none;">预约课程</button>
         </div>
@@ -32,6 +36,7 @@ export default {
   },
   data() {
     return {
+      init: null,
       personalList: [],
       originShopNum: null
     }
@@ -48,9 +53,18 @@ export default {
       const { data: res } = await this.$http.get('condabout/searchprivate', {
         params: { shopnum, token }
       })
-      console.log(res)
-      this.personalList = res
-      this.originShopNum = shopnum
+      if (res.msg === 'success') {
+        if (res.data.length === 0) {
+          this.originShopNum = shopnum
+          return (this.init = 'null')
+        }
+        this.init = 'block'
+        this.personalList = res.data
+        this.originShopNum = shopnum
+      }
+    },
+    orderShow() {
+      this.$router.push({ name: 'index' })
     }
   }
 }
@@ -104,5 +118,19 @@ export default {
   background-color: #7ecef4;
   border-radius: 8px;
   margin-top: 0.26rem;
+}
+.initBox {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.initBox img {
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  margin: 0.52rem auto;
+}
+.initBox p {
+  font-size: 0.32rem;
+  text-align: center;
 }
 </style>

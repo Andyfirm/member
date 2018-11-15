@@ -7,7 +7,7 @@
         <div class="imgBox_l"><img :src="'/static/images/img/' + item.leagueimg" alt=""></div>
         <div class="content_r">
           <p>项目：{{item.courseName}}</p>
-          <p>课程日期：<i>{{item.recorddate}}</i></p>
+          <p>课程日期：<i>{{item.recorddate | convertDate}}</i></p>
           <p>课程时间：<i>{{item.courseTime}}</i></p>
           <p>授课地点：<i>{{item.classroom}}</i></p>
           <p>剩余人数：<i>{{item.maxRenShu-item.shangkerenshu}}</i></p>
@@ -56,8 +56,8 @@ export default {
       const { data: res } = await this.$http.get('condabout/league', {
         params: { shopnum, shopName, token: this.token }
       })
-      if (res) {
-        this.leagueList = res
+      if (res.msg === 'success') {
+        this.leagueList = res.data
         this.originShopNum = shopnum
       }
     }
