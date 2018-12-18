@@ -4,7 +4,7 @@
     <div class="content">
       <ul>
         <li v-for="item of list" :key="item.id" @click="coachingCourse(item.id)">
-          <div class="imgBox"><img :src="'/static/images/' + item.infEImage.imgurl" alt=""></div>
+          <div class="imgBox"><img :src="'/static/images/' + item.infEImage.imgurl" :onerror="defaultImg" alt=""></div>
           <div class="text_right">
             <div>
               <span>{{item.name}}</span> <i>{{item.job1L}}</i>
@@ -29,7 +29,8 @@ export default {
     return {
       token: sessionStorage.getItem('token'),
       originalShopName: null,
-      list: []
+      list: [],
+      defaultImg: 'this.src="/static/images/icon/init.png"'
     }
   },
   activated() {
@@ -45,15 +46,15 @@ export default {
       const { data: res } = await this.$http.get('homepageresp/GetEJtByShopNum', {
         params: { shopNum, token: this.token, state: true }
       })
-      if (res) {
-        this.list = res
-        console.log(res)
+      if (res.msg === 'success') {
+        this.list = res.data
+        console.log(this.list)
         this.originalShopName = window.sessionStorage.getItem('shopName')
       }
     },
     // 点击进入下级页面
     coachingCourse(id) {
-      this.$router.push({ name: 'coachingCourse', query: {id} })
+      this.$router.push({ name: 'coachingCourse', query: { id } })
     }
   },
   computed: {

@@ -90,3 +90,20 @@ a {
 .mint-toast {
   background-color: rgba(0, 0, 0, 0.6) !important;
 }
+.swiper-pagination-bullet-active {
+  background-color: #7fc0fd !important;
+}
+.icon-caozuochenggong:before {
+  font-size: 0.8rem;
+}
+.picker-toolbar {
+  height: 40px;
+  font-size: 0.38rem;
+  text-align: right;
+  line-height: 40px;
+  margin-right: 10px;
+  color: #26a2ff;
+}
+.picker-slot {
+  font-size: 0.36rem !important;
+}

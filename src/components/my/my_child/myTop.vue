@@ -6,7 +6,7 @@
         <span class="name">{{infa.name}}</span>
         <i class="icon_sex" v-show="infa.sex === '男'"><img src="/static/images/icon/sex_boy.png" alt=""></i>
         <i class="icon_sex" v-show="infa.sex === '女'"><img src="/static/images/icon/sex_girl.png" alt=""></i>
-        <i class="icon_redact"></i>
+        <router-link :to="{name:'personalDetails'}"><i class="icon_redact"></i></router-link>
       </li>
       <li class="call">手机号：{{infa.mobile}}</li>
       <li class="huiji">会籍顾问：王晓辉</li>
@@ -35,6 +35,7 @@ export default {
       console.log(res)
       if (res.msg === 'success') {
         this.infa = res.data.infa
+        window.sessionStorage.setItem('userNickName', res.data.infa.name)
       }
     },
     closeEsc() {

@@ -12,6 +12,7 @@ import moreCoach from '@/components/index/secondaryPage/moreCoach.vue'
 import coachingCourse from '@/components/index/secondaryPage/coachingCourse.vue'
 import courseDetails from '@/components/index/secondaryPage/courseDetails.vue'
 import confirmPayment from '@/components/confirmPayment/confirmPayment.vue'
+import succeed from '@/components/confirmPayment/succeed.vue'
 import orderSite from '@/components/order/order_child/orderSite.vue'
 import orderLeague from '@/components/order/order_child/orderLeague.vue'
 import orderPersonal from '@/components/order/order_child/orderPersonal.vue'
@@ -36,6 +37,8 @@ import groupCourseDetails from '@/components/order/secondaryPage/groupCourseDeta
 import login from '@/components/login/login'
 import forgetpassword from '@/components/login/forgetpassword'
 import register from '@/components/login/register'
+import headAccount from '@/components//index/secondaryPage/headAccount'
+import personalDetails from '@/components/my/mysecondaryPage/personalDetails'
 
 Vue.use(Router)
 
@@ -117,7 +120,14 @@ export default new Router({
       }
     },
     { path: '/purchaseCard', name: 'purchaseCard', component: purchaseCard },
-    { path: '/myCentre', name: 'myCentre', component: myCentre },
+    {
+      path: '/myCentre',
+      name: 'myCentre',
+      component: myCentre,
+      meta: {
+        keepAlive: true
+      }
+    },
     {
       path: '/cardRecharge',
       name: 'cardRecharge',
@@ -132,7 +142,14 @@ export default new Router({
     { path: '/fiancoIndex', name: 'fiancoIndex', component: fiancoIndex },
     { path: '/fiancoResult', name: 'fiancoResult', component: fiancoResult },
     { path: '/fiancoDetails', name: 'fiancoDetails', component: fiancoDetails },
-    { path: '/messageBoard', name: 'messageBoard', component: messageBoard },
+    {
+      path: '/messageBoard',
+      name: 'messageBoard',
+      component: messageBoard,
+      meta: {
+        keepAlive: true
+      }
+    },
     {
       path: '/realNameCard',
       name: 'realNameCard',
@@ -185,6 +202,23 @@ export default new Router({
       path: '/groupCourseDetails',
       name: 'groupCourseDetails',
       component: groupCourseDetails,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/succeed',
+      name: 'succeed',
+      component: succeed,
+      meta: {
+        keepAlive: true
+      }
+    },
+    { path: '/headAccount', name: 'headAccount', component: headAccount },
+    {
+      path: '/personalDetails',
+      name: 'personalDetails',
+      component: personalDetails,
       meta: {
         keepAlive: true
       }

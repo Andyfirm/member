@@ -1,38 +1,47 @@
 <template>
   <div id="myOrderPersonal">
-    <div class="initBox" v-if="init!=='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt="">
+    <div class="initBox" v-if="init==='null'" @click="orderShow">
+      <img src="/static/images/icon/init.png" alt>
       <p>您还没有预约任何私教，赶快点我去预约吧</p>
     </div>
     <ul v-if="init==='block'">
-      <li>
-        <div class="imgBox_l"><img src="" alt=""></div>
-        <div class="content_r">
-          <p>教练：王石</p>
-          <p>课程：瑜伽教练30分钟</p>
-          <p>开始时间：2018-10-22 <i>11:00</i></p>
-          <p>结束时间：2018-10-22 <i>12:00</i></p>
-          <button>联系教练</button>
-          <button>取消预约</button>
-          <div class="coach_bottom">
-            <span>教练代预约</span>
-            <em>确认</em>
-          </div>
+      <li v-for="item of list" :key="item.id">
+        <div class="imgBox_l">
+          <img :src="'/static/images/sjkc/'+item.infPTClassInfo.imgurl" alt>
         </div>
-      </li>
-      <li>
-        <div class="imgBox_l"><img src="" alt=""></div>
         <div class="content_r">
-          <p>教练：王石</p>
-          <p>课程：瑜伽教练30分钟</p>
-          <p>开始时间：2018-10-22 <i>11:00</i></p>
-          <p>结束时间：2018-10-22 <i>12:00</i></p>
-          <button>联系教练</button>
-          <button>取消预约</button>
-          <div class="coach_bottom">
+          <p>教练：{{item.coachName}}</p>
+          <p>课程：{{item.className}}</p>
+          <p>
+            开始时间：{{item.appointDate}}
+            <i>{{item.appointBegin.slice(0,5)}}</i>
+          </p>
+          <p>
+            结束时间：{{item.appointDate}}
+            <i>{{item.appointEnd.slice(0,5)}}</i>
+          </p>
+          <button>
+            <a class="mobile" :href="'tel:'+item.memberMobile">联系教练</a>
+          </button>
+          <button v-if="item.showStatus === '0'" @click="cancelReservation(item)">取消预约</button>
+          <button v-else-if="item.showStatus === '1'" class="disabled">已过取消时间</button>
+          <button v-else-if="item.showStatus === '2'" class="disabled">预约已过期</button>
+          <button v-else-if="item.showStatus === '3'" class="disabled">预约已取消</button>
+          <div
+            class="coach_bottom"
+            v-if="item.memberConfirm===0&&item.coachConfirm===1&&(item.showStatus!=='2'&&item.showStatus!=='3')"
+          >
             <span>教练代预约</span>
-            <em>确认</em>
+            <em @click="confirmYuue(item.id)">确认</em>
           </div>
+          <div
+            class="text"
+            v-else-if="item.memberConfirm===1&&item.coachConfirm===0&&(item.showStatus !== '2'&&item.showStatus !=='3')"
+          >会员已预约，待教练确认</div>
+          <div
+            class="text"
+            v-else-if="item.memberConfirm===1&&item.coachConfirm===1&&(item.showStatus !== '2'&&item.showStatus !=='3')"
+          >会员确认成功，等待上课</div>
         </div>
       </li>
     </ul>
@@ -44,15 +53,125 @@ export default {
   name: 'myOrderPersonal',
   data() {
     return {
-      init: null
+      init: null,
+      page: 0,
+      list: [],
+      shopName: window.sessionStorage.getItem('shopName'),
+      shopNum: window.sessionStorage.getItem('shopNum'),
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {
+    this.getList(this.page)
     window.sessionStorage.setItem('myOrderShow', 'myOrderPersonal')
   },
   methods: {
+    // 获取首屏数据
+    async getList(page) {
+      const { data: res } = await this.$http.get(
+        'myresp/getAppointmentPTByUser',
+        {
+          params: {
+            pageNo: page,
+            pageSize: 6,
+            shopName: this.shopName,
+            shopNum: this.shopNum,
+            token: this.token
+          }
+        }
+      )
+      console.log(res)
+      if (res.msg === 'success') {
+        if (res.data.length === 0) {
+          // 如果请求数据为空则提示初始化状态
+          return (this.init = 'null')
+        }
+        // 有数据
+        this.init = 'block'
+        if (this.pageNo !== 0) {
+          // 不是首屏数据则追加
+          for (let i = 0; i < res.data.length; i++) {
+            this.list.push(res.data[i])
+          }
+        } else {
+          // 首屏数据则直接赋值
+          this.list = res.data
+        }
+      } else {
+      }
+    },
+    // 确认教练代预约
+    confirmYuue(id) {
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您确定要教练代预约吗',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(async action => {
+        if (action === 'confirm') {
+          const { data: res } = await this.$http.get(
+            'condabout/confirmPTAppointment',
+            { params: { appointmentId: id, token: this.token } }
+          )
+          if (res.msg === 'success') {
+            for (let i = 0; i < this.list.length; i++) {
+              if (this.list[i].id === id) {
+                // 成功后将状态改为已确认预约状态，多个。。。。。。。。。。。。。。
+                this.list[i].showStatus = '4'
+              }
+            }
+          }
+        }
+      })
+    },
+    // 取消私教预约
+    cancelReservation(item) {
+      if (item.showStatus !== '0') return
+      // 弹框提示是否取消私教预约
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您确定要取消私教预约吗',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(async action => {
+        if (action === 'confirm') {
+          let useTimeObj = {
+            starttime: item.appointBegin,
+            endtime: item.appointEnd,
+            date: item.appointDate
+          }
+          let useTime = JSON.stringify(useTimeObj)
+          const { data: res } = await this.$http.get(
+            'condabout/cancelPTAppointment',
+            {
+              params: {
+                appointmentId: item.id,
+                assCardNum: item.assCardNum, // 无此数据来源。。。。。。。。。。。。。。。。。。。。。
+                coachShortName: item.coachShortName,
+                className: item.className,
+                useTime,
+                token: this.token
+              }
+            }
+          )
+          console.log(res)
+          if (res.msg === 'success') {
+            let len = this.list.length
+            for (let i = 0; i < len; i++) {
+              if (this.list.length[i].id === item.id) {
+                this.list[i].showStatus = '4' // 变为已取消预约的状态
+                return
+              }
+            }
+          }
+        }
+      })
+    },
+    // 点击跳转至一级私教预约页面
     orderShow() {
-      window.sessionStorage.setItem('orderShow', 'orderPersonal')
+      window.sessionStorage.setItem('orderShow', 'orderPersonal') // 记录当前点击选中的状态
       this.$router.push({ name: 'orderPersonal' })
     }
   }
@@ -71,11 +190,15 @@ export default {
   border-radius: 8px;
 }
 .imgBox_l {
+  overflow: hidden;
   float: left;
   width: 2.28rem;
   height: 2.28rem;
   background-color: #efefef;
   border-radius: 8px;
+}
+.imgBox_l img {
+  width: 100%;
 }
 .content_r {
   position: relative;
@@ -135,5 +258,17 @@ export default {
 .initBox p {
   font-size: 0.32rem;
   text-align: center;
+}
+.mobile {
+  color: #fff;
+}
+.disabled {
+  background-color: #ccc !important;
+}
+.content_r .text {
+  float: left;
+  font-size: 0.28rem;
+  color: #999;
+  margin: 0.2rem 0 0.08rem;
 }
 </style>

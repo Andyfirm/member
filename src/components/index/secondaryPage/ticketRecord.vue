@@ -49,10 +49,27 @@ export default {
   data() {
     return {
       wqp: true,
-      yqp: false
+      yqp: false,
+      list: [],
+      shopNum: window.sessionStorage.getItem('shopNum'),
+      token: window.sessionStorage.getItem('token')
     }
   },
+  created() {
+    this.getList()
+  },
   methods: {
+    // 获取首屏数据
+    async getList() {
+      const { data: res } = await this.$http.get(
+        'homepageresp/getTicketOrderiTem',
+        { params: { shopNum: this.shopNum, token: this.token } }
+      )
+      console.log(res)
+      if (res.msg === 'success') {
+        this.list = res.data
+      }
+    },
     getWqp() {
       this.wqp = true
       this.yqp = false

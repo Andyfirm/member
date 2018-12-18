@@ -14,7 +14,7 @@
         </div>
         <p>在线报班</p>
       </router-link>
-      <router-link to="">
+      <router-link :to="{name: 'headAccount'}">
         <div class="imgBox three">
           <img src="~images/icon/control.png" alt="">
         </div>
@@ -52,7 +52,7 @@ export default {
 }
 .online h5 {
   font-size: 0.36rem;
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: 0.36rem;
 }
 .img_icon {

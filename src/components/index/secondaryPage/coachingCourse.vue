@@ -41,11 +41,10 @@ export default {
           token: this.token
         }
       })
-      if (res) {
-        console.log(res)
-        this.tbPriList = res.tbPriList
-        this.viewEJt = res.viewEJt
-        this.infEImage = res.viewEJt.infEImage
+      if (res.msg === 'success') {
+        this.tbPriList = res.data.ptClassArray
+        this.viewEJt = res.data.viewEJt
+        this.infEImage = res.data.viewEJt.infEImage
       }
     }
   }

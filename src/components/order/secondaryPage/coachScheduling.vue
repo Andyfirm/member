@@ -1,242 +1,30 @@
 <template>
-  <div id="coachScheduling">
+  <div id="coachScheduling" v-show="keyArr.length > 0">
     <div class="top_h">
-      <h6>王石教练的排期</h6>
+      <h6>{{teachername}}教练的排期</h6>
     </div>
     <div class="milde_container">
       <div class="top_opcity"></div>
       <div class="left_opcity"></div>
       <div class="date_left" ref="leftdate_y">
         <ul>
-          <li>09:00</li>
-          <li>10:00</li>
-          <li>11:00</li>
-          <li>12:00</li>
-          <li>13:00</li>
-          <li>14:00</li>
-          <li>15:00</li>
-          <li>16:00</li>
-          <li>17:00</li>
-          <li>18:00</li>
-          <li>19:00</li>
-          <li>20:00</li>
-          <li>21:00</li>
-          <li>22:00</li>
+          <li v-for="(item,index) of times" :key="index">{{item}}</li>
         </ul>
       </div>
       <div class="sitename_top" ref="top_x">
         <ul>
-          <li>11-13</li>
-          <li>11-14</li>
-          <li>11-15</li>
-          <li>11-16</li>
-          <li>11-17</li>
-          <li>11-18</li>
-          <li>11-19</li>
-          <li>11-20</li>
-          <li>11-21</li>
-          <li>11-22</li>
-          <li>11-23</li>
-          <li>11-24</li>
-          <li>11-25</li>
+          <li v-for="(item,index) of keyArr" :key="index">{{item.slice(5)}}</li>
         </ul>
       </div>
       <div class="sitecontent" ref="scroll_top">
         <div class="sitecontentWrap" ref="scroll_left">
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+          <ul v-for="(item,key) of keyObj" :key="key">
+            <li
+              v-for="(item1,index) of item"
+              :key="index"
+              :class="{colorTwo: item1.state === 1, colorOne:item1.state === 4 ||item1.state === 2,colorThree:item1.state === 3 }"
+              @click="select(item1.starttime,item1.endtime,item1.state,key,index)"
+            ></li>
           </ul>
         </div>
       </div>
@@ -258,7 +46,7 @@
       </ul>
     </div>
     <div class="btnBox">
-      <button>提交约课</button>
+      <button @click="trainerResult">提交约课</button>
     </div>
   </div>
 </template>
@@ -267,14 +55,29 @@
 export default {
   name: 'coachScheduling',
   data() {
-    return {}
+    return {
+      times: [],
+      keyObj: {},
+      keyArr: [],
+      selectList: [],
+      asscardnum: this.$route.query.asscardnum, // 卡号
+      shortname: this.$route.query.shortname, // eg:"esp01"
+      teachershortname: this.$route.query.teachershortname, // eg:"ws"
+      teachername: this.$route.query.teachername, // eg:王石
+      teachitemname: this.$route.query.teachitemname, // eg:"足球少年班"
+      teachitemshortname: this.$route.query.teachitemshortname, // eg:"zqsnb"
+      token: window.sessionStorage.getItem('token'),
+      shopNum: window.sessionStorage.getItem('shopNum')
+    }
   },
   mounted() {
     let scrollTop = this.$refs.scroll_top
     this.handleScroll()
     scrollTop.addEventListener('scroll', this.handleScroll)
+    this.getList()
   },
   methods: {
+    // 滚动事件
     handleScroll() {
       let scrollLeft = this.$refs.scroll_left // 获取主动触发的x方向的元素
       let topX = this.$refs.top_x // 获取顶部x方向滚动元素
@@ -287,6 +90,137 @@ export default {
       let leftdateY = this.$refs.leftdate_y // 获取侧部y方向要滚动的元素
       let yNumber = scrollTop.scrollTop
       leftdateY.scrollTop = yNumber
+    },
+    // 获取首屏数据
+    async getList() {
+      const { data: res } = await this.$http.get(
+        'condabout/searchprivategraphing',
+        {
+          params: {
+            ptShortname: this.shortname,
+            shortname: this.teachershortname,
+            token: this.token
+          }
+        }
+      )
+      if (res.msg === 'success') {
+        this.times = res.data.times
+        let resObj = res.data.ptObject // 保存得到的对象列表
+        let keyArr = [] // 声明数组，将循环出的键追加到此数组中，然后比较大小
+        let keyObj = {} // 声明新的数组，储存排序好的键值对
+        for (let key in resObj) {
+          keyArr.push(new Date(key).getTime())
+        }
+        keyArr.sort(function(a, b) {
+          return a - b
+        })
+        for (let i = 0; i < keyArr.length; i++) {
+          let keys = this.$moment(keyArr[i]).format('YYYY-MM-DD')
+          this.keyArr.push(keys)
+          keyObj[keys] = resObj[keys]
+        }
+        this.keyObj = keyObj
+      }
+    },
+    // 选择
+    select(starttime, endtime, state, key, index) {
+      let objTime = {}
+      objTime.starttime = starttime
+      objTime.endtime = endtime
+      objTime.date = key
+      if (state === 4) return this.$toast('该场次已出售或正在维护中...')
+      if (state === 1) {
+        let activeDate = `${key} ${starttime}` // 选择的日期时间
+        let dateIngTime = new Date().getTime() // 当前时间时间戳
+        let activeDateTime = new Date(activeDate).getTime() // 选择时间时间戳
+        if (activeDateTime - dateIngTime <= 0) {
+          return this.$toast('预约时间已过！')
+        }
+        // if (activeDateTime - dateIngTime <= 1800000) this.$toast('您距离本场次已不足30分钟')
+        this.keyObj[key][index].state = 3
+        this.selectList.push(objTime)
+      } else if (state === 3) {
+        this.keyObj[key][index].state = 1
+        this.removeArray(this.selectList, objTime)
+      }
+    },
+    // 点击弹框确认
+    trainerResult() {
+      if (this.selectList.length <= 0) {
+        return this.$toast('请您至少选择一节课程！')
+      }
+      let selectListStr = JSON.stringify(this.selectList)
+      let dateymd = this.$moment(new Date()).format('YYYY-MM-DD')
+      let sjdataObj = {
+        teachername: this.teachername,
+        teachitemname: this.teachitemname,
+        selectList: this.selectList
+      }
+      let sjdataStr = JSON.stringify(sjdataObj)
+      window.sessionStorage.setItem('sjdataStr', sjdataStr) // 保存成功后所需数据
+      // 弹框所需数据
+      let title = '您已选择' + this.teachername + '教练以下课程'
+      let str = ''
+      for (let i = 0; i < this.selectList.length; i++) {
+        str +=
+          '<p>' +
+          this.selectList[i].date +
+          ' ' +
+          this.selectList[i].starttime +
+          '-' +
+          this.selectList[i].endtime +
+          '</p>'
+      }
+      let dateStr =
+        '<div style="color:#7ecef4;">' +
+        this.teachitemname +
+        '课程</div><div>预约时间段</div><div style="overflow: scroll;max-height: 5rem;">' +
+        str +
+        '</div>'
+      this.$messagebox({
+        title: title,
+        message: dateStr,
+        showCancelButton: true,
+        confirmButtonText: '预约',
+        cancelButtonText: '取消'
+      }).then(action => {
+        if (action === 'confirm') {
+          this.submit(selectListStr, dateymd)
+        }
+      })
+    },
+    // 提交
+    async submit(selectListStr, dateymd) {
+      const { data: res } = await this.$http.post(
+        'condabout/makeprivate',
+        this.qs.stringify({
+          preTime: dateymd,
+          teachershortname: this.teachershortname,
+          teachitemshortname: this.teachitemshortname,
+          ClassName: this.teachitemname,
+          assCardNum: this.asscardnum,
+          useTime: selectListStr,
+          shopNum: this.shopNum,
+          token: this.token
+        })
+      )
+      if (res.msg === 'success') {
+        this.$router.push({ name: 'succeed', query: { stamp: '3' } })
+      }
+    },
+    // 删除选择元素方法
+    removeArray(arr, val) {
+      var length = arr.length
+      for (var i = 0; i < length; i++) {
+        if (
+          arr[i].date === val.date &&
+          arr[i].starttime === val.starttime &&
+          arr[i].endtime === val.endtime
+        ) {
+          arr.splice(i, 1)
+          return
+        }
+      }
     }
   }
 }
@@ -380,7 +314,6 @@ h6 {
 .sitecontent ul li {
   width: 55px;
   height: 24px;
-  background-color: #7ecef4;
   font-size: 12px;
   color: #fff;
   text-align: center;
@@ -462,5 +395,14 @@ button {
   display: flex;
   text-align: center;
   justify-content: center;
+}
+.colorOne {
+  background-color: #e5e5e5;
+}
+.colorTwo {
+  background-color: #49bf5d;
+}
+.colorThree {
+  background-color: #7ecef4;
 }
 </style>

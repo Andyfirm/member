@@ -22,7 +22,12 @@
             <i class="select_icon" ref="select_icon" @click="controlShow"></i>
             <span id="selected" ref="selected" @click="controlShow">{{huijiname}}</span>
             <ul v-show="selectShow">
-              <li ref="li" @click="controlShow($event,item.shortName)" v-for="item of huijiList" :key="item.id">{{item.name}}</li>
+              <li
+                ref="li"
+                @click="controlShow($event,item.shortName)"
+                v-for="item of huijiList"
+                :key="item.id"
+              >{{item.name}}</li>
             </ul>
           </div>
         </div>
@@ -50,6 +55,7 @@ export default {
       mobile: '',
       selectShow: false,
       hShortName: null,
+      badgeName: this.$route.query.badgeName,
       shopNum: window.sessionStorage.getItem('shopNum'),
       token: window.sessionStorage.getItem('token')
     }
@@ -69,11 +75,14 @@ export default {
       this.woman = true
     },
     async gethuijiList() {
-      const { data: res } = await this.$http.get('homepageresp/getEJtCoByShopNum', {
-        params: { shopNum: this.shopNum, token: this.token }
-      })
-      if (res) {
-        this.huijiList = res.eJtList
+      const { data: res } = await this.$http.get(
+        'homepageresp/getEJtCoByShopNum',
+        {
+          params: { shopNum: this.shopNum, token: this.token }
+        }
+      )
+      if (res.msg === 'success') {
+        this.huijiList = res.data.eJtList
       }
     },
     controlShow: function(event, hShortName) {
@@ -133,9 +142,24 @@ export default {
       )
       if (res.msg === 'success') {
         this.$toast('认证成功，正在为您跳转...')
-        setTimeout(() => {
-          this.$router.push({ name: 'confirmPayment' })
-        }, 2000)
+        switch (this.badgeName) {
+          case '5': // 在线报班
+            setTimeout(() => {
+              this.$router.push({
+                name: 'confirmPayment',
+                query: { badgeName: '5' }
+              })
+            }, 2000)
+            break
+          case '7': // 购卡
+            setTimeout(() => {
+              this.$router.push({
+                name: 'confirmPayment',
+                query: { badgeName: '7' }
+              })
+            }, 2000)
+            break
+        }
       }
     }
   }

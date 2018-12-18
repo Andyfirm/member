@@ -52,7 +52,7 @@ export default {
       this.$router.push({name: 'orderLeague'})
     },
     async getmyLeagueList() {
-      const { data: res } = await this.$http.get('', {
+      const { data: res } = await this.$http.get('myresp/getAppointmentClassByUser', {
         params: { pageNo: 0, pageSize: 4, shopNum: this.shopNum, token: this.token }
       })
       console.log(res)

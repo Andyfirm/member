@@ -28,7 +28,7 @@
         <ul class="card_content">
           <li v-for="(item, index) of cardList" :key="index" :class="{active: index===i}" @click="select(index)">
             <div class="icon_cards"></div>
-            <div class="card_text">{{item.cardname}}<i class="cardAfterfour">(余额￥:{{item.cardcash}})</i></div>
+            <div class="card_text">{{item.cardname}}<i class="cardAfterfour">(余额￥{{item.cardcash}})</i></div>
             <div class="icon_select"></div>
           </li>
         </ul>
@@ -60,21 +60,15 @@ export default {
       const { data: res } = await this.$http.get('myresp/selectinfacd', {
         params: { shopNum: this.shopNum, token: this.token }
       })
-      if (res) {
-        let arr = res
+      if (res.msg === 'success') {
+        let arr = res.data
         for (let i = 0; i < arr.length; i++) {
           for (let j = 0; j < arr.length - i - 1; j++) {
-            if (arr[j].cardcash < arr[j + 1].cardcash) {
+            if (arr[j].cardcash > arr[j + 1].cardcash) {
               let temp = arr[j]
               arr[j] = arr[j + 1]
               arr[j + 1] = temp
             }
-          }
-        }
-        for (var i = 0; i < arr.length; i++) {
-          var cardcash = arr[i].cardcash
-          if (cardcash - this.priceTotal <= 0) {
-            arr[i].zhihui = true
           }
         }
         this.cardList = arr
@@ -100,6 +94,7 @@ export default {
         return this.$toast('请输入正确的金额')
       }
       const dataObj = {
+        id: this.cardDefault.id,
         money: this.money,
         cardindex: this.cardDefault.cardindex,
         cardname: this.cardDefault.cardname,
@@ -107,7 +102,7 @@ export default {
         token: this.token
       }
       this.setSubmittedData(dataObj)
-      this.$router.push({ name: 'confirmPayment' })
+      this.$router.push({ name: 'confirmPayment', query: { badgeName: '8' } })
     },
     ...mapMutations(['setSubmittedData'])
   },
@@ -151,9 +146,9 @@ export default {
 }
 .card_icon {
   float: left;
-  width: 0.5rem;
+  width: 0.42rem;
   height: 0.3rem;
-  background-color: #f512a9;
+  background: url('/static/images/icon/zficon.png') no-repeat center/cover;
   margin: 0.14rem 0.2rem 0;
 }
 .jt_r {
@@ -268,11 +263,11 @@ export default {
 }
 .icon_cards {
   float: left;
-  width: 0.5rem;
+  width: 0.42rem;
   height: 0.3rem;
   margin-right: 0.2rem;
   margin-top: 0.146rem;
-  background-color: #f512a9;
+  background: url('/static/images/icon/zficon.png') no-repeat center/cover;
 }
 .icon_select {
   float: right;

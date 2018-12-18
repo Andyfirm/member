@@ -52,14 +52,15 @@ export default {
         params: { id: this.id, token: this.token }
       })
       console.log(res)
-      if (res) {
-        this.imgUrl = res.leagueimg
-        this.courseName = res.courseName
-        this.courseTime = res.courseTime
-        this.classroom = res.classroom
-        this.shangkerenshu = res.shangkerenshu
-        this.maxRenShu = res.maxRenShu
-        this.remark = res.remark
+      if (res.msg === 'success') {
+        let data = res.data
+        this.imgUrl = data.leagueimg
+        this.courseName = data.courseName
+        this.courseTime = data.courseTime
+        this.classroom = data.classroom
+        this.shangkerenshu = data.shangkerenshu
+        this.maxRenShu = data.maxRenShu
+        this.remark = data.remark
       }
     }
   }

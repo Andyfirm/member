@@ -57,10 +57,9 @@ export default {
       const { data: res } = await this.$http.get(url, {
         params: { id: this.id, token: this.token }
       })
-      console.log(res)
-      if (res) {
-        this.data = res
-        this.money = res.total
+      if (res.msg === 'success') {
+        this.data = res.data
+        this.money = res.data.total
       }
     },
     confirmPayment() {
@@ -69,16 +68,19 @@ export default {
       if (this.type === 'course') {
         dataObj.money = this.orderPrice
         dataObj.classId = this.id
+        dataObj.token = window.sessionStorage.getItem('token')
+        this.setSubmittedData(dataObj)
+        this.$router.push({ name: 'confirmPayment', query: { badgeName: '6' } }) // 购买私教
       } else if (this.type === 'ticket') {
         dataObj.ticketName = this.data.name
         dataObj.count = this.number
         dataObj.money = this.orderPrice
         dataObj.shortName = this.data.shortName
         dataObj.shopnum = window.sessionStorage.getItem('shopNum')
+        dataObj.token = window.sessionStorage.getItem('token')
+        this.setSubmittedData(dataObj)
+        this.$router.push({ name: 'confirmPayment', query: { badgeName: '4' } }) // 在线购票
       }
-      dataObj.token = window.sessionStorage.getItem('token')
-      this.setSubmittedData(dataObj)
-      this.$router.push({ name: 'confirmPayment' })
     },
     ...mapMutations(['setSubmittedData'])
   },

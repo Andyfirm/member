@@ -11,6 +11,15 @@ import { Swipe, SwipeItem } from 'vue-swipe'
 import store from './store/index'
 import 'mint-ui/lib/style.css'
 import 'swiper/dist/css/swiper.css'
+import '../static/iconfont/iconfont.css'
+import '../static/iconfont/iconfont.eot'
+import '../static/iconfont/iconfont.svg'
+import '../static/iconfont/iconfont.ttf'
+import VeLine from 'v-charts/lib/line.common'
+import VueScroller from 'vue-scroller'
+// import mui from '../static/mui/js/mui'
+// Vue.prototype.$mui = mui
+Vue.use(VueScroller)
 Vue.use(VueAwesomeSwiper)
 
 Vue.filter('convertDate', function(value) {
@@ -19,9 +28,9 @@ Vue.filter('convertDate', function(value) {
 
 Vue.component('swipe', Swipe)
 Vue.component('swipe-item', SwipeItem)
-
+Vue.component(VeLine.name, VeLine)
 Vue.use(Mint)
-Axios.defaults.baseURL = 'http://192.168.1.180/weixinPay/'
+Axios.defaults.baseURL = 'http://192.168.1.43/weixinPay/'
 Vue.prototype.$http = Axios
 Vue.prototype.qs = qs
 Vue.prototype.$moment = Moment

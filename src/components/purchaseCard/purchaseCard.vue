@@ -60,9 +60,10 @@ export default {
       const { data: res } = await this.$http.get('homepageresp/getCardsBySN', {
         params: { shopNum, token }
       })
-      if (res) {
-        this.state = res.state
-        this.cardList = res.cardsSellList
+      if (res.msg === 'success') {
+        this.state = res.data.state
+        // this.cardList = res.data.dataArray // 正式渲染
+        this.cardList.push(res.data.dataArray[0]) // 临时测试
         this.originShopNum = shopNum
       }
     },
@@ -89,9 +90,9 @@ export default {
       }
       this.setSubmittedData(dataObj)
       if (this.state === 1) {
-        this.$router.push({ name: 'realNameCard' })
+        this.$router.push({ name: 'realNameCard', query: { badgeName: '7' } })
       } else if (this.state === 2) {
-        this.$router.push({ name: 'confirmPayment' })
+        this.$router.push({ name: 'confirmPayment', query: { badgeName: '7' } })
       }
     },
     ...mapMutations(['setSubmittedData'])

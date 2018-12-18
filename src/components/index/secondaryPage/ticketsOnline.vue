@@ -46,8 +46,8 @@ export default {
       const { data: res } = await this.$http.get('homepageresp/TickByShopNum', {
         params: { shopNum, token: this.token }
       })
-      if (res) {
-        this.ticketList = res.tbWxTickList
+      if (res.msg === 'success') {
+        this.ticketList = res.data
         this.shopNumOrigin = window.sessionStorage.getItem('shopNum')
       }
     },

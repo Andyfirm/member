@@ -4,19 +4,32 @@
     <!-- "1"为自定义的标识符，证明是自定义触发的状态 -->
     <my-select @change="getPersonalList('1')"></my-select>
     <div class="initBox" v-if="init==='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt="">
+      <img src="/static/images/icon/init.png" alt>
       <p>您还没有购买任何私教，赶快点我去购买吧</p>
     </div>
     <ul v-if="init==='block'">
       <li v-for="item of personalList" :key="item.id">
-        <div class="imgBox_l"><img :src="'/static/images/sjkc/' + item.infPTClassInfo.imgurl" alt=""></div>
+        <div class="imgBox_l">
+          <img :src="'/static/images/sjkc/' + item.infPTClassInfo.imgurl" alt>
+        </div>
         <div class="content_r">
           <p>私教姓名：{{item.teachername}}</p>
           <p>课程名称：{{item.teachitemname}}</p>
-          <p>购买次数：<i>{{item.teachtime}}</i></p>
-          <p>剩余次数：<i>{{item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum)}}</i></p>
+          <p>
+            购买次数：
+            <i>{{item.teachtime}}</i>
+          </p>
+          <p>
+            剩余次数：
+            <i>{{item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum)}}</i>
+          </p>
           <!-- 可预约 -->
-          <router-link :to="{name: 'coachScheduling', query: {id: item.id}}" v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"><button>预约课程</button></router-link>
+          <router-link
+            :to="{name: 'coachScheduling', query: {shortname: item.shortname,teachershortname:item.teachershortname,teachername:item.teachername,teachitemname:item.teachitemname,teachitemshortname:item.teachitemshortname,asscardnum:item.asscardnum}}"
+            v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"
+          >
+            <button>预约课程</button>
+          </router-link>
           <!-- 不可预约 -->
           <button v-else style="background-color: #ccc;border: 0px;outline: none;">预约课程</button>
         </div>
@@ -54,6 +67,7 @@ export default {
         params: { shopnum, token }
       })
       if (res.msg === 'success') {
+        console.log(res)
         if (res.data.length === 0) {
           this.originShopNum = shopnum
           return (this.init = 'null')

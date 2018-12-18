@@ -34,9 +34,10 @@ export default {
       const { data: res } = await this.$http.get('homepageresp/TrainingClassDe', {
         params: { pid: this.classId, token: this.token }
       })
-      if (res) {
-        this.state = res.state
-        this.detailsObj = res.tbPtclass
+      if (res.msg === 'success') {
+        console.log(res)
+        this.state = res.data.state
+        this.detailsObj = res.data
       }
     },
     signUp() {
@@ -48,9 +49,9 @@ export default {
       }
       this.setSubmittedData(dataObj)
       if (this.state === 1) {
-        this.$router.push({ name: 'realNameCard' })
+        this.$router.push({ name: 'realNameCard', query: { badgeName: '5' } })
       } else if (this.state === 2) {
-        this.$router.push({ name: 'confirmPayment' })
+        this.$router.push({ name: 'confirmPayment', query: { badgeName: '5' } })
       }
     },
     ...mapMutations(['setSubmittedData'])

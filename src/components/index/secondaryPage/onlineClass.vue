@@ -40,8 +40,8 @@ export default {
       const { data: res } = await this.$http.get('homepageresp/TrainingClass', {
         params: { shopNum, token: this.token }
       })
-      if (res) {
-        this.classList = res
+      if (res.msg === 'success') {
+        this.classList = res.data
         this.shopNumOrigin = window.sessionStorage.getItem('shopNum')
       }
     }

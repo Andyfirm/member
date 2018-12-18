@@ -44,7 +44,7 @@ export default {
 }
 h5 {
   font-size: 0.36rem;
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: 0.4rem;
 }
 li {

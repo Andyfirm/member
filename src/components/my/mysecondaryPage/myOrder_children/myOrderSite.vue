@@ -1,43 +1,56 @@
 <template>
   <div id="myOrderSite">
-    <div class="initBox" v-if="init!=='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt="">
+    <div class="initBox" v-if="init==='null'" @click="orderShow">
+      <img src="/static/images/icon/init.png" alt>
       <p>您还没有预约任何场地，赶快点我去预约吧</p>
     </div>
-    <ul v-if="init==='block'">
-      <li>
-        <div class="imgBox_l"><img src="" alt=""></div>
-        <div class="content_r">
-          <p>场地：羽毛球1场</p>
-          <p>开始时间：2018-10-21 <i>18:00</i></p>
-          <p>结束时间：2018-10-21 <i>19:00</i></p>
-          <p>总价：<i>￥80</i></p>
-          <button>确认到场</button>
-          <button>取消预约</button>
+
+    <ul v-if="init==='block'" class="content">
+      <li v-for="item of mySiteList" :key="item.id">
+        <div class="imgBox_l">
+          <img :src="'/static/images/img/'+ item.infSt.fieldimg" alt>
         </div>
-        <p class="subtime">提交预约时间：2018-10-21 17:26:20</p>
-      </li>
-      <li>
-        <div class="imgBox_l"><img src="" alt=""></div>
         <div class="content_r">
-          <p>场地：羽毛球1场</p>
-          <p>开始时间：2018-10-21 <i>18:00</i></p>
-          <p>结束时间：2018-10-21 <i>19:00</i></p>
-          <p>总价：<i>￥80</i></p>
-          <button>确认到场</button>
-          <button>取消预约</button>
+          <p>场地：{{item.stagenum}}</p>
+          <p>
+            开始时间：{{item.readydate}}
+            <i>{{item.readystarttime.slice(0,5)}}</i>
+          </p>
+          <p>
+            结束时间：{{item.readydate}}
+            <i>{{item.readyendtime.slice(0,5)}}</i>
+          </p>
+          <p>
+            总价：
+            <i>￥80</i>
+          </p>
+          <!-- 到场按钮 -->
+          <button
+            v-if="item.showStatus === '0'||item.showStatus === '1'"
+            @click="affrmSite(item.id)"
+          >确认到场</button>
+          <button class="disabled" v-else-if="item.showStatus === '2'">已确认到场</button>
+          <button class="disabled" v-else-if="item.showStatus === '3'||item.showStatus === '4'">确认到场</button>
+          <!-- 取消预约按钮 -->
+          <button class="disabled" v-if="item.showStatus === '1'">已过取消时间</button>
+          <button class="disabled" v-else-if="item.showStatus === '3'">预约已过期</button>
+          <button class="disabled" v-else-if="item.showStatus === '4'">预约已取消</button>
+          <button
+            v-else-if="item.showStatus === '0'"
+            @click="cancelSite(item.id,item.billNum,item.stagenum)"
+          >取消预约</button>
         </div>
-        <p class="subtime">提交预约时间：2018-10-21 17:26:20</p>
+        <p class="subtime">提交预约时间：{{item.preTime}}</p>
       </li>
     </ul>
   </div>
 </template>
-
 <script>
 export default {
   name: 'myOrderSite',
   data() {
     return {
+      pageNoIndex: 0,
       mySiteList: [],
       init: null,
       shopNum: window.sessionStorage.getItem('shopNum'),
@@ -45,32 +58,135 @@ export default {
     }
   },
   created() {
-    this.getmySiteList()
+    this.getmySiteList(this.pageNoIndex)
     window.sessionStorage.setItem('myOrderShow', 'myOrderSite')
   },
+  mounted() {},
   methods: {
     orderShow() {
       window.sessionStorage.setItem('orderShow', 'orderSite')
-      this.$router.push({name: 'orderSite'})
+      this.$router.push({ name: 'orderSite' })
     },
-    async getmySiteList() {
-      const { data: res } = await this.$http.get('myresp/getAppointmentPlaceByUser', {
-        params: { pageNo: 0, pageSize: 4, shopNum: this.shopNum, token: this.token }
-      })
+    // 获取列表数据
+    async getmySiteList(pageNoIndex) {
+      const { data: res } = await this.$http.get(
+        'myresp/getAppointmentPlaceByUser',
+        {
+          params: {
+            pageNo: pageNoIndex,
+            pageSize: 4,
+            shopNum: this.shopNum,
+            token: this.token
+          }
+        }
+      )
       if (res.msg === 'success') {
-        if (!res.data || res.data.length === 0) return (this.init = 'null')
+        // 如果首屏请求为空
+        if (res.data.length === 0 && this.pageNoIndex === 0) {
+          return (this.init = 'null')
+        }
+        // 如果下拉请求为空
+        if (res.data.length === 0 && this.pageNoIndex !== 0) {
+          return
+        }
+        // 有数据
         this.init = 'block'
-        this.mySiteList = res.data
+        if (this.pageNoIndex !== 0) {
+          // 不是首屏数据则追加
+          for (let i = 0; i < res.data.length; i++) {
+            this.mySiteList.push(res.data[i])
+          }
+        } else {
+          this.mySiteList = res.data
+        }
+        console.log(this.mySiteList)
       }
+    },
+    // 确认到场
+    affrmSite(id) {
+      let itemArr = this.mySiteList.filter(item => {
+        return item.id === id
+      })
+      let item = itemArr[0]
+      console.log(item.showStatus !== '1')
+      if (item.showStatus !== '0' && item.showStatus !== '1') return
+      // 弹框提示是否确认到场 发送请求
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您要确认到场吗',
+        showCancelButton: true,
+        confirmButtonText: '确认到场',
+        cancelButtonText: '取消'
+      }).then(async action => {
+        if (action === 'confirm') {
+          const { data: res } = await this.$http.get(
+            'condabout/confirmPlaceAppointment',
+            { params: { id, token: this.token } }
+          )
+          console.log(res)
+          if (res.msg === 'success') {
+            let mySiteList = this.mySiteList
+            for (let i = 0; i < mySiteList.length; i++) {
+              if (mySiteList[i].id === id) {
+                mySiteList[i].showStatus = '2' // 变为已确认的状态
+                return
+              }
+            }
+          }
+        }
+      })
+    },
+    // 取消场地预约
+    cancelSite(id, billNum, stagenum) {
+      let itemArr = this.mySiteList.filter(item => {
+        return item.id === id
+      })
+      let item = itemArr[0]
+      if (item.showStatus !== '0') return
+      // 弹框提示是否取消场地预约
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您确定要取消场地预约吗',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(async action => {
+        if (action === 'confirm') {
+          const { data: res } = await this.$http.get(
+            'weixinPay/canclePlaceAppointment',
+            { params: { id, billNum, stagenum, token: this.token } }
+          )
+          if (res.msg === 'success') {
+            let len = this.mySiteList.length
+            for (let i = 0; i < len; i++) {
+              if (this.mySiteList[i].id === id) {
+                this.mySiteList[i].showStatus = '4' // 变为已取消预约的状态
+                return
+              }
+            }
+          }
+        }
+      })
     }
   }
 }
 </script>
 
 <style scoped>
+.mui-scroll-wrapper {
+  overflow: visible;
+}
+#tabs_container {
+  position: relative;
+}
+.mui-content.mui-scroll-wrapper {
+  height: 11.6rem;
+  background-color: #f6f6f6;
+}
 #myOrderSite {
+  position: relative;
   width: 100%;
-  height: 400px;
+  /* height: 6rem; */
 }
 #myOrderSite ul li {
   overflow: hidden;
@@ -80,11 +196,15 @@ export default {
   border-radius: 8px;
 }
 .imgBox_l {
+  overflow: hidden;
   float: left;
   width: 2.28rem;
   height: 2.28rem;
   background-color: #efefef;
   border-radius: 8px;
+}
+.imgBox_l img {
+  width: 100%;
 }
 .content_r {
   position: relative;
@@ -133,5 +253,8 @@ export default {
 .initBox p {
   font-size: 0.32rem;
   text-align: center;
+}
+.disabled {
+  background-color: #ccc !important;
 }
 </style>

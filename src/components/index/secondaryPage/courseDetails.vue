@@ -40,12 +40,13 @@ export default {
       const { data: res } = await this.$http.get('homepageresp/GetEJtDeById', {
         params: { id: this.id, token: this.token }
       })
-      if (res) {
-        this.courseName = res.infI.name
-        this.teacher = res.ejt.name
-        this.actualPrice = res.actualPrice
-        this.courseDetails = res.courseDetails
-        this.imgUrl = res.infPTClassInfo.imgurl
+      if (res.msg === 'success') {
+        let data = res.data
+        this.courseName = data.infI.name
+        this.teacher = data.ejt.name
+        this.actualPrice = data.actualPrice
+        this.courseDetails = data.courseDetails
+        this.imgUrl = data.infPTClassInfo.imgurl
       }
     }
   }

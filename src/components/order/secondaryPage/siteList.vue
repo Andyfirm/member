@@ -31,7 +31,7 @@
       <div class="sitecontent" ref="scroll_top">
         <div class="sitecontentWrap" ref="scroll_left">
           <ul v-for="(item,index) of siteList" :key="index">
-            <li v-for="(item1, index1) of item.projectInfo" :key="index1" :class="{colorTwo: item1.state === 1, colorOne:item1.state === 4,colorThree:item1.state === 3 }" @click="select(item1.state,index,index1)">￥{{item1.money}}</li>
+            <li v-for="(item1, index1) of item.projectInfo" :key="index1" :class="{colorTwo: item1.state === 1, colorOne:item1.state === 4 ||item1.state === 2,colorThree:item1.state === 3 }" @click="select(item1.state,index,index1)">￥{{item1.money}}</li>
           </ul>
         </div>
       </div>
@@ -293,6 +293,7 @@ export default {
         fieldinfo
       }
       this.setSubmittedData(dataObj)
+      this.$router.push({ name: 'confirmPayment', query: { badgeName: '1' } })
     },
     ...mapMutations(['setSubmittedData'])
   },
@@ -309,7 +310,6 @@ export default {
       let money = 0
       for (let i = 0; i < this.selectList.length; i++) {
         money += this.selectList[i].money
-        console.log(money)
       }
       return money.toFixed(2)
     }
@@ -573,11 +573,9 @@ button {
 .colorOne {
   background-color: #e5e5e5;
 }
-
 .colorTwo {
   background-color: #49bf5d;
 }
-
 .colorThree {
   background-color: #7ecef4;
 }

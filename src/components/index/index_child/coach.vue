@@ -51,7 +51,7 @@ export default {
 .top h5 {
   font-size: 0.36rem;
   float: left;
-  font-weight: 500;
+  font-weight: 700;
 }
 .top a {
   float: right;
