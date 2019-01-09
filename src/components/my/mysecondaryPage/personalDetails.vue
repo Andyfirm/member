@@ -3,7 +3,7 @@
     <ul>
       <li>
         <span>头像</span>
-        <img src="/static/images/my/header.png" alt>
+        <img src="../../../../static/images/my/header.png" alt>
       </li>
       <li>
         <span>昵称</span>
@@ -165,10 +165,11 @@ export default {
       if (this.ageNumber < 0) {
         return this.$toast('请正确填写年龄')
       }
+      let sex = this.sex !== '请选择' ? this.sex : null
       let birthday = this.$moment(this.inputdateValue).format('YYYY-MM-DD HH:mm:ss')
       let infoObj = {
         name: this.name,
-        sex: this.sex,
+        sex,
         mobile: this.infa.mobile,
         birthday,
         age: this.ageNumber,

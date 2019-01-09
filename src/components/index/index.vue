@@ -6,6 +6,26 @@
     <online-functions></online-functions>
     <coach></coach>
     <stores-information></stores-information>
+    <!-- 显示分享页面 -->
+    <transition name="fade">
+      <div class="shareBox" v-show="shareActive" ref="shareBox">
+        <div class="shareContent">
+          <div class="topBox">
+            <div class="topImg" style="background-image: url('../../../static/images/img/jazz.jpg')"></div>
+            <div class="imgBox" style="background-image: url('../../../static/images/img/jazz.jpg')"></div>
+          </div>
+          <p class="tishi">哇~您的好友xxx向您分享了</p>
+          <!-- 主要信息显示区域 -->
+          <div class="textBox">
+            <p>教练:Linda</p>
+            <p>所在门店:中关村5号楼汉王大厦235室</p>
+            <p>擅长瑜伽，纤体瘦身。</p>
+          </div>
+          <button>查看详情</button>
+          <div class="close" @click="close"></div>
+        </div>
+      </div>
+    </transition>
     <footer-nav :page="0"></footer-nav>
   </div>
 </template>
@@ -36,13 +56,23 @@ export default {
       cgimgurl: '',
       venue_name: '',
       tbShopTrue: {},
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      shareActive: true
     }
   },
   mounted() {
+    let shareBox = this.$refs.shareBox
+    shareBox.ontouchmove = function(e) {
+      e.preventDefault()
+    }
     this.loadIndex()
   },
   methods: {
+    // 关闭分享弹框
+    close() {
+      let shareBox = this.$refs.shareBox
+      shareBox.style.display = 'none'
+    },
     async loadIndex() {
       const { data: res } = await this.$http.get('homepageresp/getVenue', {
         params: {
@@ -70,7 +100,12 @@ export default {
         window.sessionStorage.setItem('shopNum', ArrshopNum[0].shopNum)
       }
     },
-    ...mapMutations(['getcgjjInfo', 'getshopNumVuex', 'getindexList', 'getindexListShow'])
+    ...mapMutations([
+      'getcgjjInfo',
+      'getshopNumVuex',
+      'getindexList',
+      'getindexListShow'
+    ])
   }
 }
 </script>
@@ -79,5 +114,89 @@ export default {
 #indexWrap {
   padding-bottom: 1.6rem;
   border-radius: 8px;
+}
+.shareBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 11;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* display: none; */
+}
+.shareContent {
+  position: absolute;
+  top: -2rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 5.5rem;
+  height: 7.34rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+.topBox {
+  position: relative;
+  width: 5.1rem;
+  height: 2.8rem;
+  margin: 0.2rem auto;
+}
+.topImg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('') no-repeat center/cover;
+  opacity: 0.3;
+}
+.imgBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 2.28rem;
+  height: 2.28rem;
+  background: url('') no-repeat center/cover;
+  opacity: 1;
+  border-radius: 8px;
+}
+.tishi {
+  margin-left: 0.6rem;
+  font-size: 0.24rem;
+  color: #999;
+}
+.textBox {
+  font-size: 0.3rem;
+  width: 4.3rem;
+  margin: 0.3rem auto;
+}
+.textBox p {
+  margin-top: 0.2rem;
+}
+button {
+  display: block;
+  outline: none;
+  width: 4.3rem;
+  margin: auto;
+  font-size: 0.3rem;
+  color: #fff;
+  padding: 0.2rem;
+  border: 0;
+  background: linear-gradient(
+    123deg,
+    rgba(138, 217, 213, 1) 0%,
+    rgba(141, 187, 250, 1) 100%
+  );
+  border-radius: 20px;
+}
+.close {
+  width: 0.84rem;
+  height: 0.84rem;
+  margin: 0.7rem auto;
+  background: url('../../../static/images/icon/shareClose.png') no-repeat center/contain;
 }
 </style>

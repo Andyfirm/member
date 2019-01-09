@@ -2,12 +2,15 @@
   <div id="groupCourseDetails">
     <div class="content_box">
       <div class="content_top">
-        <div class="imgBox"><img :src="'/static/images/sjkc/' + imgUrl" alt=""></div>
+        <div class="imgBox"><img :src="'../../../../static/images/sjkc/' + imgUrl" alt=""></div>
         <div class="text_right">
           <p>项目：{{courseName}}</p>
           <p>课程时间：<i>{{courseTime}}</i></p>
           <p>授课地点：<i>{{classroom}}</i></p>
           <p>课程人数：<i>{{shangkerenshu}}</i></p>
+          <div class="share">
+            <span></span><i>分享这个课给好友</i>
+          </div>
         </div>
       </div>
       <div class="content_btom">
@@ -98,7 +101,7 @@ export default {
 .text_right p {
   font-size: 0.28rem;
   color: #888;
-  margin-bottom: 0.266rem;
+  margin-bottom: 0.08rem;
 }
 .text_right i {
   color: #7ecef4;
@@ -130,5 +133,24 @@ export default {
   color: #fff;
   background-color: #7ecef4;
   border-radius: 8px;
+}
+.share {
+  overflow: hidden;
+  margin-top: 0.1rem;
+}
+.share span {
+  float: left;
+  display: block;
+  width: 0.44rem;
+  height: 0.44rem;
+  background: url('../../../../static/images/icon/share.png') no-repeat center/cover;
+  border-radius: 4px;
+}
+.share i {
+  float: left;
+  font-size: 0.24rem;
+  color: #999;
+  margin-left: 6px;
+  margin-top: 0.04rem;
 }
 </style>

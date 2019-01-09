@@ -16,7 +16,7 @@
         >
           <div class="icon">
             <img
-              :src="index === 0 ? '/static/images/icon/weChat.png' : '/static/images/icon/zficon.png' "
+              :src="index === 0 ? '../../../static/images/icon/weChat.png' : '../../../static/images/icon/zficon.png' "
               alt
             >
           </div>

@@ -9,7 +9,7 @@
     <ul class="contentBox">
       <li v-for="item of list" :key="item.id">
         <div class="content_top">
-          <img src="/static/images/my/header.png" alt>
+          <img src="../../../../static/images/my/header.png" alt>
           <span class="name">{{item.name}}</span>
           <span class="time">{{item.datetime.slice(0,16)}}</span>
         </div>
@@ -258,7 +258,7 @@ button {
   right: 14px;
   width: 0.3rem;
   height: 0.3rem;
-  background: url('/static/images/icon/close.png') no-repeat center/cover;
+  background: url('../../../..//static/images/icon/close.png') no-repeat center/cover;
 }
 .disable {
   background-color: #ccc;

@@ -1,48 +1,52 @@
 <template>
   <div id="myOrderSite">
     <div class="initBox" v-if="init==='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt>
+      <img src="../../../../../static/images/icon/init.png" alt>
       <p>您还没有预约任何场地，赶快点我去预约吧</p>
     </div>
-
-    <ul v-if="init==='block'" class="content">
-      <li v-for="item of mySiteList" :key="item.id">
-        <div class="imgBox_l">
-          <img :src="'/static/images/img/'+ item.infSt.fieldimg" alt>
-        </div>
-        <div class="content_r">
-          <p>场地：{{item.stagenum}}</p>
-          <p>
-            开始时间：{{item.readydate}}
-            <i>{{item.readystarttime.slice(0,5)}}</i>
-          </p>
-          <p>
-            结束时间：{{item.readydate}}
-            <i>{{item.readyendtime.slice(0,5)}}</i>
-          </p>
-          <p>
-            总价：
-            <i>￥80</i>
-          </p>
-          <!-- 到场按钮 -->
-          <button
-            v-if="item.showStatus === '0'||item.showStatus === '1'"
-            @click="affrmSite(item.id)"
-          >确认到场</button>
-          <button class="disabled" v-else-if="item.showStatus === '2'">已确认到场</button>
-          <button class="disabled" v-else-if="item.showStatus === '3'||item.showStatus === '4'">确认到场</button>
-          <!-- 取消预约按钮 -->
-          <button class="disabled" v-if="item.showStatus === '1'">已过取消时间</button>
-          <button class="disabled" v-else-if="item.showStatus === '3'">预约已过期</button>
-          <button class="disabled" v-else-if="item.showStatus === '4'">预约已取消</button>
-          <button
-            v-else-if="item.showStatus === '0'"
-            @click="cancelSite(item.id,item.billNum,item.stagenum)"
-          >取消预约</button>
-        </div>
-        <p class="subtime">提交预约时间：{{item.preTime}}</p>
-      </li>
-    </ul>
+    <scroller :on-infinite="infinite" :on-refresh="refresh" ref="my_scroller">
+      <ul v-if="init==='block'" class="content">
+        <li v-for="item of mySiteList" :key="item.id">
+          <div class="imgBox_l">
+            <img :src="'../../../../../static/images/img/'+ item.infSt.fieldimg" alt>
+          </div>
+          <div class="content_r">
+            <p>场地：{{item.stagenum}}</p>
+            <p>
+              开始时间：{{item.readydate}}
+              <i>{{item.readystarttime.slice(0,5)}}</i>
+            </p>
+            <p>
+              结束时间：{{item.readydate}}
+              <i>{{item.readyendtime.slice(0,5)}}</i>
+            </p>
+            <p>
+              总价：
+              <i>￥80</i>
+            </p>
+            <!-- 到场按钮 -->
+            <button
+              v-if="item.showStatus === '0'||item.showStatus === '1'"
+              @click="affrmSite(item.id)"
+            >确认到场</button>
+            <button class="disabled" v-else-if="item.showStatus === '2'">已确认到场</button>
+            <button
+              class="disabled"
+              v-else-if="item.showStatus === '3'||item.showStatus === '4'"
+            >确认到场</button>
+            <!-- 取消预约按钮 -->
+            <button class="disabled" v-if="item.showStatus === '1'">已过取消时间</button>
+            <button class="disabled" v-else-if="item.showStatus === '3'">预约已过期</button>
+            <button class="disabled" v-else-if="item.showStatus === '4'">预约已取消</button>
+            <button
+              v-else-if="item.showStatus === '0'"
+              @click="cancelSite(item.id,item.billNum,item.stagenum)"
+            >取消预约</button>
+          </div>
+          <p class="subtime">提交预约时间：{{item.preTime}}</p>
+        </li>
+      </ul>
+    </scroller>
   </div>
 </template>
 <script>
@@ -50,7 +54,7 @@ export default {
   name: 'myOrderSite',
   data() {
     return {
-      pageNoIndex: 0,
+      pageNoIndex: 1,
       mySiteList: [],
       init: null,
       shopNum: window.sessionStorage.getItem('shopNum'),
@@ -58,17 +62,55 @@ export default {
     }
   },
   created() {
-    this.getmySiteList(this.pageNoIndex)
+    this.pageNoIndex = 1
+    this.getmySiteList()
     window.sessionStorage.setItem('myOrderShow', 'myOrderSite')
   },
-  mounted() {},
   methods: {
+    // 下拉刷新
+    refresh(done) {
+      // 这是向下滑动的时候请求最新的数据
+      this.pageNoIndex = 1
+      this.getmySiteList(done)
+    },
+    // 上拉加载
+    infinite(done) {
+      this.upList(this.pageNoIndex, done)
+    },
     orderShow() {
       window.sessionStorage.setItem('orderShow', 'orderSite')
       this.$router.push({ name: 'orderSite' })
     },
-    // 获取列表数据
-    async getmySiteList(pageNoIndex) {
+    // 获取首屏列表数据
+    async getmySiteList(fn) {
+      const { data: res } = await this.$http.get(
+        'myresp/getAppointmentPlaceByUser',
+        {
+          params: {
+            pageNo: 0,
+            pageSize: 4,
+            shopNum: this.shopNum,
+            token: this.token
+          }
+        }
+      )
+      if (res.msg === 'success') {
+        if (fn) fn()
+        // 如果首屏请求为空
+        if (res.data.length === 0) {
+          let vcontainer = document.getElementsByClassName('_v-container')[0]
+          vcontainer.style.zIndex = '-1'
+          let vcontent = document.getElementsByClassName('_v-content')[0]
+          vcontent.style.display = 'none'
+          return (this.init = 'null')
+        }
+        // 有数据
+        this.init = 'block'
+        this.mySiteList = res.data
+      }
+    },
+    // 上拉加载
+    async upList(pageNoIndex, fn) {
       const { data: res } = await this.$http.get(
         'myresp/getAppointmentPlaceByUser',
         {
@@ -81,25 +123,15 @@ export default {
         }
       )
       if (res.msg === 'success') {
-        // 如果首屏请求为空
-        if (res.data.length === 0 && this.pageNoIndex === 0) {
-          return (this.init = 'null')
-        }
-        // 如果下拉请求为空
-        if (res.data.length === 0 && this.pageNoIndex !== 0) {
-          return
-        }
-        // 有数据
-        this.init = 'block'
-        if (this.pageNoIndex !== 0) {
-          // 不是首屏数据则追加
-          for (let i = 0; i < res.data.length; i++) {
-            this.mySiteList.push(res.data[i])
-          }
+        if (res.data.length === 0) {
+          // 没有更多数据了
+          fn(true)
         } else {
-          this.mySiteList = res.data
+          fn()
+          this.mySiteList = this.mySiteList.concat(res.data)
+          this.pageNoIndex++
+          console.log(res.data)
         }
-        console.log(this.mySiteList)
       }
     },
     // 确认到场
@@ -173,20 +205,10 @@ export default {
 </script>
 
 <style scoped>
-.mui-scroll-wrapper {
-  overflow: visible;
-}
-#tabs_container {
-  position: relative;
-}
-.mui-content.mui-scroll-wrapper {
-  height: 11.6rem;
-  background-color: #f6f6f6;
-}
 #myOrderSite {
   position: relative;
   width: 100%;
-  /* height: 6rem; */
+  height: 12rem;
 }
 #myOrderSite ul li {
   overflow: hidden;

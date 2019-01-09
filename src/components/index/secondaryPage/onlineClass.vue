@@ -3,7 +3,7 @@
     <my-select @change="getOnlineClass"></my-select>
     <ul class="classBox">
       <li v-for="item of classList" :key="item.classId">
-        <router-link :to="{name: 'classDetails',query: {classId: item.classId, money: item.price}}"><img :src="'/static/images/zxbb/'+ item.imgurl" alt=""></router-link>
+        <router-link :to="{name: 'classDetails',query: {classId: item.classId, money: item.price}}"><img :src="'../../../../static/images/zxbb/'+ item.imgurl" alt=""></router-link>
       </li>
     </ul>
   </div>

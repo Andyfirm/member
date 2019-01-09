@@ -70,7 +70,7 @@ export default {
         this.passMobile = true
       }
     },
-    // 获取验证码
+    // 验证手机号是否注册
     async sendMessage() {
       this.count = 59
       this.verifyMobile()

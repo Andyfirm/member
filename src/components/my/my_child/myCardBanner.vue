@@ -17,7 +17,7 @@
           <b class="erweima" @click="quickMark(item.cardindex)"></b>
         </div>
         <img
-          :src="'/static/images/image/hyk/'+item.infCs.imgpath"
+          :src="'../../../..../../../../static/images/image/hyk/'+item.infCs.imgpath"
           class="main-img"
           @click="selectedCard(item)"
         >
@@ -57,7 +57,7 @@
             <div class="close" @click="closeHykdetails"></div>
           </div>
           <div class="cardBox">
-            <img :src="'/static/images/image/hyk/'+hykdetailsItem.infCs.imgpath" alt>
+            <img :src="'../../../../static/images/image/hyk/'+hykdetailsItem.infCs.imgpath" alt>
             <div class="hykdetails_wenzi">
               <div class="cardName">{{hykdetailsItem.infCs.name}}</div>
               <div
@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     async getList() {
-      const { data: res } = await this.$http.get('myresp/selectinfacd', {
+      const { data: res } = await this.$http.get('card/getCardByUser', {
         params: { shopNum: this.shopNum, token: this.token }
       })
       console.log(res)
@@ -276,7 +276,7 @@ h4 {
   display: block;
   width: 0.48rem;
   height: 0.48rem;
-  background: url('/static/images/icon/qrcode.png') no-repeat center/contain;
+  background: url('../../../../static/images/icon/qrcode.png') no-repeat center/contain;
 }
 .codeBox,
 .hykdetailsBox {
@@ -328,7 +328,7 @@ h4 {
   right: 14px;
   width: 20px;
   height: 20px;
-  background: url('/static/images/icon/close.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/close.png') no-repeat center/cover;
 }
 .boxWrap {
   position: absolute;
@@ -353,14 +353,14 @@ h4 {
   top: 0.36rem;
   width: 0.48rem;
   height: 0.48rem;
-  background: url('/static/images/icon/qrcode.png') no-repeat center/contain;
+  background: url('../../../../static/images/icon/qrcode.png') no-repeat center/contain;
 }
 .topBox .close {
   right: 0.4rem;
   top: 0.36rem;
   width: 0.3rem;
   height: 0.3rem;
-  background: url('/static/images/icon/close.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/close.png') no-repeat center/cover;
 }
 .topBox .qrcode,
 .topBox .close {

@@ -4,7 +4,7 @@
     <my-select @change="getLeagueList"></my-select>
     <ul>
       <li v-for="item of leagueList" :key="item.id">
-        <div class="imgBox_l"><img :src="'/static/images/img/' + item.leagueimg" alt=""></div>
+        <div class="imgBox_l"><img :src="'../../../../static/images/img/' + item.leagueimg" alt=""></div>
         <div class="content_r">
           <p>项目：{{item.courseName}}</p>
           <p>课程日期：<i>{{item.recorddate | convertDate}}</i></p>

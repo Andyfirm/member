@@ -9,7 +9,7 @@
       <ul class="content_mide">
         <li v-for="item of ticketList" :key="item.id">
           <div class="img_left">
-            <img :src="'/static/images/image/zxgp/' + item.picture" alt="">
+            <img :src="'../../../../static/images/image/zxgp/' + item.picture" alt="">
           </div>
           <div class="btn_right">
             <button @click="purchase(item.id)">购买</button>

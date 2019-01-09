@@ -1,18 +1,28 @@
 <template>
   <div id="coachingCourse">
     <div class="content_top">
-      <div class="imgBox"><img :src="'/static/images/' + infEImage.imgurl" alt=""></div>
+      <div class="imgBox">
+        <img :src="'../../../../static/images/' + infEImage.imgurl" alt>
+      </div>
       <div class="text_right">
         <p>教练：{{viewEJt.name}}</p>
         <p>所在门店：{{viewEJt.shopName}}</p>
         <p>{{infEImage.info}}</p>
-        <a :href="'tel:' + viewEJt.phone"><button class="contactCoach">联系教练</button></a>
+        <a :href="'tel:' + viewEJt.phone">
+          <button class="contactCoach">联系教练</button>
+        </a>
+        <div class="share">
+          <span></span>
+          <i>分享这个教练给好友</i>
+        </div>
       </div>
     </div>
     <ul class="course_bottom">
       <li v-for="item of tbPriList" :key="item.id">
         <span>{{item.infI.name}}</span>
-        <router-link :to="{name: 'courseDetails', query: {id: item.id}}"><button>购买课程</button></router-link>
+        <router-link :to="{name: 'courseDetails', query: {id: item.id}}">
+          <button>购买课程</button>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -35,12 +45,15 @@ export default {
   },
   methods: {
     async getCourse() {
-      const { data: res } = await this.$http.get('homepageresp/GetViewEJtById', {
-        params: {
-          id: this.id,
-          token: this.token
+      const { data: res } = await this.$http.get(
+        'homepageresp/GetViewEJtById',
+        {
+          params: {
+            id: this.id,
+            token: this.token
+          }
         }
-      })
+      )
       if (res.msg === 'success') {
         this.tbPriList = res.data.ptClassArray
         this.viewEJt = res.data.viewEJt
@@ -61,7 +74,7 @@ export default {
 }
 .content_top {
   overflow: hidden;
-  padding-bottom: 0.4rem;
+  padding-bottom: 1.2rem;
   border-bottom: 1px solid #dcdcdc;
 }
 .imgBox {
@@ -119,5 +132,27 @@ button.contactCoach {
   background-color: #fff;
   border: 1px solid #7ecef4;
   border-radius: 0.16rem;
+}
+.share {
+  position: absolute;
+  bottom: -0.8rem;
+  overflow: hidden;
+  margin-top: 0.1rem;
+}
+.share span {
+  float: left;
+  display: block;
+  width: 0.44rem;
+  height: 0.44rem;
+  background: url('../../../../static/images/icon/share.png') no-repeat center/cover;
+  border-radius: 4px;
+}
+.share i {
+  float: left;
+  font-size: 0.24rem;
+  font-style: normal;
+  color: #999;
+  margin-left: 6px;
+  margin-top: 0.04rem;
 }
 </style>

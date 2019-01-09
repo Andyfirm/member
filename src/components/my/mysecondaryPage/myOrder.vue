@@ -1,7 +1,7 @@
 <template>
   <div id="myOrder">
     <top-nav :routers="routers"></top-nav>
-    <router-view />
+      <router-view/>
   </div>
 </template>
 

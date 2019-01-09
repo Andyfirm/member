@@ -3,7 +3,7 @@
     <h5>分店信息</h5>
     <ul>
       <li v-for="item of indexList" :key="item.id">
-        <div class="imgBox"><img :src="'/static/' + item.shopImg" alt=""></div>
+        <div class="imgBox"><img :src="'../../../../static/' + item.shopImg" alt=""></div>
         <div class="content">
           <h6>{{item.name}}</h6>
           <div class="contact">

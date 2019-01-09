@@ -1,11 +1,11 @@
 <template>
   <div id="mytop">
-    <div class="imgBox"><img src="/static/images/my/header.png" alt=""></div>
+    <div class="imgBox"><img src="../../../../static/images/my/header.png" alt=""></div>
     <ul class="my_right">
       <li>
         <span class="name">{{infa.name}}</span>
-        <i class="icon_sex" v-show="infa.sex === '男'"><img src="/static/images/icon/sex_boy.png" alt=""></i>
-        <i class="icon_sex" v-show="infa.sex === '女'"><img src="/static/images/icon/sex_girl.png" alt=""></i>
+        <i class="icon_sex" v-show="infa.sex === '男'"><img src="../../../../static/images/icon/sex_boy.png" alt=""></i>
+        <i class="icon_sex" v-show="infa.sex === '女'"><img src="../../../../static/images/icon/sex_girl.png" alt=""></i>
         <router-link :to="{name:'personalDetails'}"><i class="icon_redact"></i></router-link>
       </li>
       <li class="call">手机号：{{infa.mobile}}</li>
@@ -47,6 +47,7 @@ export default {
         cancelButtonText: '取消'
       }).then(action => {
         if (action === 'confirm') {
+          window.sessionStorage.setItem('isLogin', 'false')
           this.$router.push({ name: 'login' })
         }
       })

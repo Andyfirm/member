@@ -1,50 +1,52 @@
 <template>
   <div id="myOrderPersonal">
     <div class="initBox" v-if="init==='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt>
+      <img src="../../../../../static/images/icon/init.png" alt>
       <p>您还没有预约任何私教，赶快点我去预约吧</p>
     </div>
-    <ul v-if="init==='block'">
-      <li v-for="item of list" :key="item.id">
-        <div class="imgBox_l">
-          <img :src="'/static/images/sjkc/'+item.infPTClassInfo.imgurl" alt>
-        </div>
-        <div class="content_r">
-          <p>教练：{{item.coachName}}</p>
-          <p>课程：{{item.className}}</p>
-          <p>
-            开始时间：{{item.appointDate}}
-            <i>{{item.appointBegin.slice(0,5)}}</i>
-          </p>
-          <p>
-            结束时间：{{item.appointDate}}
-            <i>{{item.appointEnd.slice(0,5)}}</i>
-          </p>
-          <button>
-            <a class="mobile" :href="'tel:'+item.memberMobile">联系教练</a>
-          </button>
-          <button v-if="item.showStatus === '0'" @click="cancelReservation(item)">取消预约</button>
-          <button v-else-if="item.showStatus === '1'" class="disabled">已过取消时间</button>
-          <button v-else-if="item.showStatus === '2'" class="disabled">预约已过期</button>
-          <button v-else-if="item.showStatus === '3'" class="disabled">预约已取消</button>
-          <div
-            class="coach_bottom"
-            v-if="item.memberConfirm===0&&item.coachConfirm===1&&(item.showStatus!=='2'&&item.showStatus!=='3')"
-          >
-            <span>教练代预约</span>
-            <em @click="confirmYuue(item.id)">确认</em>
+    <scroller :on-infinite="infinite" :on-refresh="refresh" ref="my_scroller">
+      <ul v-if="init==='block'">
+        <li v-for="item of list" :key="item.id">
+          <div class="imgBox_l">
+            <img :src="'../../../../../static/images/sjkc/'+item.infPTClassInfo.imgurl" alt>
           </div>
-          <div
-            class="text"
-            v-else-if="item.memberConfirm===1&&item.coachConfirm===0&&(item.showStatus !== '2'&&item.showStatus !=='3')"
-          >会员已预约，待教练确认</div>
-          <div
-            class="text"
-            v-else-if="item.memberConfirm===1&&item.coachConfirm===1&&(item.showStatus !== '2'&&item.showStatus !=='3')"
-          >会员确认成功，等待上课</div>
-        </div>
-      </li>
-    </ul>
+          <div class="content_r">
+            <p>教练：{{item.coachName}}</p>
+            <p>课程：{{item.className}}</p>
+            <p>
+              开始时间：{{item.appointDate}}
+              <i>{{item.appointBegin.slice(0,5)}}</i>
+            </p>
+            <p>
+              结束时间：{{item.appointDate}}
+              <i>{{item.appointEnd.slice(0,5)}}</i>
+            </p>
+            <button>
+              <a class="mobile" :href="'tel:'+item.memberMobile">联系教练</a>
+            </button>
+            <button v-if="item.showStatus === '0'" @click="cancelReservation(item)">取消预约</button>
+            <button v-else-if="item.showStatus === '1'" class="disabled">已过取消时间</button>
+            <button v-else-if="item.showStatus === '2'" class="disabled">预约已过期</button>
+            <button v-else-if="item.showStatus === '3'" class="disabled">预约已取消</button>
+            <div
+              class="coach_bottom"
+              v-if="item.memberConfirm===0&&item.coachConfirm===1&&(item.showStatus!=='2'&&item.showStatus!=='3')"
+            >
+              <span>教练代预约</span>
+              <em @click="confirmYuue(item.id)">确认</em>
+            </div>
+            <div
+              class="text"
+              v-else-if="item.memberConfirm===1&&item.coachConfirm===0&&(item.showStatus !== '2'&&item.showStatus !=='3')"
+            >会员已预约，待教练确认</div>
+            <div
+              class="text"
+              v-else-if="item.memberConfirm===1&&item.coachConfirm===1&&(item.showStatus !== '2'&&item.showStatus !=='3')"
+            >会员确认成功，等待上课</div>
+          </div>
+        </li>
+      </ul>
+    </scroller>
   </div>
 </template>
 
@@ -54,7 +56,7 @@ export default {
   data() {
     return {
       init: null,
-      page: 0,
+      pageNoIndex: 1,
       list: [],
       shopName: window.sessionStorage.getItem('shopName'),
       shopNum: window.sessionStorage.getItem('shopNum'),
@@ -62,12 +64,54 @@ export default {
     }
   },
   created() {
-    this.getList(this.page)
+    this.pageNoIndex = 1
+    this.getList()
     window.sessionStorage.setItem('myOrderShow', 'myOrderPersonal')
   },
   methods: {
+    // 下拉刷新
+    refresh(done) {
+      // 这是向下滑动的时候请求最新的数据
+      this.pageNoIndex = 1
+      this.getList(done)
+    },
+    // 上拉加载
+    infinite(done) {
+      this.upList(this.pageNoIndex, done)
+    },
     // 获取首屏数据
-    async getList(page) {
+    async getList(fn) {
+      const { data: res } = await this.$http.get(
+        'myresp/getAppointmentPTByUser',
+        {
+          params: {
+            pageNo: 0,
+            pageSize: 6,
+            shopName: this.shopName,
+            shopNum: this.shopNum,
+            token: this.token
+          }
+        }
+      )
+      console.log(res)
+      if (res.msg === 'success') {
+        if (fn) fn()
+        if (res.data.length === 0) {
+          // 如果请求数据为空则提示初始化状态
+          let vcontainer = document.getElementsByClassName('_v-container')[0]
+          vcontainer.style.zIndex = '-1'
+          let vcontent = document.getElementsByClassName('_v-content')[0]
+          vcontent.style.display = 'none'
+          return (this.init = 'null')
+        }
+        // 有数据
+        this.init = 'block'
+        this.list = res.data
+      } else {
+      }
+    },
+    // 上拉加载
+    async upList(page, fn) {
       const { data: res } = await this.$http.get(
         'myresp/getAppointmentPTByUser',
         {
@@ -80,24 +124,16 @@ export default {
           }
         }
       )
-      console.log(res)
       if (res.msg === 'success') {
         if (res.data.length === 0) {
-          // 如果请求数据为空则提示初始化状态
-          return (this.init = 'null')
-        }
-        // 有数据
-        this.init = 'block'
-        if (this.pageNo !== 0) {
-          // 不是首屏数据则追加
-          for (let i = 0; i < res.data.length; i++) {
-            this.list.push(res.data[i])
-          }
+          // 没有更多数据了
+          fn(true)
         } else {
-          // 首屏数据则直接赋值
-          this.list = res.data
+          fn()
+          this.list = this.list.concat(res.data)
+          this.pageNoIndex++
+          console.log(res.data)
         }
-      } else {
       }
     },
     // 确认教练代预约
@@ -180,7 +216,9 @@ export default {
 
 <style scoped>
 #myOrderPersonal {
+  position: relative;
   width: 100%;
+  height: 12rem;
 }
 #myOrderPersonal ul li {
   overflow: hidden;

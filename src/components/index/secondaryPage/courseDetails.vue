@@ -2,7 +2,7 @@
   <div id="courseDetails">
     <div class="content_box">
       <div class="content_top">
-        <div class="imgBox"><img :src="'/static/images/sjkc/' + imgUrl" alt=""></div>
+        <div class="imgBox"><img :src="'../../../../static/images/sjkc/' + imgUrl" alt=""></div>
         <div class="text_right">
           <p>项目：{{courseName}}</p>
           <p>授课老师：<i>{{teacher}}</i></p>

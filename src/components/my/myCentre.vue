@@ -20,6 +20,12 @@ export default {
     myBottom,
     myCardBanner
   },
+  created() {
+    let isLogin = window.sessionStorage.getItem('isLogin')
+    if (isLogin === 'false') {
+      this.$router.push({ name: 'login', replace: true })
+    }
+  },
   data() {
     return {}
   }

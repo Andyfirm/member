@@ -369,7 +369,7 @@ export default {
   margin-top: -0.14rem;
   width: 0.56rem;
   height: 0.52em;
-  background: url('/static/images/icon/rili.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/rili.png') no-repeat center/cover;
 }
 .milde_container {
   position: relative;

@@ -17,8 +17,6 @@ import '../static/iconfont/iconfont.svg'
 import '../static/iconfont/iconfont.ttf'
 import VeLine from 'v-charts/lib/line.common'
 import VueScroller from 'vue-scroller'
-// import mui from '../static/mui/js/mui'
-// Vue.prototype.$mui = mui
 Vue.use(VueScroller)
 Vue.use(VueAwesomeSwiper)
 
@@ -30,12 +28,25 @@ Vue.component('swipe', Swipe)
 Vue.component('swipe-item', SwipeItem)
 Vue.component(VeLine.name, VeLine)
 Vue.use(Mint)
-Axios.defaults.baseURL = 'http://192.168.1.43/weixinPay/'
+// http://192.168.1.43/
+Axios.defaults.baseURL = 'https://www.easyserp.com/weixinPayTest/'
 Vue.prototype.$http = Axios
 Vue.prototype.qs = qs
 Vue.prototype.$moment = Moment
 Vue.config.productionTip = false
 
+// 监听物理返回键
+window.addEventListener('popstate', (e) => {
+  if (router.match(location).hash === '#/myOrder' || router.match(location).hash === '#/myOrder/myOrderSite' || router.match(location).hash === '#/myOrder/myOrderLeague' || router.match(location).hash === '#/myOrder/myOrderPersonal') {
+    router.push({ name: 'myCentre' })
+  }
+  if (router.match(location).hash === '#/orders/orderPersonal') {
+    router.push({ name: 'index' })
+  }
+  if (router.match(location).hash === '#/orders') {
+    router.push({ name: 'orderSite' })
+  }
+})
 Axios.interceptors.request.use(config => {
   if (router.match(location).hash === '#/login') {
     Mint.Indicator.open('正在登录...')

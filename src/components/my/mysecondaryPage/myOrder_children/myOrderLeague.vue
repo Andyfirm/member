@@ -1,7 +1,7 @@
 <template>
   <div id="myOrderLeague">
     <div class="initBox" v-if="init!=='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt="">
+      <img src="../../../../../static/images/icon/init.png" alt="">
       <p>您还没有预约任何团课，赶快点我去预约吧</p>
     </div>
     <ul v-if="init==='block'">
@@ -43,6 +43,10 @@ export default {
     }
   },
   created() {
+    // window.addEventListener('popstate', (e) => {
+    //   window.sessionStorage.setItem('myOrderShow', 'myOrderLeague')
+    //   this.$router.push({name: 'myCentre'})
+    // })
     this.getmyLeagueList()
     window.sessionStorage.setItem('myOrderShow', 'myOrderLeague')
   },

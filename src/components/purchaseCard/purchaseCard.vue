@@ -3,7 +3,7 @@
     <ul>
       <li class="cardBox" v-for="item of cardList" :key="item.id">
         <div class="imgBox_wrap">
-          <img :src="'/static/images/hyk/' + item.infCs.imgpath" alt="">
+          <img :src="'../../../static/images/hyk/' + item.infCs.imgpath" alt="">
           <div class="imgBox">
             <h6>{{item.cardName}}</h6>
             <p></p>

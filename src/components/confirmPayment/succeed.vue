@@ -1,7 +1,7 @@
 <template>
   <div id="succeed">
     <div class="success">
-      <img src="/static/images/icon/success.png" alt>
+      <img src="../../../static/images/icon/success.png" alt>
     </div>
     <p class="success_p" v-if="stamp==='1'||stamp==='2'||stamp==='3'">预约成功</p>
     <p class="success_p" v-else-if="stamp==='8'">充值成功</p>

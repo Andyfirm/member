@@ -39,13 +39,19 @@ import forgetpassword from '@/components/login/forgetpassword'
 import register from '@/components/login/register'
 import headAccount from '@/components//index/secondaryPage/headAccount'
 import personalDetails from '@/components/my/mysecondaryPage/personalDetails'
+import club from '@/components/dataOrigin/club'
+import branch from '@/components/dataOrigin/branch'
+import member from '@/components/dataOrigin/member'
 
 Vue.use(Router)
 
 export default new Router({
   linkActiveClass: 'myactive',
   routes: [
-    { path: '/', redirect: '/login' },
+    { path: '/', redirect: '/member' },
+    { path: '/member', name: 'member', component: member },
+    { path: '/club', name: 'club', component: club },
+    { path: '/branch', name: 'branch', component: branch },
     {
       path: '/index',
       name: 'index',

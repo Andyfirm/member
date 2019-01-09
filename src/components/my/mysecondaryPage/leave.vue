@@ -1,42 +1,46 @@
 <template>
   <div id="leave">
     <div class="nav_topWrap">
-      <div class="nav_top">
-        <div>
-          <div class="leave_l active" ref="leave_l" @click="leave">请假</div>
-        </div>
-        <div>
-          <div class="pause_r" ref="pause_r" @click="pause">暂停</div>
+      <div class="navWrap">
+        <div class="nav_top">
+          <div>
+            <div class="leave_l active" ref="leave_l" @click="leave">请假</div>
+          </div>
+          <div>
+            <div class="pause_r" ref="pause_r" @click="pause">暂停</div>
+          </div>
         </div>
       </div>
       <div class="initBox" v-if="leaves.length===0" v-show="isLeave">
-        <img src="/static/images/icon/init.png" alt>
+        <img src="../../../../static/images/icon/init.png" alt>
         <p>您暂时没有请假记录</p>
       </div>
-      <ul v-else class="content_leave" v-show="isLeave">
-        <li v-for="item of leaves" :key="item.id">
-          <p>卡号:{{item.asscardnum}}</p>
-          <p>暂停天数:{{item.vactiondays}}天</p>
-          <p>开始时间:{{item.vactionstartdate}}</p>
-          <p>结束时间:{{item.vactionenddate}}</p>
-          <p>暂停日期:{{item.pauseStartDate}}</p>
-          <p>注销日期:{{item.pauseEndDate}}</p>
-        </li>
-      </ul>
-      <div class="initBox" v-if="stops.length===0" v-show="isPause">
-        <img src="/static/images/icon/init.png" alt>
-        <p>您暂时没有暂停记录</p>
+      <div class="wrapList">
+        <ul v-if="leaves.length!==0" class="content_leave" v-show="isLeave">
+          <li v-for="item of leaves" :key="item.id">
+            <p>卡号:{{item.asscardnum}}</p>
+            <p>暂停天数:{{item.vactiondays}}天</p>
+            <p>开始时间:{{item.vactionstartdate}}</p>
+            <p>结束时间:{{item.vactionenddate}}</p>
+            <p>暂停日期:{{item.pauseStartDate}}</p>
+            <p>注销日期:{{item.pauseEndDate}}</p>
+          </li>
+        </ul>
+        <div class="initBox" v-if="stops.length===0" v-show="isPause">
+          <img src="../../../../static/images/icon/init.png" alt>
+          <p>您暂时没有暂停记录</p>
+        </div>
+        <ul class="content_leave" v-if="stops.length!==0" v-show="isPause">
+          <li v-for="item of stops" :key="item.id">
+            <p>卡号:{{item.asscardnum}}</p>
+            <p>暂停天数:{{item.vactiondays}}天</p>
+            <p>开始时间:{{item.vactionstartdate}}</p>
+            <p>结束时间:{{item.vactionenddate}}</p>
+            <p>暂停日期:{{item.vactiondate}}</p>
+            <p>注销日期:{{item.cancelDate}}</p>
+          </li>
+        </ul>
       </div>
-      <ul class="content_leave" v-else v-show="isPause">
-        <li v-for="item of stops" :key="item.id">
-          <p>卡号:{{item.asscardnum}}</p>
-          <p>暂停天数:{{item.vactiondays}}天</p>
-          <p>开始时间:{{item.vactionstartdate}}</p>
-          <p>结束时间:{{item.vactionenddate}}</p>
-          <p>暂停日期:{{item.vactiondate}}</p>
-          <p>注销日期:{{item.cancelDate}}</p>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
@@ -48,7 +52,7 @@ export default {
     return {
       isLeave: true,
       isPause: false,
-      page: 0,
+      pageNoIndex: 1,
       leaves: [],
       stops: [],
       shopNum: window.sessionStorage.getItem('shopNum'),
@@ -56,14 +60,15 @@ export default {
     }
   },
   created() {
-    this.getList(this.page)
+    this.pageNoIndex = 1
+    this.getList()
   },
   methods: {
     // 获取首屏数据
-    async getList(page) {
+    async getList(fn) {
       const { data: res } = await this.$http.get('myresp/getLeaveByUser', {
         params: {
-          pageNo: page,
+          pageNo: 0,
           pageSize: 6,
           shopNum: this.shopNum,
           token: this.token
@@ -71,6 +76,7 @@ export default {
       })
       console.log(res)
       if (res.msg === 'success') {
+        if (fn) fn()
         this.leaves = res.data.leave
         this.stops = res.data.stop
       }
@@ -163,5 +169,20 @@ li {
 .initBox p {
   font-size: 0.32rem;
   text-align: center;
+}
+.wrapList {
+  position: relative;
+  height: 12rem;
+  margin-top: 1.26rem;
+}
+.navWrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 9;
+  padding: 0.2rem;
+  background-color: #f6f6f6;
+  box-sizing: border-box;
 }
 </style>

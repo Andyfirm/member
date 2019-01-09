@@ -1,25 +1,36 @@
 <template>
   <div id="login_container">
     <p class="activity">
-      <img src="/static/images/icon/logo.png" />
+      <img src="../../../static/images/icon/logo.png">
     </p>
     <div class="mian">
       <p>
-        <input type="text" name="" class="entry" id="userName" v-model="userName" placeholder="请输入用户名/手机号" />
-        <input type="hidden" name="" value="" />
+        <input
+          type="text"
+          name
+          class="entry"
+          id="userName"
+          v-model="userName"
+          placeholder="请输入用户名/手机号"
+        >
+        <input type="hidden" name value>
       </p>
       <p>
-        <input type="password" name="" class="entry" id="pwd" v-model="pwd" placeholder="请输入密码" />
-        <input type="hidden" name="" value="" />
+        <input type="password" name class="entry" id="pwd" v-model="pwd" placeholder="请输入密码">
+        <input type="hidden" name value>
       </p>
       <p class="exmple">
-        <router-link :to="{name: 'forgetpassword'}"><span class="forget">忘记密码？</span></router-link>
+        <router-link :to="{name: 'forgetpassword'}">
+          <span class="forget">忘记密码？</span>
+        </router-link>
       </p>
       <label>
         <button class="entry goIn" id="btn" @click="startLogin">登录</button>
       </label>
       <label>
-        <router-link :to="{name: 'register'}"><button class="entry goIn zhuce">注册</button></router-link>
+        <router-link :to="{name: 'register'}">
+          <button class="entry goIn zhuce">注册</button>
+        </router-link>
       </label>
     </div>
   </div>
@@ -32,13 +43,14 @@ export default {
     return {
       userName: null,
       pwd: null,
-      token: null
+      token: window.sessionStorage.getItem('token')
     }
   },
   created() {
-    let token = 'oQc9-jhcSgZI4ovA5r8kk7fhOMb8'
-    window.sessionStorage.setItem('token', token)
-    this.token = token
+    // let token = 'oQc9-jhcSgZI4ovA5r8kk7fhOMb8'
+    // window.sessionStorage.setItem('token', token)
+    // this.token = token
+    window.sessionStorage.setItem('isLogin', 'false')
   },
   methods: {
     async startLogin() {
@@ -59,10 +71,18 @@ export default {
         return
       }
       const { data: res } = await this.$http.get('memberLogin/logined', {
-        params: { userName: this.userName, passWord: this.pwd, token: this.token }
+        params: {
+          userName: this.userName,
+          passWord: this.pwd,
+          token: this.token
+        }
       })
       console.log(res)
-      if (res.msg === 'success') this.$router.push({ name: 'index' })
+      if (res.msg === 'success') {
+        this.$router.push({ name: 'index' })
+        window.sessionStorage.setItem('isLogin', 'true')
+      }
+      if (res.msg === 'fail') this.$toast(res.data)
     }
   }
 }

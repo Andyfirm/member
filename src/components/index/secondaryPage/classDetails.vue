@@ -1,7 +1,13 @@
 <template>
   <div id="classDetails_container">
     <div class="content">
-      <div class="imgBox"><img :src="'/static/images/zxbb/' +detailsObj.imgurl" alt=""></div>
+      <div class="imgBox">
+        <img :src="'../../../../static/images/zxbb/' +detailsObj.imgurl" alt>
+      </div>
+      <div class="share">
+        <i>分享这个课给好友</i>
+        <span></span>
+      </div>
       <div class="content_btom">
         <h6>班级介绍：</h6>
         <p>{{detailsObj.remark}}</p>
@@ -31,9 +37,12 @@ export default {
   },
   methods: {
     async getclassDetails() {
-      const { data: res } = await this.$http.get('homepageresp/TrainingClassDe', {
-        params: { pid: this.classId, token: this.token }
-      })
+      const { data: res } = await this.$http.get(
+        'homepageresp/TrainingClassDe',
+        {
+          params: { pid: this.classId, token: this.token }
+        }
+      )
       if (res.msg === 'success') {
         console.log(res)
         this.state = res.data.state
@@ -108,5 +117,26 @@ export default {
   color: #fff;
   background-color: #7ecef4;
   border-radius: 8px;
+}
+.share {
+  float: right;
+  overflow: hidden;
+  width: 100%;
+  margin: 0.4rem 0;
+}
+.share span {
+  float: right;
+  display: block;
+  width: 0.44rem;
+  height: 0.44rem;
+  background: url('../../../../static/images/icon/share.png') no-repeat center/cover;
+  border-radius: 4px;
+}
+.share i {
+  float: right;
+  font-size: 0.24rem;
+  font-style: normal;
+  color: #999;
+  margin: 0.04rem 0.2rem 0 6px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="myPersonal">
     <div class="initBox" v-if="init==='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt>
+      <img src="../../../../static/images/icon/init.png" alt>
       <p>您还没有购买任何私教，赶快点我去购买吧</p>
     </div>
     <ul v-if="init==='block'">

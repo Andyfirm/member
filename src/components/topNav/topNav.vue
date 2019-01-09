@@ -37,7 +37,7 @@ export default {
   width: 100%;
   background-color: #f6f6f6;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 9;
 }
 .topnav_content {
   overflow: hidden;

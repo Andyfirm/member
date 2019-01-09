@@ -4,7 +4,7 @@
     <my-select @change="getSiteList"></my-select>
     <ul>
       <li v-for="item of siteList" :key="item.id">
-        <div class="imgBox_l"><img :src="'/static/images/img/' + item.fieldimg" alt=""></div>
+        <div class="imgBox_l"><img :src="'../../../../static/images/img/' + item.fieldimg" alt=""></div>
         <div class="content_r">
           <p>项目：{{item.name}}</p>
           <p>营业时间：<i>{{item.workStartTime.slice(0,5)}}-{{item.workEndTime.slice(0,5)}}</i></p>

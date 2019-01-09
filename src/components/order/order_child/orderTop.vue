@@ -1,7 +1,7 @@
 <template>
   <div id="order_container">
     <div class="top_h">
-      <div class="imgBox"><img src="/static/images/image/e/logo.jpg" alt=""></div>
+      <div class="imgBox"><img src="../../../../static/images/image/e/logo.jpg" alt=""></div>
       <h4>武汉体育中心</h4>
     </div>
     <p>{{text}}</p>

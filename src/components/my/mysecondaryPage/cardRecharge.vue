@@ -148,7 +148,7 @@ export default {
   float: left;
   width: 0.42rem;
   height: 0.3rem;
-  background: url('/static/images/icon/zficon.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/zficon.png') no-repeat center/cover;
   margin: 0.14rem 0.2rem 0;
 }
 .jt_r {
@@ -267,7 +267,7 @@ export default {
   height: 0.3rem;
   margin-right: 0.2rem;
   margin-top: 0.146rem;
-  background: url('/static/images/icon/zficon.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/zficon.png') no-repeat center/cover;
 }
 .icon_select {
   float: right;

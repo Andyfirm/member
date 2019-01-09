@@ -107,3 +107,7 @@ a {
 .picker-slot {
   font-size: 0.36rem !important;
 }
+.mui-pull-caption,
+.mui-pull-caption {
+  text-align: center;
+}

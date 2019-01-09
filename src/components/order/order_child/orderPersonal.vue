@@ -4,13 +4,13 @@
     <!-- "1"为自定义的标识符，证明是自定义触发的状态 -->
     <my-select @change="getPersonalList('1')"></my-select>
     <div class="initBox" v-if="init==='null'" @click="orderShow">
-      <img src="/static/images/icon/init.png" alt>
+      <img src="../../../../static/images/icon/init.png" alt>
       <p>您还没有购买任何私教，赶快点我去购买吧</p>
     </div>
     <ul v-if="init==='block'">
       <li v-for="item of personalList" :key="item.id">
         <div class="imgBox_l">
-          <img :src="'/static/images/sjkc/' + item.infPTClassInfo.imgurl" alt>
+          <img :src="'../../../../static/images/sjkc/' + item.infPTClassInfo.imgurl" alt>
         </div>
         <div class="content_r">
           <p>私教姓名：{{item.teachername}}</p>
@@ -78,7 +78,7 @@ export default {
       }
     },
     orderShow() {
-      this.$router.push({ name: 'index' })
+      this.$router.push({ name: 'moreCoach' })
     }
   }
 }

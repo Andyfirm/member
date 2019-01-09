@@ -4,7 +4,7 @@
     <div class="content">
       <ul>
         <li v-for="item of list" :key="item.id" @click="coachingCourse(item.id)">
-          <div class="imgBox"><img :src="'/static/images/' + item.infEImage.imgurl" :onerror="defaultImg" alt=""></div>
+          <div class="imgBox"><img :src="'../../../../static/images/' + item.infEImage.imgurl" :onerror="defaultImg" alt=""></div>
           <div class="text_right">
             <div>
               <span>{{item.name}}</span> <i>{{item.job1L}}</i>
@@ -30,7 +30,7 @@ export default {
       token: sessionStorage.getItem('token'),
       originalShopName: null,
       list: [],
-      defaultImg: 'this.src="/static/images/icon/init.png"'
+      defaultImg: 'this.src="../../../../static/images/icon/init.png"'
     }
   },
   activated() {
