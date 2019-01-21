@@ -4,7 +4,7 @@
     <div class="content">
       <ul>
         <li v-for="item of list" :key="item.id" @click="coachingCourse(item.id)">
-          <div class="imgBox"><img :src="'../../../../static/images/' + item.infEImage.imgurl" :onerror="defaultImg" alt=""></div>
+          <div class="imgBox"><img :src="'./static/images/' + (item.infEImage?item.infEImage.imgurl:'')" alt=""></div>
           <div class="text_right">
             <div>
               <span>{{item.name}}</span> <i>{{item.job1L}}</i>
@@ -30,7 +30,7 @@ export default {
       token: sessionStorage.getItem('token'),
       originalShopName: null,
       list: [],
-      defaultImg: 'this.src="../../../../static/images/icon/init.png"'
+      defaultImg: 'this.src="./static/images/icon/init.png"'
     }
   },
   activated() {
@@ -42,8 +42,8 @@ export default {
     // 获取数据
     async getList() {
       let shopNum = window.sessionStorage.getItem('shopNum')
-      if (this.originalShopName === this.shopNumVuex) return
-      const { data: res } = await this.$http.get('homepageresp/GetEJtByShopNum', {
+      if (this.originalShopName === this.shopNumVuex) return // homepageresp/GetEJtByShopNum
+      const { data: res } = await this.$http.get('pt/GetEJtByShopNum', {
         params: { shopNum, token: this.token, state: true }
       })
       if (res.msg === 'success') {

@@ -36,6 +36,7 @@ export default {
         this.getshopNumVuex(itemTrue[0].shopNum)
         this.getindexListShow()
         this.$emit('change')
+        this.$emit('changeShopName')
       }
       if (this.selectShow) {
         icon.style.transition = 'all .5s'

@@ -22,7 +22,7 @@ export default {
       state.indexListShow = ArrshopNum
     }
   },
-  // 设置支付是要提交的公共数据
+  // 设置支付时要提交的公共数据
   setSubmittedData(state, data) {
     state.submittedData = data
   }

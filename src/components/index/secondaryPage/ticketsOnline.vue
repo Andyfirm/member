@@ -1,18 +1,18 @@
 <template>
   <div id="tickets_container">
-    <my-select @change="getTickList"></my-select>
+    <my-select @change="getTickList" @changeShopName="changeShopName"></my-select>
     <div class="ticket_box">
       <div class="content_top">
-        <div class="shop">门店：武昌店</div>
+        <div class="shop">门店：{{shopName}}</div>
         <router-link :to="{name: 'ticketRecord'}" class="ticket_record">购票记录</router-link>
       </div>
       <ul class="content_mide">
         <li v-for="item of ticketList" :key="item.id">
           <div class="img_left">
-            <img :src="'../../../../static/images/image/zxgp/' + item.picture" alt="">
+            <img :src="'./static/images/image/zxgp/' + item.picture" alt="">
           </div>
           <div class="btn_right">
-            <button @click="purchase(item.id)">购买</button>
+            <button @click="purchase(item)">购买</button>
           </div>
         </li>
       </ul>
@@ -31,6 +31,7 @@ export default {
     return {
       ticketList: [],
       shopNumOrigin: null,
+      shopName: window.sessionStorage.getItem('shopName'),
       token: window.sessionStorage.getItem('token')
     }
   },
@@ -40,10 +41,11 @@ export default {
     }
   },
   methods: {
+    // 获取首屏数据
     async getTickList() {
       let shopNum = window.sessionStorage.getItem('shopNum')
       if (shopNum === this.shopNumOrigin) return
-      const { data: res } = await this.$http.get('homepageresp/TickByShopNum', {
+      const { data: res } = await this.$http.get('ticket/getOnlineAllTicketInfo', {
         params: { shopNum, token: this.token }
       })
       if (res.msg === 'success') {
@@ -51,9 +53,14 @@ export default {
         this.shopNumOrigin = window.sessionStorage.getItem('shopNum')
       }
     },
-    purchase(id) {
+    // 改变分店
+    changeShopName() {
+      this.shopName = window.sessionStorage.getItem('shopName')
+    },
+    purchase(item) {
+      let itemStr = JSON.stringify(item)
       // 编程式导航，预留是否可以购票的权限
-      this.$router.push({ name: 'orderDetails', query: { id, type: 'ticket' } })
+      this.$router.push({ name: 'orderDetails', query: { item: itemStr, type: 'ticket' } })
     }
   }
 }

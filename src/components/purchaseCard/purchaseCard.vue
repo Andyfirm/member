@@ -3,27 +3,27 @@
     <ul>
       <li class="cardBox" v-for="item of cardList" :key="item.id">
         <div class="imgBox_wrap">
-          <img :src="'../../../static/images/hyk/' + item.infCs.imgpath" alt="">
+          <img :src="'./static/images/hyk/' + (item.infCs?item.infCs.imgpath:'')" alt="">
           <div class="imgBox">
-            <h6>{{item.cardName}}</h6>
+            <h6>{{item.cardName?item.cardName:''}}</h6>
             <p></p>
             <div class="card_bottom">
               <span class="beizhu">备注</span>
-              <span class="money">{{item.infCs.cardcash}}元</span>
+              <span class="money">{{item.infCs?item.infCs.cardcash:''}}元</span>
             </div>
           </div>
         </div>
         <div class="middle">
-          <div class="middle_l">卡名：{{item.cardName}}</div>
+          <div class="middle_l">卡名：{{item.cardName?item.cardName:''}}</div>
           <div class="middle_r">
-            价格: <i>￥{{item.weChatPrice}}</i>
+            价格: <i>￥{{item.weChatPrice?item.weChatPrice:''}}</i>
           </div>
         </div>
         <div class="select">
           <div class="select_l" @click="switchText">查看详情</div>
           <div class="select_r" @click="purchase(item.id, item.weChatPrice)">购买</div>
         </div>
-        <p class="showp">{{item.infCs.remarks}}</p>
+        <p class="showp">{{item.infCs?item.infCs.remarks:''}}</p>
       </li>
     </ul>
     <footer-nav :page="2"></footer-nav>
@@ -54,16 +54,17 @@ export default {
     }
   },
   methods: {
+    // 获取首屏数据
     async getCardList() {
       let shopNum = window.sessionStorage.getItem('shopNum')
       let token = window.sessionStorage.getItem('token')
-      const { data: res } = await this.$http.get('homepageresp/getCardsBySN', {
+      const { data: res } = await this.$http.get('card/getCardByShopNum', {
         params: { shopNum, token }
       })
       if (res.msg === 'success') {
         this.state = res.data.state
-        // this.cardList = res.data.dataArray // 正式渲染
-        this.cardList.push(res.data.dataArray[0]) // 临时测试
+        this.cardList = res.data.cardsInfo // 正式渲染
+        // this.cardList.push(res.data.dataArray[0]) // 临时测试
         this.originShopNum = shopNum
       }
     },

@@ -49,7 +49,9 @@ export default {
   font-size: 0.28rem;
   text-indent: 0.3rem;
   display: -webkit-box;
+  /*! autoprefixer: off */
   -webkit-box-orient: vertical;
+  /* autoprefixer: on */
   -webkit-line-clamp: 3;
   overflow: hidden;
 }

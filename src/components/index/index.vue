@@ -11,8 +11,8 @@
       <div class="shareBox" v-show="shareActive" ref="shareBox">
         <div class="shareContent">
           <div class="topBox">
-            <div class="topImg" style="background-image: url('../../../static/images/img/jazz.jpg')"></div>
-            <div class="imgBox" style="background-image: url('../../../static/images/img/jazz.jpg')"></div>
+            <div class="topImg" style="background-image: url('./static/images/img/jazz.jpg')"></div>
+            <div class="imgBox" style="background-image: url('./static/images/img/jazz.jpg')"></div>
           </div>
           <p class="tishi">哇~您的好友xxx向您分享了</p>
           <!-- 主要信息显示区域 -->
@@ -57,7 +57,7 @@ export default {
       venue_name: '',
       tbShopTrue: {},
       token: window.sessionStorage.getItem('token'),
-      shareActive: true
+      shareActive: false
     }
   },
   mounted() {
@@ -66,6 +66,7 @@ export default {
       e.preventDefault()
     }
     this.loadIndex()
+    window.localStorage.setItem('theFirst', 'true') // 保存第一次的选择场馆编号状态至本地
   },
   methods: {
     // 关闭分享弹框

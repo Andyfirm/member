@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async getCardList() {
-      const { data: res } = await this.$http.get('myresp/selectinfacd', {
+      const { data: res } = await this.$http.get('card/getCardByUser', {
         params: { shopNum: this.shopNum, token: this.token }
       })
       if (res.msg === 'success') {

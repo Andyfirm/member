@@ -17,7 +17,7 @@
           <b class="erweima" @click="quickMark(item.cardindex)"></b>
         </div>
         <img
-          :src="'../../../..../../../../static/images/image/hyk/'+item.infCs.imgpath"
+          :src="'./static/images/image/hyk/'+(item.infCs?item.infCs.imgpath:'')"
           class="main-img"
           @click="selectedCard(item)"
         >
@@ -57,7 +57,7 @@
             <div class="close" @click="closeHykdetails"></div>
           </div>
           <div class="cardBox">
-            <img :src="'../../../../static/images/image/hyk/'+hykdetailsItem.infCs.imgpath" alt>
+            <img :src="'./static/images/image/hyk/'+hykdetailsItem.infCs.imgpath" alt>
             <div class="hykdetails_wenzi">
               <div class="cardName">{{hykdetailsItem.infCs.name}}</div>
               <div

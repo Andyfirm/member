@@ -28,8 +28,8 @@ Vue.component('swipe', Swipe)
 Vue.component('swipe-item', SwipeItem)
 Vue.component(VeLine.name, VeLine)
 Vue.use(Mint)
-// http://192.168.1.43/
-Axios.defaults.baseURL = 'https://www.easyserp.com/weixinPayTest/'
+// http://192.168.1.43/  https://www.easyserp.com/weixinPayTest/
+Axios.defaults.baseURL = 'http://192.168.1.180/weixinPay/'
 Vue.prototype.$http = Axios
 Vue.prototype.qs = qs
 Vue.prototype.$moment = Moment
@@ -37,6 +37,10 @@ Vue.config.productionTip = false
 
 // 监听物理返回键
 window.addEventListener('popstate', (e) => {
+  let isLogin = window.sessionStorage.getItem('isLogin')
+  if (router.match(location).hash === '#/login' && isLogin === 'true') {
+    router.push({ name: 'index' })
+  }
   if (router.match(location).hash === '#/myOrder' || router.match(location).hash === '#/myOrder/myOrderSite' || router.match(location).hash === '#/myOrder/myOrderLeague' || router.match(location).hash === '#/myOrder/myOrderPersonal') {
     router.push({ name: 'myCentre' })
   }

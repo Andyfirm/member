@@ -4,21 +4,48 @@
     <my-select @change="getLeagueList"></my-select>
     <ul>
       <li v-for="item of leagueList" :key="item.id">
-        <div class="imgBox_l"><img :src="'../../../../static/images/img/' + item.leagueimg" alt=""></div>
+        <div class="imgBox_l">
+          <img :src="'./static/' + item.leagueimg" alt>
+        </div>
         <div class="content_r">
           <p>项目：{{item.courseName}}</p>
-          <p>课程日期：<i>{{item.recorddate | convertDate}}</i></p>
-          <p>课程时间：<i>{{item.courseTime}}</i></p>
-          <p>授课地点：<i>{{item.classroom}}</i></p>
-          <p>剩余人数：<i>{{item.maxRenShu-item.shangkerenshu}}</i></p>
+          <p>
+            课程日期：
+            <i>{{item.recorddate | convertDate}}</i>
+          </p>
+          <p>
+            课程时间：
+            <i>{{item.courseTime}}</i>
+          </p>
+          <p>
+            授课地点：
+            <i>{{item.classroom}}</i>
+          </p>
+          <p>
+            剩余人数：
+            <i>{{item.maxRenShu-item.shangkerenshu}}</i>
+          </p>
           <!-- 团课可预约 -->
-          <button v-if="item.showStatus==0&&(item.maxRenShu-item.shangkerenshu) != 0">预约团课</button>
+          <button
+            v-if="item.showStatus==0&&(item.maxRenShu-item.shangkerenshu) != 0"
+            @click="isSure(item)"
+          >预约团课</button>
           <!-- 课程已预约 -->
-          <button v-else-if="item.showStatus==1" style="background-color:#ccc;border: 0px;outline: none;">课程已预约</button>
+          <button
+            v-else-if="item.showStatus==1"
+            style="background-color:#ccc;border: 0px;outline: none;"
+          >课程已预约</button>
           <!-- 人数已满 -->
-          <button v-else-if="(item.maxRenShu-item.shangkerenshu) == 0" style="background-color:#ccc;border: 0px;outline: none;">人数已满</button>
+          <button
+            v-else-if="(item.maxRenShu-item.shangkerenshu) == 0"
+            style="background-color:#ccc;border: 0px;outline: none;"
+          >人数已满</button>
           <!-- 课程详情 -->
-          <router-link :to="{name: 'groupCourseDetails',query: {id:item.id,showStatus: item.showStatus}}"><button>课程详情</button></router-link>
+          <router-link
+            :to="{name: 'groupCourseDetails',query: {id:item.id,showStatus: item.showStatus}}"
+          >
+            <button>课程详情</button>
+          </router-link>
         </div>
       </li>
     </ul>
@@ -38,27 +65,58 @@ export default {
     return {
       leagueList: [],
       originShopNum: null,
+      success: this.$route.query.success,
       token: window.sessionStorage.getItem('token')
     }
   },
   activated() {
-    let shopnum = window.sessionStorage.getItem('shopNum')
-    if (this.originShopNum !== shopnum) {
+    let shopNum = window.sessionStorage.getItem('shopNum')
+    if (this.originShopNum !== shopNum || this.success === 'success') {
       this.getLeagueList()
     }
     window.sessionStorage.setItem('orderShow', 'orderLeague')
   },
   methods: {
+    // 获取团课首屏数据
     async getLeagueList() {
-      let shopnum = window.sessionStorage.getItem('shopNum')
+      let shopNum = window.sessionStorage.getItem('shopNum')
       let shopName = window.sessionStorage.getItem('shopName')
-      if (this.originShopNum === shopnum) return
-      const { data: res } = await this.$http.get('condabout/league', {
-        params: { shopnum, shopName, token: this.token }
+      if (this.originShopNum === shopNum) return
+      const { data: res } = await this.$http.get('tuanke/selectTuanKeByShop', {
+        params: { shopNum, shopName, token: this.token }
       })
       if (res.msg === 'success') {
         this.leagueList = res.data
-        this.originShopNum = shopnum
+        this.originShopNum = shopNum
+      }
+    },
+    // 点击触发确认预约弹框
+    isSure(data) {
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您确定要预约团课吗',
+        showCancelButton: true,
+        confirmButtonText: '预约',
+        cancelButtonText: '取消'
+      }).then(action => {
+        if (action === 'confirm') {
+          this.submit(data)
+        }
+      })
+    },
+    // 确认触发提交按钮
+    async submit(data) {
+      const { data: res } = await this.$http.get('tuanke/groupAppointment', {
+        params: {
+          shopName: window.sessionStorage.getItem('shopName'),
+          tuanKeId: data.id,
+          token: this.token
+        }
+      })
+      if (res.msg === 'success') {
+        this.$router.push({ name: 'succeed', query: { stamp: '2' } })
+      } else {
+        this.$toast(res.data)
       }
     }
   }

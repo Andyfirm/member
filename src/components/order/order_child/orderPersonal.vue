@@ -10,7 +10,7 @@
     <ul v-if="init==='block'">
       <li v-for="item of personalList" :key="item.id">
         <div class="imgBox_l">
-          <img :src="'../../../../static/images/sjkc/' + item.infPTClassInfo.imgurl" alt>
+          <img :src="'./static/images/sjkc/' + item.infPTClassInfo.imgurl" alt>
         </div>
         <div class="content_r">
           <p>私教姓名：{{item.teachername}}</p>
@@ -21,12 +21,12 @@
           </p>
           <p>
             剩余次数：
-            <i>{{item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum)}}</i>
+            <i>{{item.lastteachtime+(item.giftPtNum == null ? 0 : item.giftPtNum)}}</i>
           </p>
           <!-- 可预约 -->
           <router-link
-            :to="{name: 'coachScheduling', query: {shortname: item.shortname,teachershortname:item.teachershortname,teachername:item.teachername,teachitemname:item.teachitemname,teachitemshortname:item.teachitemshortname,asscardnum:item.asscardnum}}"
-            v-if="item.lastteachtime > 0 && item.lastteachtime-(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"
+            :to="{name: 'coachScheduling', query: {aptId:item.id,shortname:item.teachitemshortname,teachershortname:item.teachershortname,teachername:item.teachername,teachitemname:item.teachitemname,teachitemshortname:item.teachitemshortname,asscardnum:item.asscardnum}}"
+            v-if="item.lastteachtime+(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"
           >
             <button>预约课程</button>
           </router-link>
@@ -60,21 +60,21 @@ export default {
   },
   methods: {
     async getPersonalList(ischange) {
-      let shopnum = window.sessionStorage.getItem('shopNum')
+      let shopNum = window.sessionStorage.getItem('shopNum')
       let token = window.sessionStorage.getItem('token')
-      if (ischange === '1' && this.originShopNum === shopnum) return
-      const { data: res } = await this.$http.get('condabout/searchprivate', {
-        params: { shopnum, token }
+      if (ischange === '1' && this.originShopNum === shopNum) return
+      const { data: res } = await this.$http.get('pt/getPTByUser', {
+        params: { shopNum, token }
       })
       if (res.msg === 'success') {
         console.log(res)
         if (res.data.length === 0) {
-          this.originShopNum = shopnum
+          this.originShopNum = shopNum
           return (this.init = 'null')
         }
         this.init = 'block'
         this.personalList = res.data
-        this.originShopNum = shopnum
+        this.originShopNum = shopNum
       }
     },
     orderShow() {

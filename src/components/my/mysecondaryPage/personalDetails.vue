@@ -140,7 +140,7 @@ export default {
           this.sex = data.sex
         }
         this.addressData = data.address
-        this.inputdateValue = data.birthday
+        this.inputdateValue = data.birthday || new Date()
       }
     },
     // 提交
@@ -193,7 +193,7 @@ export default {
           iconClass: 'iconfont icon-caozuochenggong'
         })
         setTimeout(() => {
-          // this.$router.push('myCentre')
+          this.$router.push('myCentre')
         }, 1000)
       }
     },

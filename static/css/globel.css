@@ -111,3 +111,9 @@ a {
 .mui-pull-caption {
   text-align: center;
 }
+.wqpBox .init,
+.yqpBox .init {
+  font-size: 0.4rem;
+  text-align: center;
+  line-height: 2rem;
+}

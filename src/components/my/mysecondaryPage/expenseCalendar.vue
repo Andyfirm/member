@@ -46,7 +46,8 @@ export default {
       pageNoIndex: 1,
       list: [],
       shopNum: window.sessionStorage.getItem('shopNum'),
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      isOpen: false
     }
   },
   created() {
@@ -80,6 +81,7 @@ export default {
       console.log(res)
       if (res.msg === 'success') {
         if (fn) fn()
+        this.isOpen = true
         if (res.data.length === 0) {
           // 如果请求数据为空则提示初始化状态
           let vcontainer = document.getElementsByClassName('_v-container')[0]
@@ -91,10 +93,13 @@ export default {
         // 有数据
         this.init = 'block'
         this.list = res.data
+      } else {
+        this.$toast(res.data)
       }
     },
     // 上拉加载
     async upList(pageNoIndex, fn) {
+      if (!this.isOpen) return fn()
       const { data: res } = await this.$http.get(
         'myresp/getExpensesRecordByUser',
         {
@@ -117,6 +122,8 @@ export default {
           this.pageNoIndex++
           console.log(res.data)
         }
+      } else {
+        this.$toast(res.data)
       }
     }
   }

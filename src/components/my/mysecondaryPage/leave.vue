@@ -19,11 +19,11 @@
         <ul v-if="leaves.length!==0" class="content_leave" v-show="isLeave">
           <li v-for="item of leaves" :key="item.id">
             <p>卡号:{{item.asscardnum}}</p>
-            <p>暂停天数:{{item.vactiondays}}天</p>
+            <p>请假天数:{{item.vactiondays}}天</p>
             <p>开始时间:{{item.vactionstartdate}}</p>
             <p>结束时间:{{item.vactionenddate}}</p>
-            <p>暂停日期:{{item.pauseStartDate}}</p>
-            <p>注销日期:{{item.pauseEndDate}}</p>
+            <p>请假日期:{{item.vactiondate}}</p>
+            <p>注销日期:{{item.cancelDate}}</p>
           </li>
         </ul>
         <div class="initBox" v-if="stops.length===0" v-show="isPause">
@@ -34,8 +34,8 @@
           <li v-for="item of stops" :key="item.id">
             <p>卡号:{{item.asscardnum}}</p>
             <p>暂停天数:{{item.vactiondays}}天</p>
-            <p>开始时间:{{item.vactionstartdate}}</p>
-            <p>结束时间:{{item.vactionenddate}}</p>
+            <p>开始时间:{{item.pauseStartDate}}</p>
+            <p>结束时间:{{item.pauseEndDate}}</p>
             <p>暂停日期:{{item.vactiondate}}</p>
             <p>注销日期:{{item.cancelDate}}</p>
           </li>
@@ -71,14 +71,15 @@ export default {
           pageNo: 0,
           pageSize: 6,
           shopNum: this.shopNum,
-          token: this.token
+          token: this.token,
+          state: 'stop'
         }
       })
       console.log(res)
       if (res.msg === 'success') {
         if (fn) fn()
-        this.leaves = res.data.leave
-        this.stops = res.data.stop
+        this.leaves = res.data
+        // this.stops = res.data.stop
       }
     },
     // 请假
@@ -91,13 +92,27 @@ export default {
       this.isPause = false
     },
     // 暂停
-    pause() {
+    async pause() {
       let leave = this.$refs.leave_l
       let pause = this.$refs.pause_r
       leave.classList.remove('active')
       pause.classList.add('active')
       this.isLeave = false
       this.isPause = true
+      const { data: res } = await this.$http.get('myresp/getLeaveByUser', {
+        params: {
+          pageNo: 0,
+          pageSize: 6,
+          shopNum: this.shopNum,
+          token: this.token,
+          state: ''
+        }
+      })
+      console.log(res)
+      if (res.msg === 'success') {
+        this.stops = res.data
+        console.log(this.stops)
+      }
     }
   }
 }
@@ -159,6 +174,7 @@ li {
 }
 .initBox {
   width: 100%;
+  margin-top: 2rem;
 }
 .initBox img {
   display: block;

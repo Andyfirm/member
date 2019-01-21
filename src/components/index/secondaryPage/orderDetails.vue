@@ -2,19 +2,26 @@
   <div id="orderDetails_container">
     <div class="content">
       <ul>
-        <li>场馆名称：{{data.shopname}}</li>
-        <li>项目名称：{{data.name}}</li>
+        <li>场馆名称：{{shopName}}</li>
+        <li>项目名称：{{item.name}}</li>
         <li class="quantity">
           <div>项目数量：</div>
-          <span class="sub" @click="sub"><img src="~images/icon/reduce.png" alt=""></span> <span>{{number}}</span>
-          <span class="add" @click="number++"><img src="~images/icon/add.png" alt=""></span>
+          <span class="sub" @click="sub">
+            <img src="~images/icon/reduce.png" alt>
+          </span>
+          <span>{{number}}</span>
+          <span class="add" @click="number++">
+            <img src="~images/icon/add.png" alt>
+          </span>
         </li>
         <li>订单总价：{{orderPrice}}元</li>
-        <li>活动优惠：<span style="color:#999;">无</span></li>
-        <li>提交时间：{{data.beizhu}}</li>
         <li>
-          备注说明：
-          <p style="color:#999;padding-top:0.3rem;">仅限于个人使用，每日使用一次。</p>
+          活动优惠：
+          <span style="color:#999;">无</span>
+        </li>
+        <li>提交时间：{{submitTime}}</li>
+        <li>备注说明：
+          <p style="color:#999;padding-top:0.3rem;">{{item.subtitle}}</p>
         </li>
       </ul>
     </div>
@@ -28,22 +35,16 @@ export default {
   name: 'orderDetails',
   data() {
     return {
-      data: {},
       number: 1,
-      money: 0,
+      shopName: window.sessionStorage.getItem('shopName'),
+      submitTime: this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
       type: this.$route.query.type,
-      id: this.$route.query.id,
+      item: JSON.parse(this.$route.query.item),
       token: window.sessionStorage.getItem('token')
     }
   },
   created() {
-    let course = 'homepageresp/ViewEJtOrder'
-    let ticket = 'homepageresp/TicketOrder'
-    if (this.type === 'course') {
-      this.getOrder(course)
-    } else if (this.type === 'ticket') {
-      this.getOrder(ticket)
-    }
+    console.log(this.item)
   },
   methods: {
     sub() {
@@ -53,31 +54,30 @@ export default {
         this.number--
       }
     },
-    async getOrder(url) {
-      const { data: res } = await this.$http.get(url, {
-        params: { id: this.id, token: this.token }
-      })
-      if (res.msg === 'success') {
-        this.data = res.data
-        this.money = res.data.total
-      }
-    },
     confirmPayment() {
       // 点击提交按钮，将订单所需值存入vuex中，然后跳转到支付页面
       let dataObj = {}
       if (this.type === 'course') {
         dataObj.money = this.orderPrice
-        dataObj.classId = this.id
+        dataObj.classId = this.item.id
+        dataObj.shopnNum = window.sessionStorage.getItem('shopNum')
         dataObj.token = window.sessionStorage.getItem('token')
         this.setSubmittedData(dataObj)
         this.$router.push({ name: 'confirmPayment', query: { badgeName: '6' } }) // 购买私教
       } else if (this.type === 'ticket') {
-        dataObj.ticketName = this.data.name
-        dataObj.count = this.number
-        dataObj.money = this.orderPrice
-        dataObj.shortName = this.data.shortName
-        dataObj.shopnum = window.sessionStorage.getItem('shopNum')
-        dataObj.token = window.sessionStorage.getItem('token')
+        console.log(this.item)
+        let ticketInfoArry = []
+        for (let i = 0; i < this.number; i++) {
+          let ticketObj = { ticketId: this.item.id }
+          ticketInfoArry.push(ticketObj)
+        }
+        let ticketInfoStr = JSON.stringify(ticketInfoArry)
+        dataObj.num = this.number // 数量
+        dataObj.total = this.orderPrice // 总金额
+        dataObj.token = window.sessionStorage.getItem('token') // token认证
+        dataObj.shopNum = window.sessionStorage.getItem('shopNum') // 分店编号
+        dataObj.ticketInfo = ticketInfoStr // 票信息(ticketId的jsonStr形式)
+        dataObj.preTime = this.submitTime // 提交时间
         this.setSubmittedData(dataObj)
         this.$router.push({ name: 'confirmPayment', query: { badgeName: '4' } }) // 在线购票
       }
@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     orderPrice() {
-      return (this.money * this.number).toFixed(2)
+      return (this.item.discountPrice * this.number).toFixed(2)
     }
   }
 }

@@ -75,7 +75,7 @@ export default {
   name: 'siteList',
   data() {
     return {
-      shortname: this.$route.query.shortname,
+      shortName: this.$route.query.shortname,
       name: this.$route.query.name,
       shopNum: this.$route.query.shopNum,
       token: window.sessionStorage.getItem('token'),
@@ -112,16 +112,17 @@ export default {
       let yNumber = scrollTop.scrollTop
       leftdateY.scrollTop = yNumber
     },
+    // 获取首屏数据
     async getSiteList(key, index) {
       this.selectList = []
       this.current = index || 0
       let dateymd = this.$moment(key).format('YYYY-MM-DD') || this.$moment().format('YYYY-MM-DD')
       this.isKey = dateymd
-      const { data: res } = await this.$http.get('condabout/subsite', {
+      const { data: res } = await this.$http.get('place/getPlaceInfoByShortName', {
         params: {
-          shopnum: this.shopNum,
+          shopNum: this.shopNum,
           dateymd,
-          shortname: this.shortname,
+          shortName: this.shortName,
           token: this.token
         }
       })
@@ -287,8 +288,8 @@ export default {
       }
       const dataObj = {
         type: this.name,
-        money: this.money,
-        shopnum: this.shopNum,
+        total: this.money,
+        shopNum: this.shopNum,
         token: this.token,
         fieldinfo
       }

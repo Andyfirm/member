@@ -3,7 +3,7 @@
     <my-select @change="getOnlineClass"></my-select>
     <ul class="classBox">
       <li v-for="item of classList" :key="item.classId">
-        <router-link :to="{name: 'classDetails',query: {classId: item.classId, money: item.price}}"><img :src="'../../../../static/images/zxbb/'+ item.imgurl" alt=""></router-link>
+        <router-link :to="{name: 'classDetails',query: {item: JSON.stringify(item)}}"><img :src="'./static/images/zxbb/'+ item.imgurl" alt=""></router-link>
       </li>
     </ul>
   </div>
@@ -33,11 +33,12 @@ export default {
     }
   },
   methods: {
+    // 获取首屏数据
     async getOnlineClass() {
       let shopNum = window.sessionStorage.getItem('shopNum')
       if (this.shopNumOrigin === shopNum) return
       this.classList = []
-      const { data: res } = await this.$http.get('homepageresp/TrainingClass', {
+      const { data: res } = await this.$http.get('onclass/getOnlineClassByShop', {
         params: { shopNum, token: this.token }
       })
       if (res.msg === 'success') {

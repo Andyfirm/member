@@ -9,7 +9,7 @@
     <p
       class="money"
       v-if="stamp==='1'||stamp==='4'||stamp==='5'||stamp==='6'||stamp==='7'||stamp==='8'"
-    >支付: {{submittedData.money}}元</p>
+    >支付: {{submittedData.total}}元</p>
     <!-- 场地 -->
     <div class="words" v-if="stamp === '1'">
       <p class="shuoming">您已成功预约:</p>
@@ -93,7 +93,10 @@ export default {
           this.$router.push({ name: 'orderSite' })
           break
         case '2': // 团课预约
-          this.$router.push({ name: 'orderSite' })
+          this.$router.push({
+            name: 'orderSite',
+            query: { success: 'success' }
+          }) // 携带参数，刷新下一个页面
           break
         case '3': // 私教预约
           this.$router.push({ name: 'orderSite' })

@@ -47,9 +47,9 @@ export default {
     }
   },
   created() {
-    // let token = 'oQc9-jhcSgZI4ovA5r8kk7fhOMb8'
-    // window.sessionStorage.setItem('token', token)
-    // this.token = token
+    let token = 'oQc9-jhcSgZI4ovA5r8kk7fhOMb8'
+    window.sessionStorage.setItem('token', token)
+    this.token = token
     window.sessionStorage.setItem('isLogin', 'false')
   },
   methods: {
@@ -79,6 +79,11 @@ export default {
       })
       console.log(res)
       if (res.msg === 'success') {
+        // 登录成功后将用户名和密码保存至本地，并且设置有效时间
+        window.localStorage.setItem('yspUserName', this.userName)
+        window.localStorage.setItem('yspPassWord', this.pwd)
+        let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+        window.localStorage.setItem('pastDate', pastDate)
         this.$router.push({ name: 'index' })
         window.sessionStorage.setItem('isLogin', 'true')
       }

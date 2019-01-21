@@ -1,7 +1,7 @@
 <template>
   <div id="stadium_container">
     <h4>{{venue_name}}</h4>
-    <div class="cgimg"><img :src="'../../../../static/images/img/'+ cgimgurl" alt=""></div>
+    <div class="cgimg"><img :src="'./static/images/img/'+ cgimgurl" alt=""></div>
     <p>{{cgjjinfo}}</p>
   </div>
 </template>

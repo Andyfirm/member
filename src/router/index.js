@@ -5,6 +5,7 @@ import orders from '@/components/order/order.vue'
 import stadiumDetails from '@/components/index/secondaryPage/stadiumDetails.vue'
 import ticketsOnline from '@/components/index/secondaryPage/ticketsOnline.vue'
 import ticketRecord from '@/components/index/secondaryPage/ticketRecord.vue'
+import ticketQrCode from '@/components/index/secondaryPage/ticketQrCode.vue'
 import orderDetails from '@/components/index/secondaryPage/orderDetails.vue'
 import onlineClass from '@/components/index/secondaryPage/onlineClass.vue'
 import classDetails from '@/components/index/secondaryPage/classDetails.vue'
@@ -48,7 +49,7 @@ Vue.use(Router)
 export default new Router({
   linkActiveClass: 'myactive',
   routes: [
-    { path: '/', redirect: '/member' },
+    { path: '/', redirect: '/login' },
     { path: '/member', name: 'member', component: member },
     { path: '/club', name: 'club', component: club },
     { path: '/branch', name: 'branch', component: branch },
@@ -83,6 +84,14 @@ export default new Router({
     { path: '/stadiumDetails', name: 'stadiumDetails', component: stadiumDetails },
     { path: '/ticketsOnline', name: 'ticketsOnline', component: ticketsOnline },
     { path: '/ticketRecord', name: 'ticketRecord', component: ticketRecord },
+    {
+      path: '/ticketQrCode',
+      name: 'ticketQrCode',
+      component: ticketQrCode,
+      meta: {
+        keepAlive: true
+      }
+    },
     {
       path: '/orderDetails',
       name: 'orderDetails',

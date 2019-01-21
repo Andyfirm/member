@@ -10,17 +10,17 @@ export default {
       textNumbers: '',
       clubId: this.$route.query.clubId,
       code: '',
-      theFirst: '' // 判断是否为第一次登陆
+      token: '',
+      theFirst: window.localStorage.getItem('theFirst') // 判断是否为第一次登陆,如果成功登陆则将状态保存在本地
     }
   },
   created() {
-    if(this.clubId) {
+    if (this.clubId) {
       window.sessionStorage.setItem('clubId', this.clubId)
     }
     this.clubId = window.sessionStorage.getItem('clubId')
-    this.getTextNumbers()
-    alert('参数' + this.clubId)
     this.code = this.getParameter('code')
+    this.getTextNumbers()
     if (!this.code) {
       this.getCode()
     } else {
@@ -38,6 +38,9 @@ export default {
       if (res.msg === 'success') {
         let data = res.data
         this.textNumbers = data
+        if (this.token) {
+          this.goToNextPage()
+        }
       } else if (res.msg === 'fail') {
         this.$toast(res.data)
       }
@@ -55,10 +58,12 @@ export default {
       const { data: res } = await this.$http.get('wechar/member', {
         params: { code: this.code }
       })
-      alert('token' + JSON.stringify(res))
       if (res.msg === 'success') {
+        this.token = res.data
         window.sessionStorage.setItem('token', res.data)
-        this.goToNextPage()
+        if (this.textNumbers) {
+          this.goToNextPage()
+        }
       } else {
         this.$toast(res.data)
       }
@@ -78,13 +83,44 @@ export default {
     },
     // 根据判断跳转至不同页面
     goToNextPage() {
-      // 预留是否为第一次的判断
-      // TODO
-      window.sessionStorage.setItem('clubId', this.clubId)
-      this.$router.push({
-        name: 'club',
-        query: { textNumbers: this.textNumbers }
+      if (this.theFirst === 'true') { // 不是第一次登录
+        let date = new Date().getTime()
+        let pastDate = window.localStorage.getItem('pastDate')
+        if (pastDate < date) { // 当前时间大于以前保存的时间证明已过期，跳转至登录页
+          window.sessionStorage.setItem('clubId', this.clubId)
+          this.$router.push({
+            name: 'club',
+            query: { textNumbers: this.textNumbers }
+          })
+          return
+        }
+        // 获取账号密码
+        let userName = window.localStorage.getItem('yspUserName')
+        let password = window.localStorage.getItem('yspPassWord')
+        if (userName && password) {
+          this.login(userName, password)
+        }
+      } else {
+        window.sessionStorage.setItem('clubId', this.clubId)
+        this.$router.push({
+          name: 'club',
+          query: { textNumbers: this.textNumbers }
+        })
+      }
+    },
+    async login(userName, passWord) {
+      const { data: res } = await this.$http.get('memberLogin/logined', {
+        params: {
+          userName,
+          passWord,
+          token: window.sessionStorage.getItem('token')
+        }
       })
+      if (res.msg === 'success') {
+        this.$router.push({ name: 'index' })
+        window.sessionStorage.setItem('isLogin', 'true')
+      }
+      if (res.msg === 'fail') this.$toast(res.data)
     }
   }
 }

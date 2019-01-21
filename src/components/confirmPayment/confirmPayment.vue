@@ -2,7 +2,7 @@
   <div id="confirmPayment">
     <div class="content">
       <p class="time_top">剩余支付时间：{{minute}}:{{second}}</p>
-      <p class="money">￥{{submittedData.money}}元</p>
+      <p class="money">￥{{submittedData.total}}元</p>
       <ul>
         <li class="select_text">选择支付方式：</li>
       </ul>
@@ -16,7 +16,7 @@
         >
           <div class="icon">
             <img
-              :src="index === 0 ? '../../../static/images/icon/weChat.png' : '../../../static/images/icon/zficon.png' "
+              :src="index === 0 ? './static/images/icon/weChat.png' : './static/images/icon/zficon.png' "
               alt
             >
           </div>
@@ -127,23 +127,22 @@ export default {
         let dataObj
         switch (this.badgeName) {
           case '1': // 场地预约
-            url = 'weixinPay/pay'
+            url = 'place/reservationPlace'
             dataObj = this.submittedData
             dataObj.itemname = this.cardName
-            dataObj.asscardnum = this.cardindex
+            dataObj.Cardindex = this.cardindex
             dataObj.paytype = '会员卡支付'
             this.cardRequest(url, dataObj)
             break
           case '4': // 在线购票
-            url = 'myresp/mbrShopTick'
+            url = 'ticket/memberBuyTicket'
             dataObj = this.submittedData
-            dataObj.itemname = this.cardName
-            dataObj.asscardnum = this.cardindex
             dataObj.paytype = '会员卡支付'
+            dataObj.Cardindex = this.cardindex
             this.cardRequest(url, dataObj)
             break
           case '5': // 在线报班
-            url = 'myresp/mbrShopTick'
+            url = 'myresp/Busubmit'
             dataObj = this.submittedData
             dataObj.itemname = this.cardName
             dataObj.asscardnum = this.cardindex
@@ -167,6 +166,8 @@ export default {
       if (res.msg === 'success') {
         this.callback(res.data)
         console.log(res)
+      } else {
+        this.$toast(res.data)
       }
     },
     // 微信成功支付回调
@@ -228,6 +229,8 @@ export default {
             this.$router.push({ name: 'succeed', query: { stamp: '5' } })
             break
         }
+      } else {
+        this.$toast(res.data)
       }
     },
     // 倒计时补零
@@ -255,7 +258,7 @@ export default {
         this.cardList.push({ id: 1, cardname: '微信' })
         return
       }
-      const { data: res } = await this.$http.get('myresp/selectinfacd', {
+      const { data: res } = await this.$http.get('card/getCardByUser', {
         params: { shopNum: this.shopNum, token: this.token }
       })
       if (res.msg === 'success') {
@@ -278,6 +281,7 @@ export default {
         let weixinObj = { id: 1, cardname: '微信' }
         arr.unshift(weixinObj)
         this.cardList = arr
+      } else {
       }
     }
   },

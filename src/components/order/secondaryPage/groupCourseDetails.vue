@@ -2,14 +2,26 @@
   <div id="groupCourseDetails">
     <div class="content_box">
       <div class="content_top">
-        <div class="imgBox"><img :src="'../../../../static/images/sjkc/' + imgUrl" alt=""></div>
+        <div class="imgBox">
+          <img :src="'./static/images/sjkc/' + imgUrl" alt>
+        </div>
         <div class="text_right">
           <p>项目：{{courseName}}</p>
-          <p>课程时间：<i>{{courseTime}}</i></p>
-          <p>授课地点：<i>{{classroom}}</i></p>
-          <p>课程人数：<i>{{shangkerenshu}}</i></p>
+          <p>
+            课程时间：
+            <i>{{courseTime}}</i>
+          </p>
+          <p>
+            授课地点：
+            <i>{{classroom}}</i>
+          </p>
+          <p>
+            课程人数：
+            <i>{{shangkerenshu}}</i>
+          </p>
           <div class="share">
-            <span></span><i>分享这个课给好友</i>
+            <span></span>
+            <i>分享这个课给好友</i>
           </div>
         </div>
       </div>
@@ -20,11 +32,17 @@
     </div>
     <div id="btn">
       <!-- 团课可预约 -->
-      <button v-if="showStatus==0&&(maxRenShu-shangkerenshu) != 0">预约团课</button>
+      <button v-if="showStatus==0&&(maxRenShu-shangkerenshu) != 0" @click="isSure()">预约团课</button>
       <!-- 课程已预约 -->
-      <button v-else-if="showStatus==1" style="background-color:#ccc;border: 0px;outline: none;">课程已预约</button>
+      <button
+        v-else-if="showStatus==1"
+        style="background-color:#ccc;border: 0px;outline: none;"
+      >课程已预约</button>
       <!-- 人数已满 -->
-      <button v-else-if="(maxRenShu-shangkerenshu) == 0" style="background-color:#ccc;border: 0px;outline: none;">人数已满</button>
+      <button
+        v-else-if="(maxRenShu-shangkerenshu) == 0"
+        style="background-color:#ccc;border: 0px;outline: none;"
+      >人数已满</button>
     </div>
   </div>
 </template>
@@ -50,6 +68,7 @@ export default {
     this.getCourseObj()
   },
   methods: {
+    // 获取首屏数据
     async getCourseObj() {
       const { data: res } = await this.$http.get('condabout/searchall', {
         params: { id: this.id, token: this.token }
@@ -64,6 +83,34 @@ export default {
         this.shangkerenshu = data.shangkerenshu
         this.maxRenShu = data.maxRenShu
         this.remark = data.remark
+      }
+    },
+    // 弹框确认预约
+    isSure() {
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您确定要预约团课吗',
+        showCancelButton: true,
+        confirmButtonText: '预约',
+        cancelButtonText: '取消'
+      }).then(action => {
+        if (action === 'confirm') {
+          this.submit()
+        }
+      })
+    },
+    async submit() {
+      const { data: res } = await this.$http.get('condabout/grouppurchase', {
+        params: {
+          shopName: window.sessionStorage.getItem('shopName'),
+          tuanKeId: this.id,
+          token: this.token
+        }
+      })
+      if (res.msg === 'success') {
+        this.$router.push({ name: 'succeed', query: { stamp: '2' } })
+      } else {
+        this.$toast(res.data)
       }
     }
   }
@@ -143,7 +190,8 @@ export default {
   display: block;
   width: 0.44rem;
   height: 0.44rem;
-  background: url('../../../../static/images/icon/share.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/share.png') no-repeat
+    center/cover;
   border-radius: 4px;
 }
 .share i {

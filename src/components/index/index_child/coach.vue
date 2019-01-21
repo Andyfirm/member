@@ -7,7 +7,7 @@
     <div class="coachBox">
       <ul>
         <li v-for="item of coachList" :key="item.id">
-          <router-link :to="{name: 'coachingCourse', query: {id: item.id}}" class="imgBox"><img :src="'../../../../static/images/' + item.infEImage.imgurl" alt=""></router-link>
+          <router-link :to="{name: 'coachingCourse', query: {id: item.id}}" class="imgBox"><img :src="'./static/images/' + (item.infEImage?item.infEImage.imgurl:'')" alt=""></router-link>
           <h6>{{item.name}}</h6>
           <p>{{item.job1L}}</p>
         </li>

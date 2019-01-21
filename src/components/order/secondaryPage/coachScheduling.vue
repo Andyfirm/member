@@ -60,6 +60,7 @@ export default {
       keyObj: {},
       keyArr: [],
       selectList: [],
+      aptId: this.$route.query.aptId,
       asscardnum: this.$route.query.asscardnum, // 卡号
       shortname: this.$route.query.shortname, // eg:"esp01"
       teachershortname: this.$route.query.teachershortname, // eg:"ws"
@@ -94,7 +95,7 @@ export default {
     // 获取首屏数据
     async getList() {
       const { data: res } = await this.$http.get(
-        'condabout/searchprivategraphing',
+        'pt/getPTInfo',
         {
           params: {
             ptShortname: this.shortname,
@@ -150,7 +151,7 @@ export default {
         return this.$toast('请您至少选择一节课程！')
       }
       let selectListStr = JSON.stringify(this.selectList)
-      let dateymd = this.$moment(new Date()).format('YYYY-MM-DD')
+      let dateymd = this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
       let sjdataObj = {
         teachername: this.teachername,
         teachitemname: this.teachitemname,
@@ -192,7 +193,7 @@ export default {
     // 提交
     async submit(selectListStr, dateymd) {
       const { data: res } = await this.$http.post(
-        'condabout/makeprivate',
+        'pt/reservationPT',
         this.qs.stringify({
           preTime: dateymd,
           teachershortname: this.teachershortname,
@@ -201,6 +202,7 @@ export default {
           assCardNum: this.asscardnum,
           useTime: selectListStr,
           shopNum: this.shopNum,
+          aptId: this.aptId,
           token: this.token
         })
       )

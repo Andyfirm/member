@@ -2,15 +2,15 @@
   <div id="classDetails_container">
     <div class="content">
       <div class="imgBox">
-        <img :src="'../../../../static/images/zxbb/' +detailsObj.imgurl" alt>
+        <img :src="'./static/images/zxbb/' +item.imgurl" alt>
       </div>
-      <div class="share">
+      <!-- <div class="share">
         <i>分享这个课给好友</i>
         <span></span>
-      </div>
+      </div> -->
       <div class="content_btom">
         <h6>班级介绍：</h6>
-        <p>{{detailsObj.remark}}</p>
+        <p>{{item.remark}}</p>
       </div>
     </div>
     <div class="btnBox">
@@ -26,34 +26,16 @@ export default {
   data() {
     return {
       state: null,
-      detailsObj: {},
-      money: this.$route.query.money,
-      classId: this.$route.query.classId,
+      item: JSON.parse(this.$route.query.item),
       token: window.sessionStorage.getItem('token')
     }
   },
-  created() {
-    this.getclassDetails()
-  },
   methods: {
-    async getclassDetails() {
-      const { data: res } = await this.$http.get(
-        'homepageresp/TrainingClassDe',
-        {
-          params: { pid: this.classId, token: this.token }
-        }
-      )
-      if (res.msg === 'success') {
-        console.log(res)
-        this.state = res.data.state
-        this.detailsObj = res.data
-      }
-    },
     signUp() {
       let dataObj = {
-        classId: this.detailsObj.classId,
-        money: this.money,
-        shopNum: this.detailsObj.shopNum,
+        classId: this.item.classId,
+        money: this.item.price,
+        shopNum: window.sessionStorage.getItem('shopNum'),
         token: this.token
       }
       this.setSubmittedData(dataObj)

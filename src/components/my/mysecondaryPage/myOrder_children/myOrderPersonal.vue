@@ -8,7 +8,10 @@
       <ul v-if="init==='block'">
         <li v-for="item of list" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'../../../../../static/images/sjkc/'+item.infPTClassInfo.imgurl" alt>
+            <img
+              :src="'./static/images/sjkc/'+(item.infPTClassInfo?item.infPTClassInfo.imgurl:'')"
+              alt
+            >
           </div>
           <div class="content_r">
             <p>教练：{{item.coachName}}</p>
@@ -28,6 +31,8 @@
             <button v-else-if="item.showStatus === '1'" class="disabled">已过取消时间</button>
             <button v-else-if="item.showStatus === '2'" class="disabled">预约已过期</button>
             <button v-else-if="item.showStatus === '3'" class="disabled">预约已取消</button>
+            <!-- 根据状态判断是否确认上课 -->
+            <button v-else-if="item.showStatus === '4'" class="disabled">已上课</button>
             <div
               class="coach_bottom"
               v-if="item.memberConfirm===0&&item.coachConfirm===1&&(item.showStatus!=='2'&&item.showStatus!=='3')"
@@ -42,7 +47,12 @@
             <div
               class="text"
               v-else-if="item.memberConfirm===1&&item.coachConfirm===1&&(item.showStatus !== '2'&&item.showStatus !=='3')"
-            >会员确认成功，等待上课</div>
+            >预约成功，等待上课</div>
+            <button
+              class="confirmClass"
+              v-if="item.memberConfirm===1&&item.coachConfirm===2&&(item.showStatus !== '2'&&item.showStatus !=='3'&&item.showStatus !=='4')"
+              @click="confirmClass(item)"
+            >确认上课</button>
           </div>
         </li>
       </ul>
@@ -60,7 +70,8 @@ export default {
       list: [],
       shopName: window.sessionStorage.getItem('shopName'),
       shopNum: window.sessionStorage.getItem('shopNum'),
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      isOpen: false
     }
   },
   created() {
@@ -81,21 +92,19 @@ export default {
     },
     // 获取首屏数据
     async getList(fn) {
-      const { data: res } = await this.$http.get(
-        'myresp/getAppointmentPTByUser',
-        {
-          params: {
-            pageNo: 0,
-            pageSize: 6,
-            shopName: this.shopName,
-            shopNum: this.shopNum,
-            token: this.token
-          }
+      const { data: res } = await this.$http.get('pt/getAppointmentPTByUser', {
+        params: {
+          pageNo: 0,
+          pageSize: 6,
+          shopName: this.shopName,
+          shopNum: this.shopNum,
+          token: this.token
         }
-      )
+      })
       console.log(res)
       if (res.msg === 'success') {
         if (fn) fn()
+        this.isOpen = true
         if (res.data.length === 0) {
           // 如果请求数据为空则提示初始化状态
           let vcontainer = document.getElementsByClassName('_v-container')[0]
@@ -108,22 +117,21 @@ export default {
         this.init = 'block'
         this.list = res.data
       } else {
+        this.$toast(res.data)
       }
     },
     // 上拉加载
     async upList(page, fn) {
-      const { data: res } = await this.$http.get(
-        'myresp/getAppointmentPTByUser',
-        {
-          params: {
-            pageNo: page,
-            pageSize: 6,
-            shopName: this.shopName,
-            shopNum: this.shopNum,
-            token: this.token
-          }
+      if (!this.isOpen) return fn()
+      const { data: res } = await this.$http.get('pt/getAppointmentPTByUser', {
+        params: {
+          pageNo: page,
+          pageSize: 6,
+          shopName: this.shopName,
+          shopNum: this.shopNum,
+          token: this.token
         }
-      )
+      })
       if (res.msg === 'success') {
         if (res.data.length === 0) {
           // 没有更多数据了
@@ -134,6 +142,8 @@ export default {
           this.pageNoIndex++
           console.log(res.data)
         }
+      } else {
+        this.$toast(res.data)
       }
     },
     // 确认教练代预约
@@ -147,16 +157,18 @@ export default {
       }).then(async action => {
         if (action === 'confirm') {
           const { data: res } = await this.$http.get(
-            'condabout/confirmPTAppointment',
+            'pt/confirmPTAppointment',
             { params: { appointmentId: id, token: this.token } }
           )
           if (res.msg === 'success') {
             for (let i = 0; i < this.list.length; i++) {
               if (this.list[i].id === id) {
-                // 成功后将状态改为已确认预约状态，多个。。。。。。。。。。。。。。
-                this.list[i].showStatus = '4'
+                // 成功后将状态改为确认预约状态
+                this.list[i].memberConfirm = 1
               }
             }
+          } else {
+            this.$toast(res.data)
           }
         }
       })
@@ -179,28 +191,53 @@ export default {
             date: item.appointDate
           }
           let useTime = JSON.stringify(useTimeObj)
-          const { data: res } = await this.$http.get(
-            'condabout/cancelPTAppointment',
-            {
-              params: {
-                appointmentId: item.id,
-                assCardNum: item.assCardNum, // 无此数据来源。。。。。。。。。。。。。。。。。。。。。
-                coachShortName: item.coachShortName,
-                className: item.className,
-                useTime,
-                token: this.token
-              }
+          const { data: res } = await this.$http.get('pt/cancelPTAppointment', {
+            params: {
+              appointmentId: item.id,
+              assCardNum: item.assCardNum,
+              coachShortName: item.coachShortName,
+              className: item.className,
+              useTime,
+              token: this.token
             }
-          )
+          })
           console.log(res)
           if (res.msg === 'success') {
             let len = this.list.length
             for (let i = 0; i < len; i++) {
-              if (this.list.length[i].id === item.id) {
-                this.list[i].showStatus = '4' // 变为已取消预约的状态
+              if (this.list[i].id === item.id) {
+                this.list[i].showStatus = '3' // 变为已取消预约的状态
                 return
               }
             }
+          } else {
+            this.$toast(res.data)
+          }
+        }
+      })
+    },
+    // 确认上课
+    confirmClass(item) {
+      this.$messagebox({
+        title: '温馨提示',
+        message: '您要确认上课吗',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(async action => {
+        if (action === 'confirm') {
+          const { data: res } = await this.$http.get('pt/confirmPTClass', {
+            params: { appointmentId: item.id, token: this.token }
+          })
+          if (res.msg === 'success') {
+            for (let i = 0; i < this.list.length; i++) {
+              if (this.list[i].id === item.id) {
+                // 成功后将状态改为已确认上课状态
+                this.list[i].showStatus = '4'
+              }
+            }
+          } else {
+            this.$toast(res.data)
           }
         }
       })

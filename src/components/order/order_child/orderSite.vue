@@ -4,7 +4,7 @@
     <my-select @change="getSiteList"></my-select>
     <ul>
       <li v-for="item of siteList" :key="item.id">
-        <div class="imgBox_l"><img :src="'../../../../static/images/img/' + item.fieldimg" alt=""></div>
+        <div class="imgBox_l"><img :src="'./static/images/img/' + item.fieldimg" alt=""></div>
         <div class="content_r">
           <p>项目：{{item.name}}</p>
           <p>营业时间：<i>{{item.workStartTime.slice(0,5)}}-{{item.workEndTime.slice(0,5)}}</i></p>
@@ -34,22 +34,23 @@ export default {
     }
   },
   activated() {
-    let shopnum = window.sessionStorage.getItem('shopNum')
-    if (this.originShopNum !== shopnum) {
+    let shopNum = window.sessionStorage.getItem('shopNum')
+    if (this.originShopNum !== shopNum) {
       this.getSiteList()
     }
     window.sessionStorage.setItem('orderShow', 'orderSite')
   },
   methods: {
+    // 获取首屏数据
     async getSiteList() {
-      let shopnum = window.sessionStorage.getItem('shopNum')
-      if (this.originShopNum === shopnum) return
-      const { data: res } = await this.$http.get('condabout/project', {
-        params: { shopnum, token: this.token }
+      let shopNum = window.sessionStorage.getItem('shopNum')
+      if (this.originShopNum === shopNum) return
+      const { data: res } = await this.$http.get('place/getPlaceByShopNum', {
+        params: { shopNum, token: this.token }
       })
       if (res.msg === 'success') {
         this.siteList = res.data
-        this.originShopNum = shopnum
+        this.originShopNum = shopNum
       }
     },
     goToSiteList(shortname, name, shopNum) {

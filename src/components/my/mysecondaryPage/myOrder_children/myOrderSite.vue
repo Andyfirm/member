@@ -8,7 +8,7 @@
       <ul v-if="init==='block'" class="content">
         <li v-for="item of mySiteList" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'../../../../../static/images/img/'+ item.infSt.fieldimg" alt>
+            <img :src="'./static/images/img/'+ (item.infSt?item.infSt.fieldimg:'')" alt>
           </div>
           <div class="content_r">
             <p>场地：{{item.stagenum}}</p>
@@ -58,7 +58,8 @@ export default {
       mySiteList: [],
       init: null,
       shopNum: window.sessionStorage.getItem('shopNum'),
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      isOpen: false // 判断是否可以下拉加载
     }
   },
   created() {
@@ -84,7 +85,7 @@ export default {
     // 获取首屏列表数据
     async getmySiteList(fn) {
       const { data: res } = await this.$http.get(
-        'myresp/getAppointmentPlaceByUser',
+        'place/getPlaceAppointmentHistroy',
         {
           params: {
             pageNo: 0,
@@ -96,6 +97,7 @@ export default {
       )
       if (res.msg === 'success') {
         if (fn) fn()
+        this.isOpen = true
         // 如果首屏请求为空
         if (res.data.length === 0) {
           let vcontainer = document.getElementsByClassName('_v-container')[0]
@@ -107,12 +109,15 @@ export default {
         // 有数据
         this.init = 'block'
         this.mySiteList = res.data
+      } else {
+        this.$toast(res.data)
       }
     },
     // 上拉加载
     async upList(pageNoIndex, fn) {
+      if (!this.isOpen) return fn()
       const { data: res } = await this.$http.get(
-        'myresp/getAppointmentPlaceByUser',
+        'place/getPlaceAppointmentHistroy',
         {
           params: {
             pageNo: pageNoIndex,
@@ -132,6 +137,8 @@ export default {
           this.pageNoIndex++
           console.log(res.data)
         }
+      } else {
+        this.$toast(res.data)
       }
     },
     // 确认到场
@@ -152,7 +159,7 @@ export default {
       }).then(async action => {
         if (action === 'confirm') {
           const { data: res } = await this.$http.get(
-            'condabout/confirmPlaceAppointment',
+            'place/confirmPlaceAppointment',
             { params: { id, token: this.token } }
           )
           console.log(res)
@@ -164,6 +171,8 @@ export default {
                 return
               }
             }
+          } else {
+            this.$toast(res.data)
           }
         }
       })
@@ -196,6 +205,8 @@ export default {
                 return
               }
             }
+          } else {
+            this.$toast(res.data)
           }
         }
       })

@@ -2,7 +2,7 @@
   <div id="coachingCourse">
     <div class="content_top">
       <div class="imgBox">
-        <img :src="'../../../../static/images/' + infEImage.imgurl" alt>
+        <img :src="'./static/images/' + infEImage.imgurl" alt>
       </div>
       <div class="text_right">
         <p>教练：{{viewEJt.name}}</p>
@@ -44,9 +44,9 @@ export default {
     this.getCourse()
   },
   methods: {
-    async getCourse() {
+    async getCourse() { // homepageresp/GetViewEJtById
       const { data: res } = await this.$http.get(
-        'homepageresp/GetViewEJtById',
+        'pt/GetViewEJtById',
         {
           params: {
             id: this.id,

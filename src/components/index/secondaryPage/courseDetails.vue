@@ -2,19 +2,27 @@
   <div id="courseDetails">
     <div class="content_box">
       <div class="content_top">
-        <div class="imgBox"><img :src="'../../../../static/images/sjkc/' + imgUrl" alt=""></div>
+        <div class="imgBox">
+          <img :src="'./static/images/sjkc/' + imgUrl" alt>
+        </div>
         <div class="text_right">
-          <p>项目：{{courseName}}</p>
-          <p>授课老师：<i>{{teacher}}</i></p>
-          <p>课程价格：<i>{{actualPrice}}</i></p>
+          <p>项目：{{obj.name}}</p>
+          <p>授课老师：
+            <i>{{obj.teacher}}</i>
+          </p>
+          <p>课程价格：
+            <i>{{obj.discountPrice}}</i>
+          </p>
         </div>
       </div>
       <div class="content_btom">
         <h6>班级介绍：</h6>
-        <p>{{courseDetails}}</p>
+        <p>{{obj.courseDetails}}</p>
       </div>
     </div>
-    <router-link :to="{name: 'orderDetails', query: {id, type: 'course'}}"><button id="btn">购买课程</button></router-link>
+    <router-link :to="{name: 'orderDetails', query: {item: JSON.stringify(obj), type: 'course'}}">
+      <button id="btn">购买课程</button>
+    </router-link>
   </div>
 </template>
 
@@ -23,12 +31,16 @@ export default {
   name: 'courseDetails',
   data() {
     return {
-      courseName: '',
-      teacher: '',
-      actualPrice: '',
-      courseDetails: '',
       imgUrl: '',
       id: this.$route.query.id,
+      obj: {
+        name: '',
+        teacher: '',
+        discountPrice: '',
+        courseDetails: '',
+        id: '',
+        subtitle: '无'
+      },
       token: window.sessionStorage.getItem('token')
     }
   },
@@ -42,10 +54,11 @@ export default {
       })
       if (res.msg === 'success') {
         let data = res.data
-        this.courseName = data.infI.name
-        this.teacher = data.ejt.name
-        this.actualPrice = data.actualPrice
-        this.courseDetails = data.courseDetails
+        this.obj.id = data.id
+        this.obj.name = data.infI.name // 项目名
+        this.obj.teacher = data.ejt.name
+        this.obj.discountPrice = data.actualPrice // 价格
+        this.obj.courseDetails = data.courseDetails
         this.imgUrl = data.infPTClassInfo.imgurl
       }
     }
