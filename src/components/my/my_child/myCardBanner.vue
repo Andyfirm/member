@@ -41,7 +41,7 @@
         </p>
       </swiper-slide>
     </swiper>
-    <div class="swiper-pagination"></div>
+    <div class="swiper-pagination" v-show="wd_card.length > 1"></div>
     <!-- 会员卡详细信息显示区域 -->
     <transition name="fade">
       <div
@@ -53,7 +53,7 @@
       >
         <div class="boxWrap">
           <div class="topBox">
-            <div class="qrcode" @click="quickMark"></div>
+            <div class="qrcode" @click="quickMark(hykdetailsItem.cardindex)"></div>
             <div class="close" @click="closeHykdetails"></div>
           </div>
           <div class="cardBox">
@@ -71,7 +71,7 @@
               <span class="left">
                 状态：
                 <i>{{hykdetailsItem.cardstatus}}</i>
-              </span>
+              </span><br>
               <span
                 class="right"
               >卡号：{{hykdetailsItem.cardindex.slice(0,4)}} {{hykdetailsItem.cardindex.slice(4,8)}} {{hykdetailsItem.cardindex.slice(8,12)}} {{hykdetailsItem.cardindex.slice(12,16)}} {{hykdetailsItem.cardindex.slice(16)}}</span>
@@ -80,15 +80,7 @@
             <div class="time">到期时间：{{hykdetailsItem.enddate | convertDate}}</div>
             <div class="xmsy">项目剩余</div>
             <div class="content">
-              <p>游泳 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
-              <p>健身 剩余次数:30次</p>
+              <p v-for="(item,index) of hykdetailsItem.array" :key="index">{{item.type}} 剩余次数:{{item.num}}次</p>
             </div>
           </div>
         </div>
@@ -166,7 +158,7 @@ export default {
       }
       this.qrcodeActive = true
       let qrcode = new QRCode(this.$refs.qrCodeUrl, {
-        text: cardIndex,
+        text: '2'+ cardIndex,
         width: 200,
         height: 200
       })
@@ -421,10 +413,12 @@ h4 {
   overflow: hidden;
 }
 .textBox .top .left {
-  float: left;
+  /* float: left; */
+  display: block;
+  height: 0.18rem;
 }
 .textBox .top .right {
-  float: right;
+  /* float: right; */
 }
 .time.one {
   margin: 0.28rem 0;

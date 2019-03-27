@@ -10,7 +10,7 @@
     <ul v-if="init==='block'">
       <li v-for="item of personalList" :key="item.id">
         <div class="imgBox_l">
-          <img :src="'./static/images/sjkc/' + item.infPTClassInfo.imgurl" alt>
+          <img :src="'./static/images/sjkc/' + (item.infPTClassInfo?item.infPTClassInfo.imgurl:'')" alt>
         </div>
         <div class="content_r">
           <p>私教姓名：{{item.teachername}}</p>

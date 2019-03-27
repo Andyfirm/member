@@ -24,7 +24,7 @@ export default {
     return {
       id: null,
       subbranchList: [],
-      clubId: window.sessionStorage.getItem('clubId'),
+      clubId: this.$route.query.clubId,
       textNumbers: this.$route.query.textNumbers
     }
   },

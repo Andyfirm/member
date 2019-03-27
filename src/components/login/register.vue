@@ -99,7 +99,6 @@ export default {
         if (this.count === '01') {
           clearInterval(InterValObj)
           this.buttonState = 'open'
-          this.verCode = null
         } else {
           this.count--
           this.count = this.count >= 10 ? this.count : '0' + this.count
@@ -164,7 +163,18 @@ export default {
               token: this.token
             }
           })
-          if (res1.msg === 'success') return this.$router.push({ name: 'index' })
+          if (res1.msg === 'success') {
+              // 登录成功后将用户名和密码保存至本地，并且设置有效时间
+              let clubId = window.sessionStorage.getItem('clubId')
+              window.localStorage.setItem('userName' + clubId, this.mobile)
+              window.localStorage.setItem('passWord' + clubId, this.pwd1)
+              let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+              window.localStorage.setItem('pastDate' + clubId, pastDate)
+
+             window.sessionStorage.setItem('isLogin', 'true')
+             this.$router.replace({ name: 'index' })
+             return
+          }  
           this.$router.push({ name: 'login' })
         }, 2000)
       } else {

@@ -28,8 +28,8 @@ Vue.component('swipe', Swipe)
 Vue.component('swipe-item', SwipeItem)
 Vue.component(VeLine.name, VeLine)
 Vue.use(Mint)
-// http://192.168.1.43/  https://www.easyserp.com/weixinPayTest/
-Axios.defaults.baseURL = 'http://192.168.1.180/weixinPay/'
+// http://192.168.1.43/  https://www.easyserp.com/weixinPayTest/ http://192.168.1.180/weixinPay/  https://www.easyserp.com/weixinPayTest
+Axios.defaults.baseURL = 'https://www.147soft.cn/easyserpClient/'
 Vue.prototype.$http = Axios
 Vue.prototype.qs = qs
 Vue.prototype.$moment = Moment
@@ -49,6 +49,9 @@ window.addEventListener('popstate', (e) => {
   }
   if (router.match(location).hash === '#/orders') {
     router.push({ name: 'orderSite' })
+  }
+  if (router.match(location).hash === '#/succeed?stamp=4') {
+    router.replace({ name: 'index' })
   }
 })
 Axios.interceptors.request.use(config => {

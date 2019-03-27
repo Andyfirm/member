@@ -59,7 +59,7 @@ export default {
         this.obj.teacher = data.ejt.name
         this.obj.discountPrice = data.actualPrice // 价格
         this.obj.courseDetails = data.courseDetails
-        this.imgUrl = data.infPTClassInfo.imgurl
+        this.imgUrl = data.infPTClassInfo ? data.infPTClassInfo.imgurl : ''
       }
     }
   }

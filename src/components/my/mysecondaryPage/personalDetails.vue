@@ -178,14 +178,12 @@ export default {
         address: this.addressData
       }
       let infoStr = JSON.stringify(infoObj)
-      const { data: res } = await this.$http.get(
+      const { data: res } = await this.$http.post(
         'myresp/updateUserInfoByToken',
-        {
-          params: {
-            infoStr,
-            token: this.token
-          }
-        }
+       this.qs.stringify({
+          infoStr,
+          token: this.token
+        })
       )
       if (res.msg === 'success') {
         this.$toast({

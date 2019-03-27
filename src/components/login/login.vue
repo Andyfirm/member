@@ -47,7 +47,7 @@ export default {
     }
   },
   created() {
-    let token = 'oQc9-jhcSgZI4ovA5r8kk7fhOMb8'
+    let token = 'oQc9-jqBcb53o8R0s9yr1ydyeVZY'
     window.sessionStorage.setItem('token', token)
     this.token = token
     window.sessionStorage.setItem('isLogin', 'false')
@@ -80,11 +80,12 @@ export default {
       console.log(res)
       if (res.msg === 'success') {
         // 登录成功后将用户名和密码保存至本地，并且设置有效时间
-        window.localStorage.setItem('yspUserName', this.userName)
-        window.localStorage.setItem('yspPassWord', this.pwd)
+        let clubId = window.sessionStorage.getItem('clubId')
+        window.localStorage.setItem('userName' + clubId, this.userName)
+        window.localStorage.setItem('passWord' + clubId, this.pwd)
         let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        window.localStorage.setItem('pastDate', pastDate)
-        this.$router.push({ name: 'index' })
+        window.localStorage.setItem('pastDate' + clubId, pastDate)
+        this.$router.replace({ name: 'index' })
         window.sessionStorage.setItem('isLogin', 'true')
       }
       if (res.msg === 'fail') this.$toast(res.data)

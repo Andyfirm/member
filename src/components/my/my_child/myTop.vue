@@ -9,7 +9,7 @@
         <router-link :to="{name:'personalDetails'}"><i class="icon_redact"></i></router-link>
       </li>
       <li class="call">手机号：{{infa.mobile}}</li>
-      <li class="huiji">会籍顾问：王晓辉</li>
+      <!-- <li class="huiji">会籍顾问：王晓辉</li> -->
       <li class="closeButton" @click="closeEsc"></li>
     </ul>
   </div>
@@ -47,6 +47,10 @@ export default {
         cancelButtonText: '取消'
       }).then(action => {
         if (action === 'confirm') {
+          let clubId = window.sessionStorage.getItem('clubId')
+          window.localStorage.removeItem('userName'+clubId)
+          window.localStorage.removeItem('passWord'+clubId)
+          window.localStorage.removeItem('pastDate'+clubId)
           window.sessionStorage.setItem('isLogin', 'false')
           this.$router.push({ name: 'login' })
         }

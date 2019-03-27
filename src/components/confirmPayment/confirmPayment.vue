@@ -80,18 +80,17 @@ export default {
     submit() {
       if (this.isWx) {
         // 微信支付
-        alert(this.badgeName)
         let url
         let dataObj
         switch (this.badgeName) {
           case '1': // 场地预约
-            url = 'weixinPay/wxpay'
+            url = 'place/reservationPlaceByOnlinePay'
             dataObj = this.submittedData
             dataObj.paytype = '微信支付'
             this.wxRequest(url, dataObj)
             break
           case '4': // 在线购票
-            url = 'myresp/shopTicket'
+            url = 'ticket/activePay'
             dataObj = this.submittedData
             dataObj.paytype = '微信支付'
             this.wxRequest(url, dataObj)
@@ -103,21 +102,25 @@ export default {
             this.wxRequest(url, dataObj)
             break
           case '6': // 购买私教
-            url = 'myresp/wxBuyCourse'
+            // url = 'myresp/wxBuyCourse'
             dataObj = this.submittedData
             dataObj.paytype = '微信支付'
-            this.wxRequest(url, dataObj)
+            // this.wxRequest(url, dataObj)
+            this.$router.push({
+              name: 'description',
+              query: { dataStr: JSON.stringify(dataObj) }
+            })
             break
           case '7': // 购卡
-            url = 'myresp/chargein'
+            url = 'card/reChargeOrbyCard'
             dataObj = this.submittedData
-            dataObj.paytype = '微信支付'
+            dataObj.payType = 'wx'
             this.wxRequest(url, dataObj)
             break
           case '8': // 会员卡充值
-            url = 'myresp/chargein'
+            url = 'card/reChargeOrbyCard'
             dataObj = this.submittedData
-            dataObj.paytype = '微信支付'
+            dataObj.payType = 'wx'
             this.wxRequest(url, dataObj)
             break
         }
@@ -153,9 +156,13 @@ export default {
             url = 'myresp/BuyCourse'
             dataObj = this.submittedData
             dataObj.itemname = this.cardName
-            dataObj.asscardnum = this.cardindex
+            dataObj.Cardindex = this.cardindex
             dataObj.paytype = '会员卡支付'
-            this.cardRequest(url, dataObj)
+            // this.cardRequest(url, dataObj)
+            this.$router.push({
+              name: 'description',
+              query: { dataStr: JSON.stringify(dataObj) }
+            })
             break
         }
       }
@@ -197,16 +204,19 @@ export default {
             // 支付成功
             switch (_this.badgeName) {
               case '1': // 场地预约
-                this.$router.push({ name: 'succeed', query: { stamp: '1' } })
+                _this.$router.push({ name: 'succeed', query: { stamp: '1' } })
                 break
               case '4': // 在线购票
-                this.$router.push({ name: 'succeed', query: { stamp: '4' } })
+                _this.$router.push({ name: 'succeed', query: { stamp: '4' } })
                 break
               case '5': // 在线报班
-                this.$router.push({ name: 'succeed', query: { stamp: '5' } })
+                _this.$router.push({ name: 'succeed', query: { stamp: '5' } })
+                break
+              case '7': // 购卡
+                _this.$router.push({ name: 'succeed', query: { stamp: '7' } })
                 break
               case '8': // 会员卡充值
-                this.$router.push({ name: 'succeed', query: { stamp: '8' } })
+                _this.$router.push({ name: 'succeed', query: { stamp: '8' } })
                 break
             }
           }

@@ -71,9 +71,8 @@ export default {
   },
   activated() {
     let shopNum = window.sessionStorage.getItem('shopNum')
-    if (this.originShopNum !== shopNum || this.success === 'success') {
+    console.log('ok')
       this.getLeagueList()
-    }
     window.sessionStorage.setItem('orderShow', 'orderLeague')
   },
   methods: {
@@ -81,7 +80,7 @@ export default {
     async getLeagueList() {
       let shopNum = window.sessionStorage.getItem('shopNum')
       let shopName = window.sessionStorage.getItem('shopName')
-      if (this.originShopNum === shopNum) return
+      // if (this.originShopNum === shopNum) return
       const { data: res } = await this.$http.get('tuanke/selectTuanKeByShop', {
         params: { shopNum, shopName, token: this.token }
       })

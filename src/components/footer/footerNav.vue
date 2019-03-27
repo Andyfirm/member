@@ -1,18 +1,18 @@
 <template>
   <div id="footer_nav">
-    <router-link :to="{name: 'index'}" :class="{home:page===0}">
+    <router-link :to="{name: 'index'}" replace :class="{home:page===0}">
       <div class="imgBox"></div>
       <p>首页</p>
     </router-link>
-    <router-link :to="{name: 'orders'}" :class="{order:page===1}">
+    <router-link :to="{name: 'orders'}" replace :class="{order:page===1}">
       <div class="imgBox"></div>
       <p>预约</p>
     </router-link>
-    <router-link :to="{name: 'purchaseCard'}" :class="{card:page===2}">
+    <router-link :to="{name: 'purchaseCard'}" replace :class="{card:page===2}">
       <div class="imgBox"></div>
       <p>购卡</p>
     </router-link>
-    <router-link :to="{name: 'myCentre'}" :class="{my:page===3}">
+    <router-link :to="{name: 'myCentre'}" replace :class="{my:page===3}">
       <div class="imgBox"></div>
       <p>我的</p>
     </router-link>

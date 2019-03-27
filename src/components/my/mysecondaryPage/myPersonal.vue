@@ -8,7 +8,7 @@
     <ul v-if="init==='block'">
       <li v-for="item of list" :key="item.id">
         <div class="imgBox_l">
-          <img :src="'./static/images/sjkc/'+item.infPTClassInfo.imgurl">
+          <img :src="'./static/images/sjkc/'+(item.infPTClassInfo?item.infPTClassInfo.imgurl:'')">
         </div>
         <div class="content_r">
           <p>教练：{{item.teachername}}</p>

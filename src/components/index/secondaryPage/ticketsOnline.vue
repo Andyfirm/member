@@ -91,6 +91,7 @@ export default {
   font-size: 0.32rem;
   line-height: 0.36rem;
   text-decoration: none;
+  margin-top: 0.06rem;
 }
 .content_mide {
   width: 100%;

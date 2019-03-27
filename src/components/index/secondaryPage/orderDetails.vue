@@ -58,11 +58,14 @@ export default {
       // 点击提交按钮，将订单所需值存入vuex中，然后跳转到支付页面
       let dataObj = {}
       if (this.type === 'course') {
-        dataObj.money = this.orderPrice
+        dataObj.total = this.orderPrice
         dataObj.classId = this.item.id
-        dataObj.shopnNum = window.sessionStorage.getItem('shopNum')
+        dataObj.shopNum = window.sessionStorage.getItem('shopNum')
         dataObj.token = window.sessionStorage.getItem('token')
         this.setSubmittedData(dataObj)
+        // 将教练名称和课程名称存起来，在购买成功后显示
+        window.sessionStorage.setItem('sjteacherName', this.item.teacher)
+        window.sessionStorage.setItem('sjcourseName', this.item.name)
         this.$router.push({ name: 'confirmPayment', query: { badgeName: '6' } }) // 购买私教
       } else if (this.type === 'ticket') {
         console.log(this.item)
@@ -78,7 +81,10 @@ export default {
         dataObj.shopNum = window.sessionStorage.getItem('shopNum') // 分店编号
         dataObj.ticketInfo = ticketInfoStr // 票信息(ticketId的jsonStr形式)
         dataObj.preTime = this.submitTime // 提交时间
+        dataObj.type = '购票'
         this.setSubmittedData(dataObj)
+        // 将票名称存起来，在购买成功后显示
+        window.sessionStorage.setItem('ticketName', this.item.name)
         this.$router.push({ name: 'confirmPayment', query: { badgeName: '4' } }) // 在线购票
       }
     },

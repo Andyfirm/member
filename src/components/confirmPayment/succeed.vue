@@ -39,7 +39,37 @@
         >{{item.date}} {{item.starttime}}-{{item.endtime}}</li>
       </ul>
     </div>
-    <!--  -->
+    <!-- 预约团课 -->
+     <div class="words sj" v-if="stamp === '2'">
+      <p class="shuoming">您已成功预约:</p>
+      <div class="title">
+        <span>{{tuankecourseName}}项目</span>
+      </div>
+      <p class="date">预约时间段</p>
+      <ul>
+        <li>{{tuankecourseTime}}</li>
+      </ul>
+    </div>
+    <!-- 在线购票 -->
+    <div class="words sj" v-if="stamp === '4'">
+      <p class="shuoming">您已成功购买:</p>
+      <div class="title" style="margin-bottom:0.4rem;">
+        <span>{{ticketName}}</span>
+      </div>
+    </div>
+    <!-- 购买私教课程 -->
+    <div class="words sj" v-if="stamp === '6'">
+      <p class="shuoming">您已成功购买:</p>
+      <div class="title" style="margin-bottom:0.4rem;">
+        <span>{{sjteacherName}}教练</span>
+        <span>{{sjcourseName}}课程</span>
+      </div>
+    </div>
+     <!-- 购卡 -->
+    <div class="words sj" v-if="stamp === '7'">
+      <p class="shuoming">您已成功购买:</p>
+      <span style="text-align:center;display:block;width:100%;">{{cardName}}</span>
+    </div>
     <p class="know" @click="classDetail">我知道了</p>
   </div>
 </template>
@@ -51,12 +81,22 @@ export default {
   data() {
     return {
       stamp: this.$route.query.stamp, // 标识
+      // 在线购票相关
+      ticketName: window.sessionStorage.getItem('ticketName'),
       // 场地相关
       ymd: [],
       time: [],
       name: [],
       // 私教相关
-      sjdataStr: {}
+      sjdataStr: {},
+      // 购买私教课程相关
+      sjteacherName: window.sessionStorage.getItem('sjteacherName'),
+      sjcourseName: window.sessionStorage.getItem('sjcourseName'),
+      // 团课相关
+      tuankecourseTime: window.sessionStorage.getItem('tuankecourseTime'),
+      tuankecourseName: window.sessionStorage.getItem('tuankecourseName'),
+      // 购卡
+      cardName: window.sessionStorage.getItem('cardName')
     }
   },
   mounted() {

@@ -4,7 +4,7 @@
     <keep-alive>
       <router-view />
     </keep-alive>
-    <order-btom></order-btom>
+    <!-- <order-btom></order-btom> -->
     <footer-nav :page="1"></footer-nav>
   </div>
 </template>

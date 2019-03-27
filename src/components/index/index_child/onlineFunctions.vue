@@ -14,12 +14,12 @@
         </div>
         <p>在线报班</p>
       </router-link>
-      <router-link :to="{name: 'headAccount'}">
+      <!-- <router-link :to="{name: 'headAccount'}">
         <div class="imgBox three">
           <img src="~images/icon/control.png" alt="">
         </div>
         <p>人数控制</p>
-      </router-link>
+      </router-link> -->
       <router-link to="">
         <div class="imgBox">
           <img src="~images/icon/more.png" alt="">
@@ -57,7 +57,8 @@ export default {
 }
 .img_icon {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: left;
 }
 a {
   width: 25%;

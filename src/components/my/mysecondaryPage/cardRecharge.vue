@@ -93,13 +93,15 @@ export default {
       if (this.money < 0.1) {
         return this.$toast('请输入正确的金额')
       }
+      let cardObj = { id: this.cardDefault.id, cardName: this.cardDefault.cardname, cardIndex: this.cardDefault.cardindex }
+      let cardInfoStr = JSON.stringify(cardObj)
       const dataObj = {
-        id: this.cardDefault.id,
-        money: this.money,
-        cardindex: this.cardDefault.cardindex,
-        cardname: this.cardDefault.cardname,
+        total: this.money,
+        cardInfo: cardInfoStr,
         shopnum: this.shopNum,
-        token: this.token
+        token: this.token,
+        type: '充值',
+        backUrl: 'reChargeBack'
       }
       this.setSubmittedData(dataObj)
       this.$router.push({ name: 'confirmPayment', query: { badgeName: '8' } })

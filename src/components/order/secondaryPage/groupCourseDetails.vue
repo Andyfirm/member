@@ -3,7 +3,7 @@
     <div class="content_box">
       <div class="content_top">
         <div class="imgBox">
-          <img :src="'./static/images/sjkc/' + imgUrl" alt>
+          <img :src="'./static/' + imgUrl" alt>
         </div>
         <div class="text_right">
           <p>项目：{{courseName}}</p>
@@ -19,10 +19,10 @@
             课程人数：
             <i>{{shangkerenshu}}</i>
           </p>
-          <div class="share">
+          <!-- <div class="share">
             <span></span>
             <i>分享这个课给好友</i>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="content_btom">
@@ -70,7 +70,7 @@ export default {
   methods: {
     // 获取首屏数据
     async getCourseObj() {
-      const { data: res } = await this.$http.get('condabout/searchall', {
+      const { data: res } = await this.$http.get('tuanke/selectTuanKeInfoById', {
         params: { id: this.id, token: this.token }
       })
       console.log(res)
@@ -100,7 +100,7 @@ export default {
       })
     },
     async submit() {
-      const { data: res } = await this.$http.get('condabout/grouppurchase', {
+      const { data: res } = await this.$http.get('tuanke/groupAppointment', {
         params: {
           shopName: window.sessionStorage.getItem('shopName'),
           tuanKeId: this.id,
@@ -108,6 +108,8 @@ export default {
         }
       })
       if (res.msg === 'success') {
+        window.sessionStorage.setItem('tuankecourseTime', this.courseTime)
+        window.sessionStorage.setItem('tuankecourseName', this.courseName)
         this.$router.push({ name: 'succeed', query: { stamp: '2' } })
       } else {
         this.$toast(res.data)

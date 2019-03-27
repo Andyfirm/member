@@ -11,10 +11,10 @@
         <a :href="'tel:' + viewEJt.phone">
           <button class="contactCoach">联系教练</button>
         </a>
-        <div class="share">
+        <!-- <div class="share">
           <span></span>
           <i>分享这个教练给好友</i>
-        </div>
+        </div> -->
       </div>
     </div>
     <ul class="course_bottom">
@@ -57,7 +57,7 @@ export default {
       if (res.msg === 'success') {
         this.tbPriList = res.data.ptClassArray
         this.viewEJt = res.data.viewEJt
-        this.infEImage = res.data.viewEJt.infEImage
+        this.infEImage = res.data.viewEJt ? res.data.viewEJt.infEImage : ''
       }
     }
   }
@@ -74,7 +74,7 @@ export default {
 }
 .content_top {
   overflow: hidden;
-  padding-bottom: 1.2rem;
+  padding-bottom: 0.4rem;
   border-bottom: 1px solid #dcdcdc;
 }
 .imgBox {
@@ -133,7 +133,7 @@ button.contactCoach {
   border: 1px solid #7ecef4;
   border-radius: 0.16rem;
 }
-.share {
+/* .share {
   position: absolute;
   bottom: -0.8rem;
   overflow: hidden;
@@ -154,5 +154,5 @@ button.contactCoach {
   color: #999;
   margin-left: 6px;
   margin-top: 0.04rem;
-}
+} */
 </style>

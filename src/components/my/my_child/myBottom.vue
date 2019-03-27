@@ -32,21 +32,23 @@
           <p>请假暂停</p>
         </router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link :to="{name: 'fiancoIndex'}">
           <div class="icon_tcxx"><img src="~images/icon/test.png" alt=""></div>
           <p>体测信息</p>
         </router-link>
-      </li>
-      <li>
+      </li> -->
+      <!-- <li>
         <router-link :to="{name: 'messageBoard'}">
           <div class="icon_lyb"><img src="~images/icon/massageBoard.png" alt=""></div>
           <p>留言板</p>
         </router-link>
-      </li>
+      </li> -->
       <li>
-        <div class="icon_lxkf"><img src="~images/icon/server.png" alt=""></div>
-        <p>联系客服</p>
+        <a href="tel:4007007576">
+          <div class="icon_lxkf"><img src="~images/icon/server.png" alt=""></div>
+          <p>联系客服</p>
+        </a>
       </li>
       <li>
         <div class="icon_jqqd"><img src="~images/icon/more.png" alt=""></div>

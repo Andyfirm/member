@@ -3,7 +3,7 @@
     <ul>
       <li class="cardBox" v-for="item of cardList" :key="item.id">
         <div class="imgBox_wrap">
-          <img :src="'./static/images/hyk/' + (item.infCs?item.infCs.imgpath:'')" alt="">
+          <img :src="'./static/images/hyk/' + (item.infCs?item.infCs.imgpath:'')" alt>
           <div class="imgBox">
             <h6>{{item.cardName?item.cardName:''}}</h6>
             <p></p>
@@ -15,13 +15,13 @@
         </div>
         <div class="middle">
           <div class="middle_l">卡名：{{item.cardName?item.cardName:''}}</div>
-          <div class="middle_r">
-            价格: <i>￥{{item.weChatPrice?item.weChatPrice:''}}</i>
+          <div class="middle_r">价格:
+            <i>￥{{item.weChatPrice?item.weChatPrice:''}}</i>
           </div>
         </div>
         <div class="select">
           <div class="select_l" @click="switchText">查看详情</div>
-          <div class="select_r" @click="purchase(item.id, item.weChatPrice)">购买</div>
+          <div class="select_r" @click="purchase(item.cardName, item.id, item.weChatPrice)">购买</div>
         </div>
         <p class="showp">{{item.infCs?item.infCs.remarks:''}}</p>
       </li>
@@ -81,15 +81,21 @@ export default {
         el.parentNode.parentNode.classList.add('unfoldLi')
       }
     },
-    purchase(id, money) {
+    purchase(name, id, money) {
+      let cardObj = { cardName: name, cardId: id }
+      let cardInfoStr = JSON.stringify(cardObj)
       // 获取所选卡信息，跳转支付页面
       const dataObj = {
         kId: id,
-        money,
+        total: money,
+        cardInfo: cardInfoStr,
         shopNum: window.sessionStorage.getItem('shopNum'),
-        token: window.sessionStorage.getItem('token')
+        token: window.sessionStorage.getItem('token'),
+        type: '办卡',
+        backUrl: 'byCardBack'
       }
       this.setSubmittedData(dataObj)
+      window.sessionStorage.setItem('cardName',name)
       if (this.state === 1) {
         this.$router.push({ name: 'realNameCard', query: { badgeName: '7' } })
       } else if (this.state === 2) {

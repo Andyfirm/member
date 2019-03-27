@@ -43,6 +43,8 @@ import personalDetails from '@/components/my/mysecondaryPage/personalDetails'
 import club from '@/components/dataOrigin/club'
 import branch from '@/components/dataOrigin/branch'
 import member from '@/components/dataOrigin/member'
+import description from '@/components/bindCard/description'
+import selectBindCard from '@/components/bindCard/selectBindCard'
 
 Vue.use(Router)
 
@@ -151,7 +153,14 @@ export default new Router({
         keepAlive: true
       }
     },
-    { path: '/myPersonal', name: 'myPersonal', component: myPersonal },
+    {
+      path: '/myPersonal',
+      name: 'myPersonal',
+      component: myPersonal,
+      meta: {
+        keepAlive: true
+      }
+    },
     { path: '/expenseCalendar', name: 'expenseCalendar', component: expenseCalendar },
     { path: '/leave', name: 'leave', component: leave },
     { path: '/fiancoIndex', name: 'fiancoIndex', component: fiancoIndex },
@@ -234,6 +243,22 @@ export default new Router({
       path: '/personalDetails',
       name: 'personalDetails',
       component: personalDetails,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/description',
+      name: 'description',
+      component: description,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/selectBindCard',
+      name: 'selectBindCard',
+      component: selectBindCard,
       meta: {
         keepAlive: true
       }

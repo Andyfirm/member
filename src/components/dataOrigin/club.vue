@@ -16,7 +16,8 @@ export default {
   name: 'club',
   data() {
     return {
-      textNumbers: this.$route.query.textNumbers
+      textNumbers: this.$route.query.textNumbers,
+      clubId: this.$route.query.clubId
     }
   },
   methods: {
@@ -24,7 +25,7 @@ export default {
     goToNextPage() {
       this.$router.push({
         name: 'branch',
-        query: { textNumbers: this.textNumbers }
+        query: { textNumbers: this.textNumbers, clubId: this.clubId }
       })
     }
   }

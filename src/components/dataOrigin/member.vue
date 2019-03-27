@@ -11,7 +11,9 @@ export default {
       clubId: this.$route.query.clubId,
       code: '',
       token: '',
-      theFirst: window.localStorage.getItem('theFirst') // 判断是否为第一次登陆,如果成功登陆则将状态保存在本地
+      appid: '',
+      name: '',
+      theFirst: 'true' // 判断是否为第一次登陆,如果成功登陆则将状态保存在本地
     }
   },
   created() {
@@ -19,15 +21,44 @@ export default {
       window.sessionStorage.setItem('clubId', this.clubId)
     }
     this.clubId = window.sessionStorage.getItem('clubId')
+
+    let code = window.localStorage.getItem('code'+this.clubId)
+    let codeTime = window.localStorage.getItem('codeTime'+this.clubId)
+    // let newDate = new Date().getTime()
+    // if (code && codeTime > newDate) { // 如果存在code且没有过期
+    //   this.code = code
+    //   this.getToken()
+    // } else { // 否则则获取code 然后将code保存至本地
+    //   this.code = this.getParameter('code')
+    //   this.getTextNumbers()
+    //   if (!this.code) {
+    //     this.getCode()
+    //   } else {
+    //     this.getToken()
+    //     window.localStorage.setItem('code'+this.clubId, this.code)
+    //     let codeTime = new Date().getTime() + 1 * 24 * 60 * 60 * 1000
+    //     window.localStorage.setItem('codeTime'+this.clubId, codeTime)
+    //   }
+    // }
     this.code = this.getParameter('code')
     this.getTextNumbers()
-    if (!this.code) {
-      this.getCode()
-    } else {
-      this.getToken()
-    }
   },
   methods: {
+    // 动态获取appid和name
+    async getAppid() {
+      const {data: res} = await this.$http.get('wechar/getWXConfigInfo',{params: {
+        clubMemberCode: this.textNumbers
+      }})
+      if(res.msg === 'success') {
+        this.name = res.data.name
+        this.appid = res.data.appid
+        if(!this.code) { // 获取appid成功后判断是否有code 没有则动态获取code
+          this.getCode()
+        }else { // 有则根据code获取token
+          this.getToken()
+        }
+      }
+    },
     // 获取场馆编号
     async getTextNumbers() {
       if (!this.clubId || this.clubId === 0) return
@@ -38,17 +69,15 @@ export default {
       if (res.msg === 'success') {
         let data = res.data
         this.textNumbers = data
-        if (this.token) {
-          this.goToNextPage()
-        }
+        this.getAppid()
       } else if (res.msg === 'fail') {
         this.$toast(res.data)
       }
     },
     // 获取code
-    getCode() {
+    getCode() { // wxaec1c79123e95c61
       let url =
-        'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaec1c79123e95c61&redirect_uri=' +
+        'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+this.appid+'&redirect_uri=' +
         location.href.split('#')[0] +
         '&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect'
       window.location.href = url
@@ -56,7 +85,7 @@ export default {
     // 获取token
     async getToken() {
       const { data: res } = await this.$http.get('wechar/member', {
-        params: { code: this.code }
+        params: { code: this.code,  clubMemberCode: this.textNumbers,name: this.name }
       })
       if (res.msg === 'success') {
         this.token = res.data
@@ -83,32 +112,39 @@ export default {
     },
     // 根据判断跳转至不同页面
     goToNextPage() {
-      if (this.theFirst === 'true') { // 不是第一次登录
+      if (this.theFirst === 'true') {
+        // 不是第一次登录
         let date = new Date().getTime()
-        let pastDate = window.localStorage.getItem('pastDate')
-        if (pastDate < date) { // 当前时间大于以前保存的时间证明已过期，跳转至登录页
-          window.sessionStorage.setItem('clubId', this.clubId)
+        let pastDate = window.localStorage.getItem('pastDate' + this.clubId)
+        if (pastDate < date) {
+          // 当前时间大于以前保存的时间证明已过期，跳转至登录页
+          window.sessionStorage.setItem('clubId'+this.clubId, this.clubId)
           this.$router.push({
-            name: 'club',
-            query: { textNumbers: this.textNumbers }
+            name: 'branch',
+            query: { textNumbers: this.textNumbers, clubId: this.clubId}
           })
           return
         }
         // 获取账号密码
-        let userName = window.localStorage.getItem('yspUserName')
-        let password = window.localStorage.getItem('yspPassWord')
+        let userName = window.localStorage.getItem('userName' + this.clubId)
+        let password = window.localStorage.getItem('passWord' + this.clubId)
         if (userName && password) {
           this.login(userName, password)
+        }else {
+          this.$router.push({
+          name: 'branch',
+          query: { textNumbers: this.textNumbers, clubId: this.clubId }
+          })
         }
       } else {
-        window.sessionStorage.setItem('clubId', this.clubId)
         this.$router.push({
-          name: 'club',
-          query: { textNumbers: this.textNumbers }
+          name: 'branch',
+          query: { textNumbers: this.textNumbers, clubId: this.clubId }
         })
       }
     },
     async login(userName, passWord) {
+      let token = window.sessionStorage.getItem('token')
       const { data: res } = await this.$http.get('memberLogin/logined', {
         params: {
           userName,
