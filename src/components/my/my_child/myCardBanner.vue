@@ -414,12 +414,8 @@ h4 {
   overflow: hidden;
 }
 .textBox .top .left {
-  /* float: left; */
   display: block;
   height: 0.18rem;
-}
-.textBox .top .right {
-  /* float: right; */
 }
 .time.one {
   margin: 0.28rem 0;
