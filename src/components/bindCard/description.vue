@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     bindCard() {
-      this.$router.push({
+      this.$router.replace({
         name: 'selectBindCard',
         query: { dataStr: this.dataStr }
       })

@@ -4,7 +4,7 @@
       <div class="card_top" @click="openFunction">
         <div class="name_h">会员卡</div>
         <div class="card_icon"></div>
-        <div class="card_text">{{cardDefault.cardname}}<i class="cardAfterfour">({{cardAfterfour}})</i></div>
+        <div class="card_text">{{cardDefault.cardname}}<i class="cardAfterfour" v-show="cardDefault.cardname">({{cardAfterfour}})</i></div>
         <div class="jt_r"></div>
       </div>
       <div class="card_czje">充值金额</div>
@@ -78,9 +78,7 @@ export default {
     select(index) {
       this.i = index
       this.isShow = false
-      if (index !== 0) {
-        this.cardDefault = this.cardList[index]
-      }
+      this.cardDefault = this.cardList[index]
       console.log(this.cardList[index])
     },
     openFunction() {
@@ -90,10 +88,10 @@ export default {
       this.isShow = false
     },
     charge() {
-      if (this.money < 0.1) {
+      if (this.money < 0.01) {
         return this.$toast('请输入正确的金额')
       }
-      let cardObj = { id: this.cardDefault.id, cardName: this.cardDefault.cardname, cardIndex: this.cardDefault.cardindex }
+      let cardObj = { id: this.cardDefault.id, cardName: this.cardDefault.cardname, cardIndex: this.cardDefault.cardindex, cardShortName: this.cardDefault.cardShortName }
       let cardInfoStr = JSON.stringify(cardObj)
       const dataObj = {
         total: this.money,

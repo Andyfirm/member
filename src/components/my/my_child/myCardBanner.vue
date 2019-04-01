@@ -27,7 +27,7 @@
             {{item.cardindex.slice(0,4)}} {{item.cardindex.slice(4,8)}} {{item.cardindex.slice(8,12)}} {{item.cardindex.slice(12,16)}}
             {{item.cardindex.slice(16)}}
           </h4>
-          <p id="moneyNum">{{item.infCs.cardcash}}元</p>
+          <p id="moneyNum">{{item.cardcash}}元</p>
         </div>
         <p class="cardInfo">
           <span class="condition">
@@ -50,6 +50,7 @@
         v-show="hykdetailsActive"
         :class="{hykdetailsActive: hykdetailsActive}"
         ref="hykdetailsBox"
+        @click.self="closeHykdetails"
       >
         <div class="boxWrap">
           <div class="topBox">
@@ -63,7 +64,7 @@
               <div
                 class="cardIndex"
               >{{hykdetailsItem.cardindex.slice(0,4)}} {{hykdetailsItem.cardindex.slice(4,8)}} {{hykdetailsItem.cardindex.slice(8,12)}} {{hykdetailsItem.cardindex.slice(12,16)}} {{hykdetailsItem.cardindex.slice(16)}}</div>
-              <div class="money">{{hykdetailsItem.infCs.cardcash}}元</div>
+              <div class="money">{{hykdetailsItem.cardcash}}元</div>
             </div>
           </div>
           <div class="textBox">
@@ -78,8 +79,8 @@
             </div>
             <div class="time one">入会时间：{{hykdetailsItem.transdate | convertDate}}</div>
             <div class="time">到期时间：{{hykdetailsItem.enddate | convertDate}}</div>
-            <div class="xmsy">项目剩余</div>
-            <div class="content">
+            <div class="xmsy" v-if="hykdetailsItem.array">项目剩余</div>
+            <div class="content" v-if="hykdetailsItem.array">
               <p v-for="(item,index) of hykdetailsItem.array" :key="index">{{item.type}} 剩余次数:{{item.num}}次</p>
             </div>
           </div>
@@ -93,6 +94,7 @@
         v-show="qrcodeActive"
         :class="{qrcodeActive: qrcodeActive}"
         ref="codeBox"
+        @click.self="closeQrcode"
       >
         <div class="qrcodeBox">
           <div class="close" @click="closeQrcode"></div>
@@ -158,7 +160,7 @@ export default {
       }
       this.qrcodeActive = true
       let qrcode = new QRCode(this.$refs.qrCodeUrl, {
-        text: '2'+ cardIndex,
+        text: '2' + cardIndex,
         width: 200,
         height: 200
       })
@@ -325,13 +327,11 @@ h4 {
 .boxWrap {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
-  margin: auto;
+  margin: 2rem auto 0;
   overflow: hidden;
   width: 6.7rem;
-  height: 8.9rem;
   background-color: #fff;
   border-radius: 8px;
 }
@@ -400,7 +400,8 @@ h4 {
 }
 .textBox {
   width: 5.88rem;
-  height: 4.4rem;
+  /* height: 4.4rem; */
+  padding-bottom: 0.6rem;
   margin: 0 auto;
   font-size: 0.3rem;
   color: #999;
@@ -438,7 +439,7 @@ h4 {
 }
 .textBox .content {
   overflow: scroll;
-  height: 1.4rem;
+  max-height: 1.4rem;
 }
 .textBox .content p:first-child {
   margin-top: 0;

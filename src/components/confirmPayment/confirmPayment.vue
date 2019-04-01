@@ -9,7 +9,7 @@
       <ul class="typePayment">
         <li
           class="wxli"
-          @click="select(index)"
+          @click="select(index, item.notMoney, item.past)"
           v-for="(item, index) of cardList"
           :key="index"
           :class="{active: index===i}"
@@ -21,11 +21,11 @@
             >
           </div>
           <p v-if="item.id===1">{{item.cardname}}</p>
-          <p v-else>
+          <p v-else :class="{zhihuiText: item.notMoney || item.past}">
             {{item.cardname}}
             <i class="yue">(余额￥{{item.cardcash}})</i>
           </p>
-          <div class="radius"></div>
+          <div class="radius" :class="{zhihuiBorder: item.notMoney || item.past}"></div>
         </li>
       </ul>
     </div>
@@ -64,7 +64,10 @@ export default {
     this.getCardList()
   },
   methods: {
-    select(index) {
+    select(index, notMoney, past) {
+      if (notMoney && index !== 0) return this.$toast('此卡余额不足')
+      // 如果卡对应的参数zhihui为true说明卡已过期 禁止选中
+      if (past && index !== 0) return this.$toast('此卡已过期')
       this.i = index
       // 微信支付
       if (index === 0) {
@@ -102,14 +105,27 @@ export default {
             this.wxRequest(url, dataObj)
             break
           case '6': // 购买私教
-            // url = 'myresp/wxBuyCourse'
+            url = 'pt/wxBuyPrivateCourse'
             dataObj = this.submittedData
             dataObj.paytype = '微信支付'
-            // this.wxRequest(url, dataObj)
-            this.$router.push({
-              name: 'description',
-              query: { dataStr: JSON.stringify(dataObj) }
-            })
+            if (this.cardList.length <= 1) {
+              // 如果没有卡则直接走支付请求，不进行绑卡操作
+              this.$messagebox({
+                title: '温馨提示',
+                message:
+                  '为了精准的为您提供服务，我们会为您免费办理一张会员卡与此课程关联，以确保您的私教课程能正常使用。',
+                showCancelButton: true,
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+              }).then(action => {
+                this.wxRequest(url, dataObj)
+              })
+            } else {
+              this.$router.replace({
+                name: 'description',
+                query: { dataStr: JSON.stringify(dataObj) }
+              })
+            }
             break
           case '7': // 购卡
             url = 'card/reChargeOrbyCard'
@@ -158,8 +174,7 @@ export default {
             dataObj.itemname = this.cardName
             dataObj.Cardindex = this.cardindex
             dataObj.paytype = '会员卡支付'
-            // this.cardRequest(url, dataObj)
-            this.$router.push({
+            this.$router.replace({
               name: 'description',
               query: { dataStr: JSON.stringify(dataObj) }
             })
@@ -204,19 +219,40 @@ export default {
             // 支付成功
             switch (_this.badgeName) {
               case '1': // 场地预约
-                _this.$router.push({ name: 'succeed', query: { stamp: '1' } })
+                _this.$router.replace({
+                  name: 'succeed',
+                  query: { stamp: '1' }
+                })
                 break
               case '4': // 在线购票
-                _this.$router.push({ name: 'succeed', query: { stamp: '4' } })
+                _this.$router.replace({
+                  name: 'succeed',
+                  query: { stamp: '4' }
+                })
                 break
               case '5': // 在线报班
-                _this.$router.push({ name: 'succeed', query: { stamp: '5' } })
+                _this.$router.replace({
+                  name: 'succeed',
+                  query: { stamp: '5' }
+                })
+                break
+              case '6': // 购买私教
+                _this.$router.replace({
+                  name: 'succeed',
+                  query: { stamp: '6' }
+                })
                 break
               case '7': // 购卡
-                _this.$router.push({ name: 'succeed', query: { stamp: '7' } })
+                _this.$router.replace({
+                  name: 'succeed',
+                  query: { stamp: '7' }
+                })
                 break
               case '8': // 会员卡充值
-                _this.$router.push({ name: 'succeed', query: { stamp: '8' } })
+                _this.$router.replace({
+                  name: 'succeed',
+                  query: { stamp: '8' }
+                })
                 break
             }
           }
@@ -230,13 +266,16 @@ export default {
         // 支付成功
         switch (this.badgeName) {
           case '1': // 场地预约
-            this.$router.push({ name: 'succeed', query: { stamp: '1' } })
+            this.$router.replace({ name: 'succeed', query: { stamp: '1' } })
             break
           case '4': // 在线购票
-            this.$router.push({ name: 'succeed', query: { stamp: '4' } })
+            this.$router.replace({ name: 'succeed', query: { stamp: '4' } })
             break
           case '5': // 在线报班
-            this.$router.push({ name: 'succeed', query: { stamp: '5' } })
+            this.$router.replace({ name: 'succeed', query: { stamp: '5' } })
+            break
+          case '6': // 购买私教
+            this.$router.replace({ name: 'succeed', query: { stamp: '6' } })
             break
         }
       } else {
@@ -285,8 +324,11 @@ export default {
         for (var i = 0; i < arr.length; i++) {
           var cardcash = arr[i].cardcash
           if (cardcash - this.priceTotal <= 0) {
-            arr[i].zhihui = true
+            arr[i].notMoney = true
           }
+          let endDate = new Date(arr[i].enddate).getTime()
+          let nowDate = new Date().getTime()
+          if (endDate < nowDate) arr[i].past = true
         }
         let weixinObj = { id: 1, cardname: '微信' }
         arr.unshift(weixinObj)
@@ -412,5 +454,11 @@ export default {
   border: 0;
   border-radius: 8px;
   background-color: #7ecef4;
+}
+.zhihuiText {
+  color: #ccc !important;
+}
+.zhihuiBorder {
+  border: 1px solid #ccc !important;
 }
 </style>

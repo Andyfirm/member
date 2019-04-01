@@ -23,7 +23,7 @@ export default {
   methods: {
     // 跳转至分店
     goToNextPage() {
-      this.$router.push({
+      this.$router.replace({
         name: 'branch',
         query: { textNumbers: this.textNumbers, clubId: this.clubId }
       })

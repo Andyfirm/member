@@ -130,28 +130,28 @@ export default {
     classDetail() {
       switch (this.stamp) {
         case '1': // 场地预约
-          this.$router.push({ name: 'orderSite' })
+          this.$router.replace({ name: 'orderSite' })
           break
         case '2': // 团课预约
-          this.$router.push({
+          this.$router.replace({
             name: 'orderSite',
             query: { success: 'success' }
           }) // 携带参数，刷新下一个页面
           break
         case '3': // 私教预约
-          this.$router.push({ name: 'orderSite' })
+          this.$router.replace({ name: 'orderSite' })
           break
         case '4': // 在线购票
-          this.$router.push({ name: 'ticketsOnline' })
+          this.$router.replace({ name: 'ticketsOnline' })
           break
         case '5': // 在线报班
-          this.$router.push({ name: 'onlineClass' })
+          this.$router.replace({ name: 'onlineClass' })
           break
         case '6': // 购买私教
-          this.$router.push({ name: 'index' })
+          this.$router.replace({ name: 'index' })
           break
         case '7': // 购卡
-          this.$router.push({ name: 'purchaseCard' })
+          this.$router.replace({ name: 'purchaseCard' })
           break
       }
     }

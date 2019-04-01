@@ -8,11 +8,26 @@
     <div class="wrap loginPage">
       <section>
         <div class="wrapper" id="phone">
-          <input type="text" id="tel1" placeholder="请输入您的手机号" maxlength="11" v-model="mobile" @blur="verifyMobile">
+          <input
+            type="text"
+            id="tel1"
+            placeholder="请输入您的手机号"
+            maxlength="11"
+            v-model="mobile"
+            @blur="verifyMobile"
+          >
         </div>
         <div class="wrapper2">
           <div class="ident2">
-            <input type="number" pattern="[0-9]*" id="verCode" style="margin-left:0px !important;" placeholder="请输入验证码" v-model="verCode" @blur="setVerCode">
+            <input
+              type="number"
+              pattern="[0-9]*"
+              id="verCode"
+              style="margin-left:0px !important;"
+              placeholder="请输入验证码"
+              v-model="verCode"
+              @blur="setVerCode"
+            >
             <!-- 初始状态 -->
             <div class="ident3" v-if="buttonState==='init'">
               <input type="button" id="yzm1" value="获取验证码" @click="sendMessage">
@@ -28,13 +43,26 @@
           </div>
         </div>
         <div class="wrapper" id="passTiShi1">
-          <input type="password" id="pwd1" placeholder="请输入您的密码" v-model="pwd1" @focus="focusPwd" @blur="blurPwd">
+          <input
+            type="password"
+            id="pwd1"
+            placeholder="请输入您的密码"
+            v-model="pwd1"
+            @focus="focusPwd"
+            @blur="blurPwd"
+          >
         </div>
         <div class="wrapper" id="passTiShi2">
-          <input type="password" id="repwd1" placeholder="请再次输入您的密码" v-model="pwd2" @blur="blurpassPwd">
+          <input
+            type="password"
+            id="repwd1"
+            placeholder="请再次输入您的密码"
+            v-model="pwd2"
+            @blur="blurpassPwd"
+          >
         </div>
         <button id="register" @click="register">立即注册</button>
-        <input type="hidden" id="loginResult" value="">
+        <input type="hidden" id="loginResult" value>
       </section>
     </div>
   </div>
@@ -68,12 +96,14 @@ export default {
         return false
       } else {
         this.passMobile = true
+        return true
       }
     },
     // 验证手机号是否注册
     async sendMessage() {
       this.count = 59
-      this.verifyMobile()
+      let verifyMobile = this.verifyMobile()
+      if (!verifyMobile) return
       const { data: res } = await this.$http.get('memberLogin/mobileIfExit', {
         params: { mobile: this.mobile, token: this.token }
       })
@@ -83,9 +113,12 @@ export default {
         this.passMobile = false
         return
       }
-      const { data: res1 } = await this.$http.get('memberLogin/sendVerificationCode', {
-        params: { mobile: this.mobile, sign: 1, token: this.token }
-      })
+      const { data: res1 } = await this.$http.get(
+        'memberLogin/sendVerificationCode',
+        {
+          params: { mobile: this.mobile, sign: 1, token: this.token }
+        }
+      )
       console.log(res1)
       if (res1.msg === 'success') {
         this.$toast('验证码发送成功')
@@ -141,8 +174,17 @@ export default {
       if (this.verCode !== this.sendcode) {
         return this.$toast('验证码填写有误')
       }
-      if (!this.passMobile || !this.verCode || !this.passPwd1 || !this.passPwd2) {
-        return this.$toast('表单信息填写有误，请重新填写')
+      if (!this.passMobile) {
+        return this.$toast('请填写正确的手机号码')
+      }
+      if (!this.verCode) {
+        return this.$toast('请填写正确的验证码')
+      }
+      if (!this.passPwd1) {
+        return this.$toast('请完善您的密码')
+      }
+      if (!this.passPwd2) {
+        return this.$toast('请确认您的密码')
       }
       const { data: res } = await this.$http.get('memberLogin/registUser', {
         params: {
@@ -152,7 +194,6 @@ export default {
           token: this.token
         }
       })
-      console.log(res)
       if (res.msg === 'success') {
         this.$toast('恭喜您注册成功，正在为您自动跳转!')
         setTimeout(async() => {
@@ -164,17 +205,17 @@ export default {
             }
           })
           if (res1.msg === 'success') {
-              // 登录成功后将用户名和密码保存至本地，并且设置有效时间
-              let clubId = window.sessionStorage.getItem('clubId')
-              window.localStorage.setItem('userName' + clubId, this.mobile)
-              window.localStorage.setItem('passWord' + clubId, this.pwd1)
-              let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-              window.localStorage.setItem('pastDate' + clubId, pastDate)
+            // 登录成功后将用户名和密码保存至本地，并且设置有效时间
+            let clubId = window.sessionStorage.getItem('clubId')
+            window.localStorage.setItem('userName' + clubId, this.mobile)
+            window.localStorage.setItem('passWord' + clubId, this.pwd1)
+            let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+            window.localStorage.setItem('pastDate' + clubId, pastDate)
 
-             window.sessionStorage.setItem('isLogin', 'true')
-             this.$router.replace({ name: 'index' })
-             return
-          }  
+            window.sessionStorage.setItem('isLogin', 'true')
+            this.$router.replace({ name: 'index' })
+            return
+          }
           this.$router.push({ name: 'login' })
         }, 2000)
       } else {

@@ -7,7 +7,7 @@
       <!-- <div class="share">
         <i>分享这个课给好友</i>
         <span></span>
-      </div> -->
+      </div>-->
       <div class="content_btom">
         <h6>班级介绍：</h6>
         <p>{{item.remark}}</p>
@@ -111,7 +111,8 @@ export default {
   display: block;
   width: 0.44rem;
   height: 0.44rem;
-  background: url('../../../../static/images/icon/share.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/share.png') no-repeat
+    center/cover;
   border-radius: 4px;
 }
 .share i {

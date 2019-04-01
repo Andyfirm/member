@@ -94,16 +94,13 @@ export default {
     },
     // 获取首屏数据
     async getList() {
-      const { data: res } = await this.$http.get(
-        'pt/getPTInfo',
-        {
-          params: {
-            ptShortname: this.shortname,
-            shortname: this.teachershortname,
-            token: this.token
-          }
+      const { data: res } = await this.$http.get('pt/getPTInfo', {
+        params: {
+          ptShortname: this.teachitemshortname,
+          shortname: this.teachershortname,
+          token: this.token
         }
-      )
+      })
       if (res.msg === 'success') {
         this.times = res.data.times
         let resObj = res.data.ptObject // 保存得到的对象列表
@@ -208,6 +205,8 @@ export default {
       )
       if (res.msg === 'success') {
         this.$router.push({ name: 'succeed', query: { stamp: '3' } })
+      } else if (res.msg === 'fail') {
+        this.$toast(res.data)
       }
     },
     // 删除选择元素方法

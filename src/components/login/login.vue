@@ -47,9 +47,9 @@ export default {
     }
   },
   created() {
-    let token = 'oQc9-jqBcb53o8R0s9yr1ydyeVZY'
-    window.sessionStorage.setItem('token', token)
-    this.token = token
+    // let token = 'oQc9-jqBcb53o8R0s9yr1ydyeVZY'
+    // window.sessionStorage.setItem('token', token)
+    // this.token = token
     window.sessionStorage.setItem('isLogin', 'false')
   },
   methods: {

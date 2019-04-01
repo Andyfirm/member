@@ -1,15 +1,24 @@
 <template>
   <div id="mytop">
-    <div class="imgBox"><img src="../../../../static/images/my/header.png" alt=""></div>
+    <div class="imgBox">
+      <img v-if="headimgurl" :src="headimgurl" alt>
+      <img v-else src="../../../../static/images/my/header.png" alt>
+    </div>
     <ul class="my_right">
       <li>
         <span class="name">{{infa.name}}</span>
-        <i class="icon_sex" v-show="infa.sex === '男'"><img src="../../../../static/images/icon/sex_boy.png" alt=""></i>
-        <i class="icon_sex" v-show="infa.sex === '女'"><img src="../../../../static/images/icon/sex_girl.png" alt=""></i>
-        <router-link :to="{name:'personalDetails'}"><i class="icon_redact"></i></router-link>
+        <i class="icon_sex" v-show="infa.sex === '男'">
+          <img src="../../../../static/images/icon/sex_boy.png" alt>
+        </i>
+        <i class="icon_sex" v-show="infa.sex === '女'">
+          <img src="../../../../static/images/icon/sex_girl.png" alt>
+        </i>
+        <router-link :to="{name:'personalDetails'}">
+          <i class="icon_redact"></i>
+        </router-link>
       </li>
       <li class="call">手机号：{{infa.mobile}}</li>
-      <!-- <li class="huiji">会籍顾问：王晓辉</li> -->
+      <li class="huiji" v-if="infabwName">会籍顾问：{{infabwName}}</li>
       <li class="closeButton" @click="closeEsc"></li>
     </ul>
   </div>
@@ -21,6 +30,8 @@ export default {
   data() {
     return {
       infa: {},
+      infabwName: null,
+      headimgurl: null,
       token: window.sessionStorage.getItem('token')
     }
   },
@@ -35,6 +46,8 @@ export default {
       console.log(res)
       if (res.msg === 'success') {
         this.infa = res.data.infa
+        this.infabwName = res.data.infabwName || null
+        this.headimgurl = res.data.headimgurl || null
         window.sessionStorage.setItem('userNickName', res.data.infa.name)
       }
     },
@@ -48,9 +61,9 @@ export default {
       }).then(action => {
         if (action === 'confirm') {
           let clubId = window.sessionStorage.getItem('clubId')
-          window.localStorage.removeItem('userName'+clubId)
-          window.localStorage.removeItem('passWord'+clubId)
-          window.localStorage.removeItem('pastDate'+clubId)
+          window.localStorage.removeItem('userName' + clubId)
+          window.localStorage.removeItem('passWord' + clubId)
+          window.localStorage.removeItem('pastDate' + clubId)
           window.sessionStorage.setItem('isLogin', 'false')
           this.$router.push({ name: 'login' })
         }
@@ -68,7 +81,12 @@ export default {
   width: 100%;
   height: 2.5rem;
   padding: 0.2rem 0.4rem 0.2rem 0.2rem;
-  background-image: linear-gradient(66deg, #8dbbfa 0%, #8ad8d7 64%, #87f5b3 100%);
+  background-image: linear-gradient(
+    66deg,
+    #8dbbfa 0%,
+    #8ad8d7 64%,
+    #87f5b3 100%
+  );
   box-sizing: border-box;
 }
 .imgBox {

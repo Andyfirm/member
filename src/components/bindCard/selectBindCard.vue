@@ -95,7 +95,7 @@ export default {
           let result = res.err_msg
           if (result === 'get_brand_wcpay_request:ok') {
             // 支付成功
-            _this.$router.push({ name: 'succeed', query: { stamp: '6' } })
+            _this.$router.replace({ name: 'succeed', query: { stamp: '6' } })
           }
         }
       )
@@ -109,7 +109,7 @@ export default {
         this.qs.stringify(dataObj)
       )
       if (res.msg === 'success') {
-        this.$router.push({ name: 'succeed', query: { stamp: '6' } })
+        this.$router.replace({ name: 'succeed', query: { stamp: '6' } })
       } else {
         this.$toast(res.data)
       }

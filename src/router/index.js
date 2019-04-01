@@ -51,7 +51,7 @@ Vue.use(Router)
 export default new Router({
   linkActiveClass: 'myactive',
   routes: [
-    { path: '/', redirect: '/login' },
+    { path: '/', redirect: '/member' },
     { path: '/member', name: 'member', component: member },
     { path: '/club', name: 'club', component: club },
     { path: '/branch', name: 'branch', component: branch },
@@ -85,7 +85,14 @@ export default new Router({
     },
     { path: '/stadiumDetails', name: 'stadiumDetails', component: stadiumDetails },
     { path: '/ticketsOnline', name: 'ticketsOnline', component: ticketsOnline },
-    { path: '/ticketRecord', name: 'ticketRecord', component: ticketRecord },
+    {
+      path: '/ticketRecord',
+      name: 'ticketRecord',
+      component: ticketRecord,
+      meta: {
+        keepAlive: true
+      }
+    },
     {
       path: '/ticketQrCode',
       name: 'ticketQrCode',
@@ -161,8 +168,22 @@ export default new Router({
         keepAlive: true
       }
     },
-    { path: '/expenseCalendar', name: 'expenseCalendar', component: expenseCalendar },
-    { path: '/leave', name: 'leave', component: leave },
+    {
+      path: '/expenseCalendar',
+      name: 'expenseCalendar',
+      component: expenseCalendar,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path: '/leave',
+      name: 'leave',
+      component: leave,
+      meta: {
+        keepAlive: true
+      }
+    },
     { path: '/fiancoIndex', name: 'fiancoIndex', component: fiancoIndex },
     { path: '/fiancoResult', name: 'fiancoResult', component: fiancoResult },
     { path: '/fiancoDetails', name: 'fiancoDetails', component: fiancoDetails },

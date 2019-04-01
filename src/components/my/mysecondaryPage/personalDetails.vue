@@ -3,7 +3,8 @@
     <ul>
       <li>
         <span>头像</span>
-        <img src="../../../../static/images/my/header.png" alt>
+        <img v-if="headimgurl" :src="headimgurl" alt>
+        <img v-else src="../../../../static/images/my/header.png" alt>
       </li>
       <li>
         <span>昵称</span>
@@ -56,7 +57,7 @@
       </li>
       <li @click="cityConfirm($event)">
         <span>住址</span>
-        <em @click="showCity">{{addressData}}</em>
+        <em @click="showCity">{{addressData||'请选择'}}</em>
         <mt-picker :slots="myAddressSlots" @change="onMyAddressChange" :showToolbar="true">确定</mt-picker>
       </li>
     </ul>
@@ -71,6 +72,7 @@ export default {
   data() {
     return {
       selectShowSex: false,
+      headimgurl: null,
       listSex: [{ id: 1, sex: '男' }, { id: 2, sex: '女' }],
       sex: '请选择',
       myAddressSlots: [
@@ -115,7 +117,7 @@ export default {
       name: null, // 昵称
       height: null,
       weight: null,
-      addressData: null
+      addressData: '请选择'
     }
   },
   mounted() {
@@ -136,6 +138,9 @@ export default {
         let data = res.data.infa
         this.infa = res.data.infa
         this.name = data.name
+        this.height = data.height
+        this.weight = data.weight
+        this.headimgurl = res.data.headimgurl
         if (data.sex) {
           this.sex = data.sex
         }
@@ -166,7 +171,9 @@ export default {
         return this.$toast('请正确填写年龄')
       }
       let sex = this.sex !== '请选择' ? this.sex : null
-      let birthday = this.$moment(this.inputdateValue).format('YYYY-MM-DD HH:mm:ss')
+      let birthday = this.$moment(this.inputdateValue).format(
+        'YYYY-MM-DD HH:mm:ss'
+      )
       let infoObj = {
         name: this.name,
         sex,
@@ -180,7 +187,7 @@ export default {
       let infoStr = JSON.stringify(infoObj)
       const { data: res } = await this.$http.post(
         'myresp/updateUserInfoByToken',
-       this.qs.stringify({
+        this.qs.stringify({
           infoStr,
           token: this.token
         })
@@ -244,11 +251,12 @@ export default {
         this.myAddressProvince = values[0]
         this.myAddressCity = values[1]
         this.myAddresscounty = values[2]
-        this.addressData = this.myAddressProvince +
-        ' ' +
-        this.myAddressCity +
-        ' ' +
-        this.myAddresscounty
+        this.addressData =
+          this.myAddressProvince +
+          ' ' +
+          this.myAddressCity +
+          ' ' +
+          this.myAddresscounty
       }
     },
     // 计算年龄
@@ -259,7 +267,9 @@ export default {
       let newDate = date.getTime() - startDate.getTime()
       // 向下取整  例如 10岁 20天 会计算成 10岁
       // 如果要向上取整 计算成11岁，把floor替换成 ceil
-      return Math.floor(newDate / 1000 / 60 / 60 / 24 / 365)
+      var age = Math.floor(newDate / 1000 / 60 / 60 / 24 / 365)
+      if (age <= 0) age = 0
+      return age
     }
   },
   computed: {

@@ -17,6 +17,9 @@ import '../static/iconfont/iconfont.svg'
 import '../static/iconfont/iconfont.ttf'
 import VeLine from 'v-charts/lib/line.common'
 import VueScroller from 'vue-scroller'
+import Vconsole from 'vconsole'
+const vConsole = new Vconsole()
+export default vConsole
 Vue.use(VueScroller)
 Vue.use(VueAwesomeSwiper)
 
@@ -38,6 +41,7 @@ Vue.config.productionTip = false
 // 监听物理返回键
 window.addEventListener('popstate', (e) => {
   let isLogin = window.sessionStorage.getItem('isLogin')
+  console.log(router.match(location).hash)
   if (router.match(location).hash === '#/login' && isLogin === 'true') {
     router.push({ name: 'index' })
   }

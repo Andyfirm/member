@@ -8,11 +8,26 @@
     <div class="wrap loginPage">
       <section>
         <div class="wrapper" id="phone">
-          <input type="text" id="tel1" placeholder="请输入您的手机号" maxlength="11" v-model="mobile" @blur="verifyMobile">
+          <input
+            type="text"
+            id="tel1"
+            placeholder="请输入您的手机号"
+            maxlength="11"
+            v-model="mobile"
+            @blur="verifyMobile"
+          >
         </div>
         <div class="wrapper2">
           <div class="ident2">
-            <input type="number" pattern="[0-9]*" id="verCode" style="margin-left:0px !important;" placeholder="请输入验证码" v-model="verCode" @blur="setVerCode">
+            <input
+              type="number"
+              pattern="[0-9]*"
+              id="verCode"
+              style="margin-left:0px !important;"
+              placeholder="请输入验证码"
+              v-model="verCode"
+              @blur="setVerCode"
+            >
             <!-- 初始状态 -->
             <div class="ident3" v-if="buttonState==='init'">
               <input type="button" id="yzm1" value="获取验证码" @click="sendMessage">
@@ -28,13 +43,26 @@
           </div>
         </div>
         <div class="wrapper" id="passTiShi1">
-          <input type="password" id="pwd1" placeholder="请输入您的密码" v-model="pwd1" @focus="focusPwd" @blur="blurPwd">
+          <input
+            type="password"
+            id="pwd1"
+            placeholder="请输入您的密码"
+            v-model="pwd1"
+            @focus="focusPwd"
+            @blur="blurPwd"
+          >
         </div>
         <div class="wrapper" id="passTiShi2">
-          <input type="password" id="repwd1" placeholder="请再次输入您的密码" v-model="pwd2" @blur="blurpassPwd">
+          <input
+            type="password"
+            id="repwd1"
+            placeholder="请再次输入您的密码"
+            v-model="pwd2"
+            @blur="blurpassPwd"
+          >
         </div>
         <button id="register" @click="reset">立即重置</button>
-        <input type="hidden" id="loginResult" value="">
+        <input type="hidden" id="loginResult" value>
       </section>
     </div>
   </div>
@@ -73,7 +101,8 @@ export default {
     // 获取验证码
     async sendMessage() {
       this.count = 59
-      this.verifyMobile()
+      let verifyMobile = this.verifyMobile()
+      if (!verifyMobile) return
       const { data: res } = await this.$http.get('memberLogin/mobileIfExit', {
         params: { mobile: this.mobile, token: this.token }
       })
@@ -142,8 +171,17 @@ export default {
       if (this.verCode !== this.sendcode) {
         return this.$toast('验证码填写有误')
       }
-      if (!this.passMobile || !this.verCode || !this.passPwd1 || !this.passPwd2) {
-        return this.$toast('表单信息填写有误，请重新填写')
+      if (!this.passMobile) {
+        return this.$toast('请填写正确的手机号码')
+      }
+      if (!this.verCode) {
+        return this.$toast('请填写正确的验证码')
+      }
+      if (!this.passPwd1) {
+        return this.$toast('请完善您的密码')
+      }
+      if (!this.passPwd2) {
+        return this.$toast('请确认您的密码')
       }
       const { data: res } = await this.$http.get('memberLogin/updateusers', {
         params: {
@@ -152,7 +190,6 @@ export default {
           token: this.token
         }
       })
-      console.log(res)
       if (res.msg === 'success') {
         this.$toast('恭喜您重置成功，正在为您自动跳转!')
         setTimeout(async() => {
@@ -174,7 +211,7 @@ export default {
             window.sessionStorage.setItem('isLogin', 'true')
             this.$router.replace({ name: 'index' })
             return
-          }  
+          }
           this.$router.push({ name: 'login' })
         }, 2000)
       } else {

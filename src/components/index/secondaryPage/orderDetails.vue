@@ -66,7 +66,7 @@ export default {
         // 将教练名称和课程名称存起来，在购买成功后显示
         window.sessionStorage.setItem('sjteacherName', this.item.teacher)
         window.sessionStorage.setItem('sjcourseName', this.item.name)
-        this.$router.push({ name: 'confirmPayment', query: { badgeName: '6' } }) // 购买私教
+        this.$router.replace({ name: 'confirmPayment', query: { badgeName: '6' } }) // 购买私教
       } else if (this.type === 'ticket') {
         console.log(this.item)
         let ticketInfoArry = []
@@ -85,7 +85,7 @@ export default {
         this.setSubmittedData(dataObj)
         // 将票名称存起来，在购买成功后显示
         window.sessionStorage.setItem('ticketName', this.item.name)
-        this.$router.push({ name: 'confirmPayment', query: { badgeName: '4' } }) // 在线购票
+        this.$router.replace({ name: 'confirmPayment', query: { badgeName: '4' } }) // 在线购票
       }
     },
     ...mapMutations(['setSubmittedData'])

@@ -8,7 +8,8 @@
         </div>
         <p>在线购票</p>
       </router-link>
-      <router-link :to="{name: 'onlineClass'}">
+      <!-- <router-link :to="{name: 'onlineClass'}"> -->
+      <router-link to="/index" @click.native="tishiyu">
         <div class="imgBox">
           <img src="~images/icon/newspaper.png" alt="">
         </div>
@@ -36,7 +37,11 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {
+    tishiyu() {
+      this.$toast('该功能暂未开放')
+    }
+  }
 }
 </script>
 

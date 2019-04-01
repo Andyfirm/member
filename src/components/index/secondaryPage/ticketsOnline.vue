@@ -107,6 +107,7 @@ export default {
   width: 3.84rem;
   height: 1.94rem;
   border-radius: 8px;
+  background: ghostwhite;
 }
 .img_left img {
   width: 100%;

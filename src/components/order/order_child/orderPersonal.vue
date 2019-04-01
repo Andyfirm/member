@@ -25,7 +25,7 @@
           </p>
           <!-- 可预约 -->
           <router-link
-            :to="{name: 'coachScheduling', query: {aptId:item.id,shortname:item.teachitemshortname,teachershortname:item.teachershortname,teachername:item.teachername,teachitemname:item.teachitemname,teachitemshortname:item.teachitemshortname,asscardnum:item.asscardnum}}"
+            :to="{name: 'coachScheduling', query: {aptId:item.id,teachershortname:item.teachershortname,teachername:item.teachername,teachitemname:item.teachitemname,teachitemshortname:item.teachitemshortname,asscardnum:item.asscardnum}}"
             v-if="item.lastteachtime+(item.giftPtNum == null ? 0 : item.giftPtNum) > 0"
           >
             <button>预约课程</button>

@@ -14,7 +14,7 @@
         :class="{selected: item.id === id}"
       >{{item.name}}</li>
     </ul>
-    <div class="button enter">进入</div>
+    <div class="button enter" @click="buttonEnter">进入</div>
   </div>
 </template>
 <script>
@@ -46,20 +46,24 @@ export default {
         this.subbranchList = res.data
       }
     },
-    async selected(id, clubShopNum) {
-      this.$router.push({ name: 'login' })
+    async selected(id, shopNum) {
       this.id = id
       const { data: res } = await this.$http.get('wechar/saveClubInfoByToken', {
         params: {
           token: window.sessionStorage.getItem('token'),
           clubMemberCode: this.textNumbers,
-          shopNum: clubShopNum
+          shopNum
         }
       })
       if (res.msg === 'success') {
         window.localStorage.setItem('clubMemberCode', this.textNumbers)
-        window.localStorage.setItem('fdShopNum', clubShopNum)
-        this.$router.push({ name: 'login' })
+        window.localStorage.setItem('shopNum' + this.clubId, shopNum)
+        this.$router.replace({ name: 'login' })
+      }
+    },
+    buttonEnter() {
+      if (this.subbranchList.length > 0) {
+        this.selected(this.subbranchList[0].id, this.subbranchList[0].clubShopNum)
       }
     }
   }
@@ -139,7 +143,8 @@ ul li.selected::after {
   display: block;
   width: 0.46rem;
   height: 0.46rem;
-  background: url('../../../static/images/icon/success.png') no-repeat center/contain;
+  background: url('../../../static/images/icon/success.png') no-repeat
+    center/contain;
 }
 .button {
   width: 100%;
