@@ -1,7 +1,7 @@
 <template>
   <div id="branch">
     <header>
-      <img src="../../../static/images/icon/logo.png" alt>
+      <img src="../../../static/images/logo/logo.png" alt>
       <p>易思普线上场馆运营管理系统</p>
     </header>
     <h6 class="changguan">北京易思普健身俱乐部</h6>
@@ -56,14 +56,13 @@ export default {
         }
       })
       if (res.msg === 'success') {
-        window.localStorage.setItem('clubMemberCode', this.textNumbers)
         window.localStorage.setItem('shopNum' + this.clubId, shopNum)
         this.$router.replace({ name: 'login' })
       }
     },
     buttonEnter() {
       if (this.subbranchList.length > 0) {
-        this.selected(this.subbranchList[0].id, this.subbranchList[0].clubShopNum)
+        this.selected(this.subbranchList[0].id, this.subbranchList[0].shopNum)
       }
     }
   }

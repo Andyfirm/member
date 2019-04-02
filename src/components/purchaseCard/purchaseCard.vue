@@ -2,7 +2,7 @@
   <div id="purchaseCard">
     <ul>
       <li class="cardBox" v-for="item of cardList" :key="item.id">
-        <div class="imgBox_wrap">
+        <div class="imgBox_wrap" @click="showCard(item)">
           <img :src="'./static/images/hyk/' + (item.infCs?item.infCs.imgpath:'')" alt>
           <div class="imgBox">
             <h6>{{item.cardName?item.cardName:''}}</h6>
@@ -20,16 +20,39 @@
             <i>￥{{item.weChatPrice?item.weChatPrice:''}}</i>
           </div>
         </div>
-        <div class="select">
-          <div class="select_l" @click="switchText">查看详情</div>
-          <div
-            class="select_r"
-            @click="purchase(item.cardName, item.id, item.weChatPrice, item.cardShortName)"
-          >购买</div>
-        </div>
-        <p class="showp">{{item.infCs?item.infCs.remarks:''}}</p>
       </li>
     </ul>
+    <!-- 会员卡详细信息显示区域 -->
+    <transition name="fade">
+      <div
+        v-if="hykdetailsItem !== ''"
+        class="hykdetailsBox"
+        v-show="hykdetailsActive"
+        :class="{hykdetailsActive: hykdetailsActive}"
+        ref="hykdetailsBox"
+        @click.self="closeHykdetails"
+      >
+        <div class="boxWrap">
+          <div class="cardBoxInfo">
+            <img :src="'./static/images/image/hyk/'+hykdetailsItem.infCs.imgpath" alt>
+            <div class="hykdetails_wenzi">
+              <div class="cardName">{{hykdetailsItem.infCs.name}}</div>
+              <div class="money">{{hykdetailsItem.weChatPrice}}元</div>
+            </div>
+          </div>
+          <div class="textBox">
+            <h6 style="font-size: 0.28rem;margin: 0.2rem 0;">详情</h6>
+            <p
+              style="font-size: 0.28rem;"
+            >{{hykdetailsItem.infCs ? hykdetailsItem.infCs.remarks : ''}}</p>
+            <button
+              @click="purchase(hykdetailsItem.cardName, hykdetailsItem.id, hykdetailsItem.weChatPrice, hykdetailsItem.cardShortName)"
+            >购买</button>
+          </div>
+        </div>
+      </div>
+    </transition>
+
     <footer-nav :page="2"></footer-nav>
   </div>
 </template>
@@ -48,14 +71,13 @@ export default {
       cardList: [],
       shouqi: null,
       zhankai: null,
-      originShopNum: null
+      originShopNum: null,
+      hykdetailsItem: '',
+      hykdetailsActive: false
     }
   },
-  activated() {
-    let shopNum = window.sessionStorage.getItem('shopNum')
-    if (shopNum !== this.originShopNum) {
-      this.getCardList()
-    }
+  created() {
+    this.getCardList()
   },
   methods: {
     // 获取首屏数据
@@ -72,18 +94,15 @@ export default {
         this.originShopNum = shopNum
       }
     },
-    switchText(event) {
-      let el = event.target
-      let isTrue = el.classList.contains('unfold')
-      if (isTrue) {
-        el.classList.remove('unfold')
-        el.innerHTML = '了解详情'
-        el.parentNode.parentNode.classList.remove('unfoldLi')
-      } else {
-        el.classList.add('unfold')
-        el.innerHTML = '收起'
-        el.parentNode.parentNode.classList.add('unfoldLi')
-      }
+    showCard(item) {
+      this.hykdetailsItem = item
+      this.hykdetailsActive = true
+    },
+    // 点击关闭详细信息
+    closeHykdetails() {
+      this.hykdetailsActive = false
+      let body = document.getElementsByTagName('body')[0]
+      body.style.position = 'static'
     },
     purchase(name, id, money, cardShortName) {
       let cardObj = { cardName: name, cardId: id, cardShortName }
@@ -222,5 +241,101 @@ export default {
 }
 .cardBox.unfoldLi .showp {
   height: auto;
+}
+
+.hykdetailsBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 11;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.hykdetailsBox {
+  z-index: 10;
+}
+.codeBox.qrcodeActive {
+  display: block;
+}
+.hykdetailsBox.hykdetailsActive {
+  display: block;
+}
+.boxWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 2rem auto 0;
+  overflow: hidden;
+  width: 6.7rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+.cardBoxInfo {
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5.88rem;
+  height: 3.16rem;
+  margin: 0.2rem auto 0;
+}
+.cardBoxInfo img {
+  width: 100%;
+}
+.hykdetails_wenzi {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 0.4rem;
+  box-sizing: border-box;
+}
+.hykdetails_wenzi .cardName {
+  margin-top: 0.4rem;
+  font-size: 0.38rem;
+  font-weight: 700;
+  color: #fff;
+}
+.hykdetails_wenzi .money {
+  width: 100%;
+  font-size: 0.38rem;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 1.3rem;
+  text-align: right;
+}
+.textBox {
+  width: 5.88rem;
+  /* height: 4.4rem; */
+  padding-bottom: 0.4rem;
+  margin: 0 auto;
+  font-size: 0.3rem;
+  color: #999;
+}
+.textBox i {
+  font-style: normal;
+  color: #7fc0fd;
+}
+
+.fade-enter-active {
+  transition: opacity 0.4s;
+}
+.fade-enter {
+  opacity: 0;
+}
+button {
+  outline: none;
+  width: 100%;
+  height: 0.8rem;
+  color: #fff;
+  margin-top: 0.4rem;
+  border-radius: 8px;
+  border: 0;
+  background-color: #7ecef4;
 }
 </style>

@@ -91,7 +91,7 @@ export default {
       if (this.money < 0.01) {
         return this.$toast('请输入正确的金额')
       }
-      let cardObj = { id: this.cardDefault.id, cardName: this.cardDefault.cardname, cardIndex: this.cardDefault.cardindex, cardShortName: this.cardDefault.cardShortName }
+      let cardObj = { cardId: this.cardDefault.id, cardName: this.cardDefault.cardname, cardIndex: this.cardDefault.cardindex, cardShortName: this.cardDefault.cardShortName }
       let cardInfoStr = JSON.stringify(cardObj)
       const dataObj = {
         total: this.money,

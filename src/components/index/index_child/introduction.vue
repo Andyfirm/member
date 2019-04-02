@@ -2,18 +2,30 @@
   <div id="introduction">
     <div class="top">
       <h4>场馆简介</h4>
-      <router-link :to="{name: 'stadiumDetails', query: {cgimgurl,venue_name}}">了解更多</router-link>
+      <router-link :to="{name: 'stadiumDetails', query: {venue_name, cgimgurl, venuedetails}}">了解更多</router-link>
     </div>
-    <p class="content">{{info}}</p>
+    <p class="content">{{venuedetails}}</p>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'introduction',
-  props: ['info', 'cgimgurl', 'venue_name'],
   data() {
     return {}
+  },
+  computed: {
+    ...mapState(['shopNumVuex', 'indexListShow']),
+    venue_name() {
+      return this.indexListShow[0].name
+    },
+    cgimgurl() {
+      return this.indexListShow[0].shopImg
+    },
+    venuedetails() {
+      return this.indexListShow[0].venuedetails
+    }
   }
 }
 </script>

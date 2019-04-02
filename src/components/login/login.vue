@@ -1,7 +1,7 @@
 <template>
   <div id="login_container">
     <p class="activity">
-      <img src="../../../static/images/icon/logo.png">
+      <img src="../../../static/images/logo/logo.png">
     </p>
     <div class="mian">
       <p>
@@ -81,10 +81,14 @@ export default {
       if (res.msg === 'success') {
         // 登录成功后将用户名和密码保存至本地，并且设置有效时间
         let clubId = window.sessionStorage.getItem('clubId')
-        window.localStorage.setItem('userName' + clubId, this.userName)
-        window.localStorage.setItem('passWord' + clubId, this.pwd)
         let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-        window.localStorage.setItem('pastDate' + clubId, pastDate)
+        let dataOrigin = {
+          userName: this.userName,
+          passWord: this.pwd,
+          pastDate: pastDate
+        }
+        let dataOriginStr = JSON.stringify(dataOrigin)
+        window.localStorage.setItem('dataOriginStr' + clubId, dataOriginStr)
         this.$router.replace({ name: 'index' })
         window.sessionStorage.setItem('isLogin', 'true')
       }

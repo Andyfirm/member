@@ -2,22 +2,19 @@
   <div id="stadium_container">
     <h4>{{venue_name}}</h4>
     <div class="cgimg"><img :src="'./static/images/img/'+ cgimgurl" alt=""></div>
-    <p>{{cgjjinfo}}</p>
+    <p>{{venuedetails}}</p>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
   name: 'stadiumDetails',
   data() {
     return {
+      venue_name: this.$route.query.venue_name,
       cgimgurl: this.$route.query.cgimgurl,
-      venue_name: this.$route.query.venue_name
+      venuedetails: this.$route.query.venuedetails
     }
-  },
-  computed: {
-    ...mapState(['cgjjinfo'])
   }
 }
 </script>

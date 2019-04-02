@@ -66,7 +66,6 @@ export default {
       e.preventDefault()
     }
     this.loadIndex()
-    window.localStorage.setItem('theFirst', 'true') // 保存第一次的选择场馆编号状态至本地
   },
   methods: {
     // 关闭分享弹框

@@ -2,7 +2,7 @@
   <div id="coachingCourse">
     <div class="content_top">
       <div class="imgBox">
-        <img :src="'./static/images/' + infEImage.imgurl" alt>
+        <img :src="'./static/images/coach/' + infEImage.imgurl" alt>
       </div>
       <div class="text_right">
         <p>教练：{{viewEJt.name}}</p>

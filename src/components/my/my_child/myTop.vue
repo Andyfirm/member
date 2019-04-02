@@ -43,7 +43,6 @@ export default {
       const { data: res } = await this.$http.get('myresp/getUserInfoByToken', {
         params: { token: this.token }
       })
-      console.log(res)
       if (res.msg === 'success') {
         this.infa = res.data.infa
         this.infabwName = res.data.infabwName || null
@@ -61,9 +60,7 @@ export default {
       }).then(action => {
         if (action === 'confirm') {
           let clubId = window.sessionStorage.getItem('clubId')
-          window.localStorage.removeItem('userName' + clubId)
-          window.localStorage.removeItem('passWord' + clubId)
-          window.localStorage.removeItem('pastDate' + clubId)
+          window.localStorage.removeItem('dataOriginStr' + clubId)
           window.sessionStorage.setItem('isLogin', 'false')
           this.$router.push({ name: 'login' })
         }

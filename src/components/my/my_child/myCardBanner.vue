@@ -282,7 +282,7 @@ h4 {
   overflow: hidden;
   z-index: 11;
   display: none;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .hykdetailsBox {
   z-index: 10;

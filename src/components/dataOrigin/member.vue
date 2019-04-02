@@ -12,8 +12,7 @@ export default {
       code: '',
       token: '',
       appid: '',
-      name: '',
-      theFirst: 'true' // 判断是否为第一次登陆,如果成功登陆则将状态保存在本地
+      name: ''
     }
   },
   created() {
@@ -104,10 +103,11 @@ export default {
     },
     // 根据判断跳转至不同页面
     goToNextPage() {
-      if (this.theFirst === 'true') {
-        // 不是第一次登录
+      let dataOriginStr = window.localStorage.getItem('dataOriginStr' + this.clubId)
+      if (dataOriginStr) { // 如果存在则证明不是第一次登陆，判断是否过期
+        let dataOriginObj = JSON.parse(dataOriginStr)
         let date = new Date().getTime()
-        let pastDate = window.localStorage.getItem('pastDate' + this.clubId)
+        let pastDate = dataOriginObj.pastDate
         if (pastDate < date) {
           // 当前时间大于以前保存的时间证明已过期，跳转至登录页
           window.sessionStorage.setItem('clubId' + this.clubId, this.clubId)
@@ -118,8 +118,8 @@ export default {
           return
         }
         // 获取账号密码
-        let userName = window.localStorage.getItem('userName' + this.clubId)
-        let password = window.localStorage.getItem('passWord' + this.clubId)
+        let userName = dataOriginObj.userName
+        let password = dataOriginObj.passWord
         if (userName && password) {
           let shopNum = window.localStorage.getItem('shopNum' + this.clubId)
           this.selected(shopNum, userName, password)

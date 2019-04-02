@@ -1,7 +1,7 @@
 <template>
   <div id="club">
     <div class="icon">
-      <img src="../../../static/images/icon/logo.png" alt>
+      <img src="../../../static/images/logo/logo.png" alt>
     </div>
     <p>易思普线上场馆运营管理系统</p>
     <div class="pinpai">

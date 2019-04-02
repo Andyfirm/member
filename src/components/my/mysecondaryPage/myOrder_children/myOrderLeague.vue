@@ -8,7 +8,7 @@
       <ul v-if="init==='block'">
         <li v-for="item of myLeagueList" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'./static/'+item.imgurl" alt>
+            <img :src="'./static/images/league/'+item.imgurl" alt>
           </div>
           <div class="content_r">
             <p>课程：{{item.coachName}}</p>

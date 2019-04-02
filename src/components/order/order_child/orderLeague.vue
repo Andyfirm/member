@@ -5,7 +5,7 @@
     <ul>
       <li v-for="item of leagueList" :key="item.id">
         <div class="imgBox_l">
-          <img :src="'./static/' + item.leagueimg" alt>
+          <img :src="'./static/images/league/' + item.leagueimg" alt>
         </div>
         <div class="content_r">
           <p>项目：{{item.courseName}}</p>

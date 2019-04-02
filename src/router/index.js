@@ -83,7 +83,14 @@ export default new Router({
         { path: 'myOrderPersonal', name: 'myOrderPersonal', component: myOrderPersonal }
       ]
     },
-    { path: '/stadiumDetails', name: 'stadiumDetails', component: stadiumDetails },
+    {
+      path: '/stadiumDetails',
+      name: 'stadiumDetails',
+      component: stadiumDetails,
+      meta: {
+        keepAlive: true
+      }
+    },
     { path: '/ticketsOnline', name: 'ticketsOnline', component: ticketsOnline },
     {
       path: '/ticketRecord',
@@ -143,7 +150,14 @@ export default new Router({
         keepAlive: true
       }
     },
-    { path: '/purchaseCard', name: 'purchaseCard', component: purchaseCard },
+    {
+      path: '/purchaseCard',
+      name: 'purchaseCard',
+      component: purchaseCard,
+      meta: {
+        keepAlive: true
+      }
+    },
     {
       path: '/myCentre',
       name: 'myCentre',
