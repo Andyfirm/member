@@ -89,8 +89,8 @@ export default {
         }
         let dataOriginStr = JSON.stringify(dataOrigin)
         window.localStorage.setItem('dataOriginStr' + clubId, dataOriginStr)
-        this.$router.replace({ name: 'index' })
         window.sessionStorage.setItem('isLogin', 'true')
+        this.$router.replace({ name: 'index' })
       }
       if (res.msg === 'fail') this.$toast(res.data)
     }

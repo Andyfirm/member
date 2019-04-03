@@ -8,7 +8,7 @@
       <ul v-if="init==='block'" class="content">
         <li v-for="item of mySiteList" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'./static/images/img/'+ (item.infSt?item.infSt.fieldimg:'')" alt>
+            <img :src="'./static/images/site/'+ (item.infSt?item.infSt.fieldimg:'')" alt>
           </div>
           <div class="content_r">
             <p>场地：{{item.stagenum}}</p>

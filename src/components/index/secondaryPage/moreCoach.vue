@@ -4,7 +4,7 @@
     <div class="content">
       <ul>
         <li v-for="item of list" :key="item.id" @click="coachingCourse(item.id)">
-          <div class="imgBox"><img :src="'./static/images/' + (item.infEImage?item.infEImage.imgurl:'')" alt=""></div>
+          <div class="imgBox"><img :src="'./static/images/coach/' + (item.infEImage?item.infEImage.imgurl:'')" alt=""></div>
           <div class="text_right">
             <div>
               <span>{{item.name}}</span> <i>{{item.job1L}}</i>

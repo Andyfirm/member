@@ -34,7 +34,7 @@
       >
         <div class="boxWrap">
           <div class="cardBoxInfo">
-            <img :src="'./static/images/image/hyk/'+hykdetailsItem.infCs.imgpath" alt>
+            <img :src="'./static/images/hyk/'+hykdetailsItem.infCs.imgpath" alt>
             <div class="hykdetails_wenzi">
               <div class="cardName">{{hykdetailsItem.infCs.name}}</div>
               <div class="money">{{hykdetailsItem.weChatPrice}}元</div>

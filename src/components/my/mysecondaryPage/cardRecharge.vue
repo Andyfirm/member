@@ -96,7 +96,7 @@ export default {
       const dataObj = {
         total: this.money,
         cardInfo: cardInfoStr,
-        shopnum: this.shopNum,
+        shopNum: this.shopNum,
         token: this.token,
         type: '充值',
         backUrl: 'reChargeBack'

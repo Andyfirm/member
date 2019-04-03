@@ -405,7 +405,7 @@ export default {
   background-color: #f6f6f6;
   top: 0;
   left: 0px;
-  padding-left: 33px;
+  padding-left: 38px;
   z-index: 2;
   width: 100%;
   box-sizing: border-box;
@@ -433,7 +433,7 @@ export default {
 .sitecontentWrap {
   display: flex;
   overflow-y: scroll;
-  padding-left: 33px;
+  padding-left: 38px;
   padding-top: 20px;
 }
 .sitecontentWrap ul {
@@ -525,13 +525,14 @@ export default {
   margin: 0 0.2rem;
 }
 .selected li span {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 55px;
   height: 22px;
   font-size: 13px;
   color: #fff;
   text-align: center;
-  line-height: 22px;
   background-color: #7ecef4;
   border-radius: 4px;
 }

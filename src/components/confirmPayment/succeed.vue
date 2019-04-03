@@ -153,6 +153,9 @@ export default {
         case '7': // 购卡
           this.$router.replace({ name: 'purchaseCard' })
           break
+        case '8': // 充值成功
+          this.$router.replace({ name: 'cardRecharge' })
+          break
       }
     }
   },

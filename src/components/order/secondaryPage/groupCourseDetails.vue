@@ -3,7 +3,7 @@
     <div class="content_box">
       <div class="content_top">
         <div class="imgBox">
-          <img :src="'./static/' + imgUrl" alt>
+          <img :src="'./static/images/league/' + imgUrl" alt>
         </div>
         <div class="text_right">
           <p>项目：{{courseName}}</p>
@@ -32,7 +32,7 @@
     </div>
     <div id="btn">
       <!-- 团课可预约 -->
-      <button v-if="showStatus==0&&(maxRenShu-shangkerenshu) != 0" @click="isSure()">预约团课</button>
+      <button v-if="showStatus==0&&(maxRenShu-shangkerenshu) > 0" @click="isSure()">预约团课</button>
       <!-- 课程已预约 -->
       <button
         v-else-if="showStatus==1"
@@ -40,7 +40,7 @@
       >课程已预约</button>
       <!-- 人数已满 -->
       <button
-        v-else-if="(maxRenShu-shangkerenshu) == 0"
+        v-else-if="(maxRenShu-shangkerenshu) <= 0"
         style="background-color:#ccc;border: 0px;outline: none;"
       >人数已满</button>
     </div>

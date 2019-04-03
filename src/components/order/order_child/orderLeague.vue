@@ -23,11 +23,11 @@
           </p>
           <p>
             剩余人数：
-            <i>{{item.maxRenShu-item.shangkerenshu}}</i>
+            <i>{{item.maxRenShu-item.shangkerenshu >= 0 ? item.maxRenShu-item.shangkerenshu : 0}}</i>
           </p>
           <!-- 团课可预约 -->
           <button
-            v-if="item.showStatus==0&&(item.maxRenShu-item.shangkerenshu) != 0"
+            v-if="item.showStatus==0&&(item.maxRenShu-item.shangkerenshu) > 0"
             @click="isSure(item)"
           >预约团课</button>
           <!-- 课程已预约 -->
@@ -37,7 +37,7 @@
           >课程已预约</button>
           <!-- 人数已满 -->
           <button
-            v-else-if="(item.maxRenShu-item.shangkerenshu) == 0"
+            v-else-if="(item.maxRenShu-item.shangkerenshu) <= 0"
             style="background-color:#ccc;border: 0px;outline: none;"
           >人数已满</button>
           <!-- 课程详情 -->

@@ -1,6 +1,6 @@
 <template>
   <div id="register">
-    <div class="beark">
+    <div class="back">
       <router-link :to="{name: 'login'}">
         <p>上一步</p>
       </router-link>
@@ -196,7 +196,7 @@ export default {
       })
       if (res.msg === 'success') {
         this.$toast('恭喜您注册成功，正在为您自动跳转!')
-        setTimeout(async() => {
+        setTimeout(async () => {
           const { data: res1 } = await this.$http.get('memberLogin/logined', {
             params: {
               userName: this.mobile,
@@ -207,10 +207,14 @@ export default {
           if (res1.msg === 'success') {
             // 登录成功后将用户名和密码保存至本地，并且设置有效时间
             let clubId = window.sessionStorage.getItem('clubId')
-            window.localStorage.setItem('userName' + clubId, this.mobile)
-            window.localStorage.setItem('passWord' + clubId, this.pwd1)
             let pastDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000
-            window.localStorage.setItem('pastDate' + clubId, pastDate)
+            let dataOrigin = {
+              userName: this.mobile,
+              passWord: this.pwd1,
+              pastDate: pastDate
+            }
+            let dataOriginStr = JSON.stringify(dataOrigin)
+            window.localStorage.setItem('dataOriginStr' + clubId, dataOriginStr)
 
             window.sessionStorage.setItem('isLogin', 'true')
             this.$router.replace({ name: 'index' })
@@ -227,13 +231,13 @@ export default {
 </script>
 
 <style scoped>
-.beark {
+.back {
   position: absolute;
   top: 16px;
   left: 9%;
   margin-top: 15px;
 }
-.beark a {
+.back a {
   display: block;
   color: #666;
   font-size: 0.32rem;

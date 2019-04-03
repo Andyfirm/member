@@ -126,7 +126,7 @@ export default {
   display: block;
   width: 0.4rem;
   height: 0.4rem;
-  margin: 0 0.2rem;
+  margin-left: 0.2rem;
   margin-top: 0.08rem;
 }
 .my_right .icon_sex img {
@@ -140,6 +140,7 @@ export default {
   height: 0.34rem;
   background: url('~images/icon/bianji.jpg') no-repeat center/contain;
   margin-top: 0.11rem;
+  margin-left: 0.2rem;
 }
 .my_right .call,
 .my_right .huiji {
