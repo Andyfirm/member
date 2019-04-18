@@ -5,7 +5,7 @@
     <ul>
       <li v-for="item of leagueList" :key="item.id">
         <div class="imgBox_l">
-          <img :src="'./static/images/league/' + item.leagueimg" alt>
+          <img :src="'./static/images/clubid' + clubId + '/league/' + item.leagueimg" onerror="this.src='./static/images/default/imgfault.png'" alt>
         </div>
         <div class="content_r">
           <p>项目：{{item.courseName}}</p>
@@ -66,7 +66,8 @@ export default {
       leagueList: [],
       originShopNum: null,
       success: this.$route.query.success,
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   activated() {
@@ -110,6 +111,8 @@ export default {
         }
       })
       if (res.msg === 'success') {
+        window.sessionStorage.setItem('tuankecourseName', data.courseName)
+        window.sessionStorage.setItem('tuankecourseTime', data.courseTime)
         this.$router.push({ name: 'succeed', query: { stamp: '2' } })
       } else {
         this.$toast(res.data)

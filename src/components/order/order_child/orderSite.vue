@@ -1,10 +1,10 @@
 <template>
   <div id="orderSite">
-    <order-top :text="indexListShow[0].venuedetails"></order-top>
+    <order-top></order-top>
     <my-select @change="getSiteList"></my-select>
     <ul>
       <li v-for="item of siteList" :key="item.id">
-        <div class="imgBox_l"><img :src="'./static/images/site/' + item.fieldimg" alt=""></div>
+        <div class="imgBox_l"><img :src="'./static/images/clubid' + clubId + '/site/' + item.fieldimg" onerror="this.src='./static/images/default/imgfault.png'" alt=""></div>
         <div class="content_r">
           <p>项目：{{item.name}}</p>
           <p>营业时间：<i>{{item.workStartTime.slice(0,5)}}-{{item.workEndTime.slice(0,5)}}</i></p>
@@ -30,7 +30,8 @@ export default {
     return {
       siteList: [],
       originShopNum: null,
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   activated() {

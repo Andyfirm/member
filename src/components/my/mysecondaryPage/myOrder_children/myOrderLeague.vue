@@ -8,7 +8,7 @@
       <ul v-if="init==='block'">
         <li v-for="item of myLeagueList" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'./static/images/league/'+item.imgurl" alt>
+            <img :src="'./static/images/clubid' + clubId + '/league/'+item.imgurl" onerror="this.src='./static/images/default/imgfault.png'" alt>
           </div>
           <div class="content_r">
             <p>课程：{{item.coachName}}</p>
@@ -72,6 +72,7 @@ export default {
       shopNum: window.sessionStorage.getItem('shopNum'),
       shopName: window.sessionStorage.getItem('shopName'),
       token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId'),
       isOpen: false
     }
   },

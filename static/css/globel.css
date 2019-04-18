@@ -113,7 +113,8 @@ a {
 }
 .wqpBox .init,
 .yqpBox .init {
-  font-size: 0.4rem;
+  font-size: 0.36rem;
   text-align: center;
   line-height: 2rem;
+  color: #666;
 }

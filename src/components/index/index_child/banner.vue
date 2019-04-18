@@ -1,10 +1,10 @@
 <template>
   <swipe class="my-swipe">
-    <swipe-item class="slide1"><img src="~images/banner/change1.jpg" alt=""></swipe-item>
-    <swipe-item class="slide2"><img src="~images/banner/change2.jpg" alt=""></swipe-item>
-    <swipe-item class="slide3"><img src="~images/banner/change3.jpg" alt=""></swipe-item>
-    <swipe-item class="slide4"><img src="~images/banner/change4.jpg" alt=""></swipe-item>
-    <swipe-item class="slide5"><img src="~images/banner/change5.jpg" alt=""></swipe-item>
+    <swipe-item class="slide1"><img :src="`./static/images/clubid${clubId}/banner/banner1.jpg`" alt=""></swipe-item>
+    <swipe-item class="slide2"><img :src="`./static/images/clubid${clubId}/banner/banner2.jpg`" alt=""></swipe-item>
+    <swipe-item class="slide3"><img :src="`./static/images/clubid${clubId}/banner/banner3.jpg`" alt=""></swipe-item>
+    <swipe-item class="slide4"><img :src="`./static/images/clubid${clubId}/banner/banner4.jpg`" alt=""></swipe-item>
+    <!-- <swipe-item class="slide5"><img src="`../../../../static/images/clubid${clubId}/banner/banner5.jpg`" alt=""></swipe-item> -->
   </swipe>
 </template>
 
@@ -12,7 +12,9 @@
 export default {
   name: 'banner',
   data() {
-    return {}
+    return {
+     clubId: window.sessionStorage.getItem('clubId')
+    }
   }
 }
 </script>

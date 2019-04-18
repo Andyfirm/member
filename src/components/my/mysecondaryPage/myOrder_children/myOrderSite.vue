@@ -8,7 +8,7 @@
       <ul v-if="init==='block'" class="content">
         <li v-for="item of mySiteList" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'./static/images/site/'+ (item.infSt?item.infSt.fieldimg:'')" alt>
+            <img :src="'./static/images/clubid' + clubId + '/site/'+ (item.infSt?item.infSt.fieldimg:'imgfault.png')" onerror="this.src='./static/images/default/imgfault.png'" alt>
           </div>
           <div class="content_r">
             <p>场地：{{item.stagenum}}</p>
@@ -59,6 +59,7 @@ export default {
       init: null,
       shopNum: window.sessionStorage.getItem('shopNum'),
       token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId'),
       isOpen: false // 判断是否可以下拉加载
     }
   },
@@ -179,6 +180,7 @@ export default {
     },
     // 取消场地预约
     cancelSite(id, billNum, stagenum) {
+      return this.$toast('该功能暂未开通')
       let itemArr = this.mySiteList.filter(item => {
         return item.id === id
       })

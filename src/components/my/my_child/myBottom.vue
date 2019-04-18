@@ -26,6 +26,12 @@
           <p>消费记录</p>
         </router-link>
       </li>
+       <li>
+        <router-link :to="{name: 'ticketRecord'}">
+          <div class="icon_xfjl"><img src="~images/icon/buyTicket.png" alt=""></div>
+          <p>购票记录</p>
+        </router-link>
+      </li>
       <li>
         <router-link :to="{name: 'leave'}">
           <div class="icon_qjzt"><img src="~images/icon/pause.png" alt=""></div>

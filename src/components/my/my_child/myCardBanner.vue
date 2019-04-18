@@ -17,9 +17,10 @@
           <b class="erweima" @click="quickMark(item.cardindex)"></b>
         </div>
         <img
-          :src="'./static/images/hyk/'+(item.infCs?item.infCs.imgpath:'')"
+          :src="'./static/images/clubid' + clubId + '/hyk/'+(item.infCs?item.infCs.imgpath:'default.png')"
           class="main-img"
           @click="selectedCard(item)"
+          onerror="this.src='./static/images/default/default.png'"
         >
         <div class="wenzi" @click="selectedCard(item)">
           <h4>{{item.infCs.name}}</h4>
@@ -58,7 +59,7 @@
             <div class="close" @click="closeHykdetails"></div>
           </div>
           <div class="cardBox">
-            <img :src="'./static/images/hyk/'+hykdetailsItem.infCs.imgpath" alt>
+            <img :src="'./static/images/clubid' + clubId + '/hyk/'+(hykdetailsItem.infCs?hykdetailsItem.infCs.imgpath:'default.png')" onerror="this.src='./static/images/default/default.png'" alt>
             <div class="hykdetails_wenzi">
               <div class="cardName">{{hykdetailsItem.infCs.name}}</div>
               <div
@@ -123,7 +124,8 @@ export default {
       shopNum: window.sessionStorage.getItem('shopNum'),
       token: window.sessionStorage.getItem('token'),
       qrcodeActive: false,
-      hykdetailsActive: false
+      hykdetailsActive: false,
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   created() {

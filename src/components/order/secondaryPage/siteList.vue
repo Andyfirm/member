@@ -3,7 +3,12 @@
     <div class="date_topWrap">
       <div class="date_top">
         <ul>
-          <li v-for="(value, key, index) in dateArr" :class="{'active': key == isKey}" :key="index" @click="getSiteList(key,index)">
+          <li
+            v-for="(value, key, index) in dateArr"
+            :class="{'active': key == isKey}"
+            :key="index"
+            @click="getSiteList(key,index)"
+          >
             <p>{{value}}</p>
             <p>{{key}}</p>
           </li>
@@ -11,8 +16,14 @@
         <div class="icon_right" @click="openPicker"></div>
       </div>
       <template>
-        <mt-datetime-picker ref="picker" type="date" :startDate="startDate" :endDate="new Date(endDateNumber)" v-model="pickerValue" @confirm="getSiteList">
-        </mt-datetime-picker>
+        <mt-datetime-picker
+          ref="picker"
+          type="date"
+          :startDate="startDate"
+          :endDate="new Date(endDateNumber)"
+          v-model="pickerValue"
+          @confirm="getSiteList"
+        ></mt-datetime-picker>
       </template>
     </div>
     <div class="milde_container">
@@ -31,7 +42,12 @@
       <div class="sitecontent" ref="scroll_top">
         <div class="sitecontentWrap" ref="scroll_left">
           <ul v-for="(item,index) of siteList" :key="index">
-            <li v-for="(item1, index1) of item.projectInfo" :key="index1" :class="{colorTwo: item1.state === 1, colorOne:item1.state === 4 ||item1.state === 2,colorThree:item1.state === 3 }" @click="select(item1.state,index,index1)">￥{{item1.money}}</li>
+            <li
+              v-for="(item1, index1) of item.projectInfo"
+              :key="index1"
+              :class="{colorTwo: item1.state === 1, colorOne:item1.state === 4 ||item1.state === 2,colorThree:item1.state === 3 }"
+              @click="select(item1.state,index,index1)"
+            >￥{{item1.money}}</li>
           </ul>
         </div>
       </div>
@@ -85,7 +101,15 @@ export default {
       startDate: new Date(),
       pickerValue: '',
       isKey: '',
-      sunday: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+      sunday: [
+        '星期日',
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六'
+      ],
       dateArr: [],
       current: 0,
       selected: false
@@ -116,16 +140,21 @@ export default {
     async getSiteList(key, index) {
       this.selectList = []
       this.current = index || 0
-      let dateymd = this.$moment(key).format('YYYY-MM-DD') || this.$moment().format('YYYY-MM-DD')
+      let dateymd =
+        this.$moment(key).format('YYYY-MM-DD') ||
+        this.$moment().format('YYYY-MM-DD')
       this.isKey = dateymd
-      const { data: res } = await this.$http.get('place/getPlaceInfoByShortName', {
-        params: {
-          shopNum: this.shopNum,
-          dateymd,
-          shortName: this.shortName,
-          token: this.token
+      const { data: res } = await this.$http.get(
+        'place/getPlaceInfoByShortName',
+        {
+          params: {
+            shopNum: this.shopNum,
+            dateymd,
+            shortName: this.shortName,
+            token: this.token
+          }
         }
-      })
+      )
       if (res.msg === 'success') {
         if (res.data.length === 0) return this.$toast('暂无可用数据')
         this.siteList = res.data.placeArray
@@ -139,7 +168,9 @@ export default {
       let dm = parseInt(d1.getMonth()) + 1
       let dd = d1.getDate()
       let dz = parseInt(d1.getDay())
-      let dateD1 = `${dy}-${dm >= 10 ? dm : '0' + dm}-${dd >= 10 ? dd : '0' + dd}`
+      let dateD1 = `${dy}-${dm >= 10 ? dm : '0' + dm}-${
+        dd >= 10 ? dd : '0' + dd
+      }`
       let y = dy
       let m = dm
       let d = dd
@@ -149,7 +180,15 @@ export default {
           y++
           m = 0
         }
-        if (m === 1 || m === 3 || m === 5 || m === 7 || m === 8 || m === 10 || m === 12) {
+        if (
+          m === 1 ||
+          m === 3 ||
+          m === 5 ||
+          m === 7 ||
+          m === 8 ||
+          m === 10 ||
+          m === 12
+        ) {
           if (d >= 31) {
             d = 0
             m++
@@ -208,7 +247,9 @@ export default {
       if (state === 4) return this.$toast('该场次已出售或正在维护中...')
       if (state === 1) {
         // 可选择
-        if (this.selectList.length >= 4) return this.$toast('一次最多可选择4个时间段！')
+        if (this.selectList.length >= 4) {
+          return this.$toast('一次最多可选择4个时间段！')
+        }
         // 时间距离判断
         this.selected = true
         let starttime = this.siteList[index].projectInfo[index1].starttime
@@ -216,8 +257,12 @@ export default {
         let activeDate = `${str} ${starttime}`
         let dateIngTime = new Date().getTime()
         let activeDateTime = new Date(activeDate).getTime()
-        if (activeDateTime - dateIngTime <= 0) return this.$toast('预约时间已过！')
-        if (activeDateTime - dateIngTime <= 1800000) this.$toast('您距离本场次已不足30分钟')
+        if (activeDateTime - dateIngTime <= 0) {
+          return this.$toast('预约时间已过！')
+        }
+        if (activeDateTime - dateIngTime <= 1800000) {
+          this.$toast('您距离本场次已不足30分钟')
+        }
         // 存下选择的数据对象
         this.siteList[index].projectInfo[index1].state = 3
         let obj = this.siteList[index].projectInfo[index1] // 开始、结束、money
@@ -370,7 +415,8 @@ export default {
   margin-top: -0.14rem;
   width: 0.56rem;
   height: 0.52em;
-  background: url('../../../../static/images/icon/rili.png') no-repeat center/cover;
+  background: url('../../../../static/images/icon/rili.png') no-repeat
+    center/cover;
 }
 .milde_container {
   position: relative;

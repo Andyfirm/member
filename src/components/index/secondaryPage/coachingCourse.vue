@@ -2,7 +2,11 @@
   <div id="coachingCourse">
     <div class="content_top">
       <div class="imgBox">
-        <img :src="'./static/images/coach/' + infEImage.imgurl" alt>
+        <img
+          :src="'./static/images/clubid' + clubId + '/coach/' + infEImage.imgurl"
+          onerror="this.src='./static/images/default/timg.jpg'"
+          alt
+        >
       </div>
       <div class="text_right">
         <p>教练：{{viewEJt.name}}</p>
@@ -14,15 +18,15 @@
         <!-- <div class="share">
           <span></span>
           <i>分享这个教练给好友</i>
-        </div> -->
+        </div>-->
       </div>
     </div>
     <ul class="course_bottom">
       <li v-for="item of tbPriList" :key="item.id">
         <span>{{item.infI.name}}</span>
-        <router-link :to="{name: 'courseDetails', query: {id: item.id}}">
-          <button>购买课程</button>
-        </router-link>
+        <!-- <router-link :to="{name: 'courseDetails', query: {id: item.id}}"> -->
+        <button @click="courseDetails(item.id)">购买课程</button>
+        <!-- </router-link> -->
       </li>
     </ul>
   </div>
@@ -37,27 +41,33 @@ export default {
       viewEJt: {},
       infEImage: {},
       id: this.$route.query.id,
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   created() {
     this.getCourse()
   },
   methods: {
-    async getCourse() { // homepageresp/GetViewEJtById
-      const { data: res } = await this.$http.get(
-        'pt/GetViewEJtById',
-        {
-          params: {
-            id: this.id,
-            token: this.token
-          }
+    async getCourse() {
+      // homepageresp/GetViewEJtById
+      const { data: res } = await this.$http.get('pt/GetViewEJtById', {
+        params: {
+          id: this.id,
+          token: this.token
         }
-      )
+      })
       if (res.msg === 'success') {
         this.tbPriList = res.data.ptClassArray
         this.viewEJt = res.data.viewEJt
         this.infEImage = res.data.viewEJt ? res.data.viewEJt.infEImage : ''
+      }
+    },
+    courseDetails(id) {
+      if (this.clubId === '10') {
+        this.$toast('暂不支持线上购买，请前往场馆购买')
+      } else {
+        this.$router.push({ name: 'courseDetails', query: { id } })
       }
     }
   }
@@ -82,7 +92,6 @@ export default {
   float: left;
   width: 2.28rem;
   height: 2.28rem;
-  background-color: #efefef;
   border-radius: 8px;
 }
 .imgBox img {

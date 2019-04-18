@@ -154,7 +154,7 @@ export default {
           this.$router.replace({ name: 'purchaseCard' })
           break
         case '8': // 充值成功
-          this.$router.replace({ name: 'cardRecharge' })
+          this.$router.replace({ name: 'myCentre' })
           break
       }
     }

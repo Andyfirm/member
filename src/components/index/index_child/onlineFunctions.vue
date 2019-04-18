@@ -9,12 +9,12 @@
         <p>在线购票</p>
       </router-link>
       <!-- <router-link :to="{name: 'onlineClass'}"> -->
-      <router-link to="/index" @click.native="tishiyu">
+      <!-- <router-link to="/index" @click.native="tishiyu">
         <div class="imgBox">
           <img src="~images/icon/newspaper.png" alt="">
         </div>
         <p>在线报班</p>
-      </router-link>
+      </router-link> -->
       <!-- <router-link :to="{name: 'headAccount'}">
         <div class="imgBox three">
           <img src="~images/icon/control.png" alt="">

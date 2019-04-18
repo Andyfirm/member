@@ -98,7 +98,8 @@ export default {
         params: {
           ptShortname: this.teachitemshortname,
           shortname: this.teachershortname,
-          token: this.token
+          token: this.token,
+          shopNum: this.shopNum
         }
       })
       if (res.msg === 'success') {

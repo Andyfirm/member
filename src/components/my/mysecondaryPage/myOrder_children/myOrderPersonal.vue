@@ -9,7 +9,8 @@
         <li v-for="item of list" :key="item.id">
           <div class="imgBox_l">
             <img
-              :src="'./static/images/sjkc/'+(item.infPTClassInfo?item.infPTClassInfo.imgurl:'')"
+              :src="'./static/images/clubid' + clubId + '/sjkc/'+(item.infPTClassInfo?item.infPTClassInfo.imgurl:'imgfault.png')"
+              onerror="this.src='./static/images/default/imgfault.png'"
               alt
             >
           </div>
@@ -71,6 +72,7 @@ export default {
       shopName: window.sessionStorage.getItem('shopName'),
       shopNum: window.sessionStorage.getItem('shopNum'),
       token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId'),
       isOpen: false
     }
   },

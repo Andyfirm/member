@@ -3,7 +3,7 @@
     <h5>分店信息</h5>
     <ul>
       <li v-for="item of indexList" :key="item.id">
-        <div class="imgBox"><img :src="'./static/images/shop/' + item.shopImg" alt=""></div>
+        <div class="imgBox"><img :src="'./static/images/clubid' + clubId + '/shop/' + item.shopImg" onerror="this.src='./static/images/default/imgfault.png'" alt=""></div>
         <div class="content">
           <h6>{{item.name}}</h6>
           <div class="contact">
@@ -25,7 +25,9 @@ import {mapState} from 'vuex'
 export default {
   name: 'storesInformation',
   data() {
-    return {}
+    return {
+      clubId: window.sessionStorage.getItem('clubId')
+    }
   },
   computed: {
     ...mapState(['indexList'])
@@ -55,7 +57,6 @@ li .imgBox {
   float: left;
   width: 1.6rem;
   height: 1.6rem;
-  background-color: #efefef;
   border-radius: 6px;
   overflow: hidden;
 }

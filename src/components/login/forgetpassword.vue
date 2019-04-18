@@ -83,7 +83,8 @@ export default {
       passPwd2: false,
       buttonState: 'init',
       count: 60,
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      clubMemberCodeParam: window.sessionStorage.getItem('clubmembercode')
     }
   },
   methods: {
@@ -113,8 +114,8 @@ export default {
         this.passMobile = false
         return
       }
-      const { data: res1 } = await this.$http.get('memberLogin/code', {
-        params: { mobile: this.mobile, sign: 1, token: this.token }
+      const { data: res1 } = await this.$http.get('memberLogin/sendVerificationCode', {
+        params: { mobile: this.mobile, sign: 1, token: this.token, clubMemberCodeParam: this.clubMemberCodeParam }
       })
       console.log(res1)
       if (res1.msg === 'success') {

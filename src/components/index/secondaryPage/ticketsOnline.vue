@@ -9,7 +9,11 @@
       <ul class="content_mide">
         <li v-for="item of ticketList" :key="item.id">
           <div class="img_left">
-            <img :src="'./static/images/ticket/' + item.picture" alt="">
+            <img :src="'./static/images/clubid' + clubId + '/ticket/' + item.picture" onerror="this.src='./static/images/default/ticketdefault.png'" alt="">
+            <div class="textBox">
+              <div class="ticketName">{{item.name}}</div>
+              <div class="money">{{item.price}}元</div>
+            </div>
           </div>
           <div class="btn_right">
             <button @click="purchase(item)">购买</button>
@@ -32,7 +36,8 @@ export default {
       ticketList: [],
       shopNumOrigin: null,
       shopName: window.sessionStorage.getItem('shopName'),
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   activated() {
@@ -103,6 +108,7 @@ export default {
   margin-bottom: 0.4rem;
 }
 .img_left {
+  position: relative;
   float: left;
   width: 3.84rem;
   height: 1.94rem;
@@ -111,6 +117,24 @@ export default {
 }
 .img_left img {
   width: 100%;
+}
+.img_left .textBox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 0.32rem;
+}
+.ticketName {
+  color: #fff;
+  margin: 0.2rem;
+}
+.money {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+  color: #fff;
 }
 .btn_right {
   float: right;

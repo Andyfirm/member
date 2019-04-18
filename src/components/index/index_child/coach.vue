@@ -1,13 +1,15 @@
 <template>
-  <div id="coach">
+  <div id="coach" v-if="coachList&&coachList.length > 0">
     <div class="top">
       <h5>教练风采</h5>
       <router-link :to="{name: 'moreCoach'}">更多教练推荐</router-link>
     </div>
     <div class="coachBox">
       <ul>
-        <li v-for="item of coachList" :key="item.id">
-          <router-link :to="{name: 'coachingCourse', query: {id: item.id}}" class="imgBox"><img :src="'./static/images/coach/' + (item.infEImage?item.infEImage.imgurl:'')" alt=""></router-link>
+        <li v-for="item of coachList" :key="item.id" v-show="item.infEImage">
+          <router-link :to="{name: 'coachingCourse', query: {id: item.id}}" class="imgBox">
+            <img :src="'./static/images/clubid' + clubId + '/coach/' + (item.infEImage?item.infEImage.imgurl:'timg.jpg')" onerror="this.src='./static/images/default/timg.jpg'" alt>
+          </router-link>
           <h6>{{item.name}}</h6>
           <p>{{item.job1L}}</p>
         </li>
@@ -21,7 +23,9 @@ import { mapState } from 'vuex'
 export default {
   name: 'coach',
   data() {
-    return {}
+    return {
+      clubId: window.sessionStorage.getItem('clubId')
+    }
   },
   computed: {
     ...mapState(['indexListShow']),
@@ -85,13 +89,12 @@ export default {
   line-height: 0.3rem;
 }
 .coachBox .imgBox {
+  overflow: hidden;
   width: 1.54rem;
   height: 1.54rem;
-  background-color: #efefef;
   border-radius: 50%;
 }
 .coachBox .imgBox img {
   width: 100%;
-  border-radius: 50%;
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
   <div id="purchaseCard">
-    <ul>
+    <div v-if="cardList.length == 0" class="nocard">暂无卡片信息</div>
+    <ul v-if="cardList.length > 0">
       <li class="cardBox" v-for="item of cardList" :key="item.id">
         <div class="imgBox_wrap" @click="showCard(item)">
-          <img :src="'./static/images/hyk/' + (item.infCs?item.infCs.imgpath:'')" alt>
+          <img :src="'./static/images/clubid' + clubId + '/hyk/' + (item.infCs?item.infCs.imgpath:'default.png')" onerror="this.src='./static/images/default/default.png'" alt>
           <div class="imgBox">
             <h6>{{item.cardName?item.cardName:''}}</h6>
             <p></p>
@@ -34,7 +35,7 @@
       >
         <div class="boxWrap">
           <div class="cardBoxInfo">
-            <img :src="'./static/images/hyk/'+hykdetailsItem.infCs.imgpath" alt>
+            <img :src="'./static/images/clubid' + clubId + '/hyk/'+ (hykdetailsItem.infCs?hykdetailsItem.infCs.imgpath:'default.png')" onerror="this.src='./static/images/default/default.png'" alt>
             <div class="hykdetails_wenzi">
               <div class="cardName">{{hykdetailsItem.infCs.name}}</div>
               <div class="money">{{hykdetailsItem.weChatPrice}}元</div>
@@ -73,7 +74,8 @@ export default {
       zhankai: null,
       originShopNum: null,
       hykdetailsItem: '',
-      hykdetailsActive: false
+      hykdetailsActive: false,
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   created() {
@@ -95,6 +97,7 @@ export default {
       }
     },
     showCard(item) {
+      console.log(item)
       this.hykdetailsItem = item
       this.hykdetailsActive = true
     },
@@ -337,5 +340,10 @@ button {
   border-radius: 8px;
   border: 0;
   background-color: #7ecef4;
+}
+.nocard {
+  font-size: 0.28rem;
+  text-align: center;
+  margin-top: 0.8rem;
 }
 </style>

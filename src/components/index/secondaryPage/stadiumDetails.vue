@@ -1,7 +1,7 @@
 <template>
   <div id="stadium_container">
     <h4>{{venue_name}}</h4>
-    <div class="cgimg"><img :src="'./static/images/shop/'+ cgimgurl" alt=""></div>
+    <div class="cgimg"><img :src="'./static/images/clubid' + clubId + '/shop/'+ cgimgurl" onerror="this.src='./static/images/default/imgfault.png'" alt=""></div>
     <p>{{venuedetails}}</p>
   </div>
 </template>
@@ -13,9 +13,16 @@ export default {
     return {
       venue_name: this.$route.query.venue_name,
       cgimgurl: this.$route.query.cgimgurl,
-      venuedetails: this.$route.query.venuedetails
+      venuedetails: this.$route.query.venuedetails,
+      clubId: window.sessionStorage.getItem('clubId')
     }
-  }
+  },
+    // computed: {
+    //   error() {
+    //     let str = `"this.src='./static/images/clubid${this.clubId}/shop/imgfault.jpg'"`
+    //     return str
+    //   }
+    // }
 }
 </script>
 

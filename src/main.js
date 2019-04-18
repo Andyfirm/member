@@ -31,7 +31,7 @@ Vue.component('swipe', Swipe)
 Vue.component('swipe-item', SwipeItem)
 Vue.component(VeLine.name, VeLine)
 Vue.use(Mint)
-// http://192.168.1.43/  https://www.easyserp.com/weixinPayTest/ http://192.168.1.180/weixinPay/  https://www.easyserp.com/weixinPayTest
+// http://192.168.1.43/  https://www.easyserp.com/weixinPayTest/ http://192.168.1.180/weixinPay/  https://www.easyserp.com/weixinPayTest https://www.147soft.cn/easyserpClient/
 Axios.defaults.baseURL = 'https://www.147soft.cn/easyserpClient/'
 Vue.prototype.$http = Axios
 Vue.prototype.qs = qs

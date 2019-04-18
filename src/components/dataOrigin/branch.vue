@@ -4,7 +4,8 @@
       <img src="../../../static/images/logo/logo.png" alt>
       <p>易思普线上场馆运营管理系统</p>
     </header>
-    <h6 class="changguan">北京易思普健身俱乐部</h6>
+    <h6 class="changguan" v-if="shopName">北京易思普健身俱乐部</h6>
+    <h6 class="changguan" v-else>暂无数据</h6>
     <ul id="fendianName">
       <!-- <li class="selected" @click="selected">中关村1店</li> -->
       <li
@@ -14,7 +15,7 @@
         :class="{selected: item.id === id}"
       >{{item.name}}</li>
     </ul>
-    <div class="button enter" @click="buttonEnter">进入</div>
+    <div class="button enter" @click="buttonEnter" v-if="shopName">进入</div>
   </div>
 </template>
 <script>
@@ -25,7 +26,8 @@ export default {
       id: null,
       subbranchList: [],
       clubId: this.$route.query.clubId,
-      textNumbers: this.$route.query.textNumbers
+      textNumbers: this.$route.query.textNumbers,
+      shopName: this.$route.query.shopName
     }
   },
   mounted() {

@@ -1,7 +1,7 @@
 <template>
   <div id="login_container">
     <p class="activity">
-      <img src="../../../static/images/logo/logo.png">
+      <img :src="'./static/images/clubid' + clubId + '/logo/order-logo.jpg'">
     </p>
     <div class="mian">
       <p>
@@ -43,11 +43,12 @@ export default {
     return {
       userName: null,
       pwd: null,
-      token: window.sessionStorage.getItem('token')
+      token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   created() {
-    // let token = 'oQc9-jqBcb53o8R0s9yr1ydyeVZY'
+    // let token = 'oiqtX1A_fD5ePsjGMiNvIQ0FzRBw' //  oiqtX1A_fD5ePsjGMiNvIQ0FzRBw oQc9-jqBcb53o8R0s9yr1ydyeVZY
     // window.sessionStorage.setItem('token', token)
     // this.token = token
     window.sessionStorage.setItem('isLogin', 'false')

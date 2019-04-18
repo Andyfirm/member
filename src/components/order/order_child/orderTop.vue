@@ -1,19 +1,33 @@
 <template>
   <div id="order_container">
     <div class="top_h">
-      <div class="imgBox"><img src="../../../../static/images/logo/order-logo.jpg" alt=""></div>
-      <h4>武汉体育中心</h4>
+      <div class="imgBox"><img :src="'./static/images/clubid' + clubId + '/logo/order-logo.jpg'" alt=""></div>
+      <h4>{{venue_name}}</h4>
     </div>
-    <p>{{text}}</p>
+    <p>{{venuedetails}}</p>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: 'orderTop',
-  props: ['text'],
   data() {
-    return {}
+    return {
+      clubId: window.sessionStorage.getItem('clubId')
+    }
+  },
+   computed: {
+    ...mapState(['shopNumVuex', 'indexListShow']),
+    venue_name() {
+      return this.indexListShow[0].name
+    },
+    cgimgurl() {
+      return this.indexListShow[0].shopImg
+    },
+    venuedetails() {
+      return this.indexListShow[0].venuedetails
+    }
   }
 }
 </script>

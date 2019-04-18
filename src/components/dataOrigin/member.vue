@@ -12,7 +12,8 @@ export default {
       code: '',
       token: '',
       appid: '',
-      name: ''
+      name: '',
+      shopName: ''
     }
   },
   created() {
@@ -52,7 +53,9 @@ export default {
       )
       if (res.msg === 'success') {
         let data = res.data
-        this.textNumbers = data
+        this.textNumbers = data.clubmembercode
+        this.shopName = data.clubname
+        window.sessionStorage.setItem('clubmembercode', data.clubmembercode)
         this.getAppid()
       } else if (res.msg === 'fail') {
         this.$toast(res.data)
@@ -113,7 +116,7 @@ export default {
           window.sessionStorage.setItem('clubId' + this.clubId, this.clubId)
           this.$router.replace({
             name: 'branch',
-            query: { textNumbers: this.textNumbers, clubId: this.clubId }
+            query: { textNumbers: this.textNumbers, clubId: this.clubId, shopName: this.shopName }
           })
           return
         }
@@ -126,13 +129,13 @@ export default {
         } else {
           this.$router.replace({
             name: 'branch',
-            query: { textNumbers: this.textNumbers, clubId: this.clubId }
+            query: { textNumbers: this.textNumbers, clubId: this.clubId, shopName: this.shopName }
           })
         }
       } else {
         this.$router.replace({
           name: 'branch',
-          query: { textNumbers: this.textNumbers, clubId: this.clubId }
+          query: { textNumbers: this.textNumbers, clubId: this.clubId, shopName: this.shopName }
         })
       }
     },
@@ -149,9 +152,11 @@ export default {
         this.$router.replace({ name: 'index' })
         window.sessionStorage.setItem('isLogin', 'true')
       }
-      if (res.msg === 'fail') this.$toast(res.data)
+      if (res.msg === 'fail') {
+        this.$toast(res.data)
+        this.$router.replace({name: 'login'})
+      }
     },
-    //
     async selected(shopNum, userName, password) {
       const { data: res } = await this.$http.get('wechar/saveClubInfoByToken', {
         params: {

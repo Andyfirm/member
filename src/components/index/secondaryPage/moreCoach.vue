@@ -3,8 +3,8 @@
     <my-select @change="getList"></my-select>
     <div class="content">
       <ul>
-        <li v-for="item of list" :key="item.id" @click="coachingCourse(item.id)">
-          <div class="imgBox"><img :src="'./static/images/coach/' + (item.infEImage?item.infEImage.imgurl:'')" alt=""></div>
+        <li v-for="item of list" :key="item.id" @click="coachingCourse(item.id)" v-show="item.infEImage">
+          <div class="imgBox"><img :src="'./static/images/clubid' + clubId + '/coach/' + (item.infEImage?item.infEImage.imgurl:'timg.jpg')" onerror="this.src='./static/images/default/timg.jpg'" alt=""></div>
           <div class="text_right">
             <div>
               <span>{{item.name}}</span> <i>{{item.job1L}}</i>
@@ -30,6 +30,7 @@ export default {
       token: sessionStorage.getItem('token'),
       originalShopName: null,
       list: [],
+      clubId: window.sessionStorage.getItem('clubId'),
       defaultImg: 'this.src="./static/images/icon/init.png"'
     }
   },
@@ -72,6 +73,7 @@ export default {
   border-radius: 8px;
 }
 .content .imgBox {
+  overflow: hidden;
   width: 20%;
   float: left;
   width: 0.88rem;
@@ -82,7 +84,6 @@ export default {
 .content .imgBox img {
   width: 100%;
   display: block;
-  border-radius: 50%;
 }
 .content .text_right {
   float: right;

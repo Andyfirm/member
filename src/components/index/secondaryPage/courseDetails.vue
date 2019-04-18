@@ -3,7 +3,7 @@
     <div class="content_box">
       <div class="content_top">
         <div class="imgBox">
-          <img :src="'./static/images/sjkc/' + imgUrl" alt>
+          <img :src="'./static/images/clubid' + clubId + '/sjkc/' + imgUrl" onerror="this.src='./static/images/default/imgfault.png'" alt>
         </div>
         <div class="text_right">
           <p>项目：{{obj.name}}</p>
@@ -20,9 +20,7 @@
         <p>{{obj.courseDetails}}</p>
       </div>
     </div>
-    <router-link :to="{name: 'orderDetails', query: {item: JSON.stringify(obj), type: 'course'}}">
-      <button id="btn">购买课程</button>
-    </router-link>
+      <button id="btn" @click="orderDetails(obj)">购买课程</button>
   </div>
 </template>
 
@@ -41,7 +39,9 @@ export default {
         id: '',
         subtitle: '无'
       },
-      token: window.sessionStorage.getItem('token')
+      shopNum: window.sessionStorage.getItem('shopNum'),
+      token: window.sessionStorage.getItem('token'),
+      clubId: window.sessionStorage.getItem('clubId')
     }
   },
   created() {
@@ -61,6 +61,21 @@ export default {
         this.obj.courseDetails = data.courseDetails
         this.imgUrl = data.infPTClassInfo ? data.infPTClassInfo.imgurl : ''
       }
+    },
+    async orderDetails(obj) {
+       const { data: res } = await this.$http.get('card/getCardByUser', {
+        params: { shopNum: this.shopNum, token: this.token }
+      })
+      console.log(res)
+      if (res.msg === 'success') {
+        if(res.data && res.data.length > 0) {
+          this.$router.push({name: 'orderDetails', query: {item: JSON.stringify(obj), type: 'course'}})
+        }else {
+          this.$toast('您还没有会员卡，请您先购卡')
+        }
+      }else {
+        this.$toast(res.data)
+      } 
     }
   }
 }
