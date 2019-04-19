@@ -8,7 +8,11 @@
       <ul v-if="init==='block'" class="content">
         <li v-for="item of mySiteList" :key="item.id">
           <div class="imgBox_l">
-            <img :src="'./static/images/clubid' + clubId + '/site/'+ (item.infSt?item.infSt.fieldimg:'imgfault.png')" onerror="this.src='./static/images/default/imgfault.png'" alt>
+            <img
+              :src="'./static/images/clubid' + clubId + '/site/'+ (item.infSt?item.infSt.fieldimg:'imgfault.png')"
+              onerror="this.src='./static/images/default/imgfault.png'"
+              alt
+            >
           </div>
           <div class="content_r">
             <p>场地：{{item.stagenum}}</p>

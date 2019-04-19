@@ -16,13 +16,7 @@ export default {
       venuedetails: this.$route.query.venuedetails,
       clubId: window.sessionStorage.getItem('clubId')
     }
-  },
-    // computed: {
-    //   error() {
-    //     let str = `"this.src='./static/images/clubid${this.clubId}/shop/imgfault.jpg'"`
-    //     return str
-    //   }
-    // }
+  }
 }
 </script>
 

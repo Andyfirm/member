@@ -1,50 +1,50 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/components/index/index.vue'
-import orders from '@/components/order/order.vue'
-import stadiumDetails from '@/components/index/secondaryPage/stadiumDetails.vue'
-import ticketsOnline from '@/components/index/secondaryPage/ticketsOnline.vue'
-import ticketRecord from '@/components/index/secondaryPage/ticketRecord.vue'
-import ticketQrCode from '@/components/index/secondaryPage/ticketQrCode.vue'
-import orderDetails from '@/components/index/secondaryPage/orderDetails.vue'
-import onlineClass from '@/components/index/secondaryPage/onlineClass.vue'
-import classDetails from '@/components/index/secondaryPage/classDetails.vue'
-import moreCoach from '@/components/index/secondaryPage/moreCoach.vue'
-import coachingCourse from '@/components/index/secondaryPage/coachingCourse.vue'
-import courseDetails from '@/components/index/secondaryPage/courseDetails.vue'
-import confirmPayment from '@/components/confirmPayment/confirmPayment.vue'
-import succeed from '@/components/confirmPayment/succeed.vue'
-import orderSite from '@/components/order/order_child/orderSite.vue'
-import orderLeague from '@/components/order/order_child/orderLeague.vue'
-import orderPersonal from '@/components/order/order_child/orderPersonal.vue'
-import purchaseCard from '@/components/purchaseCard/purchaseCard.vue'
-import myCentre from '@/components/my/myCentre.vue'
-import cardRecharge from '@/components/my/mysecondaryPage/cardRecharge'
-import myOrder from '@/components/my/mysecondaryPage/myOrder'
-import myOrderSite from '@/components/my/mysecondaryPage/myOrder_children/myOrderSite'
-import myOrderLeague from '@/components/my/mysecondaryPage/myOrder_children/myOrderLeague'
-import myOrderPersonal from '@/components/my/mysecondaryPage/myOrder_children/myOrderPersonal'
-import myPersonal from '@/components/my/mysecondaryPage/myPersonal'
-import expenseCalendar from '@/components/my/mysecondaryPage/expenseCalendar'
-import leave from '@/components/my/mysecondaryPage/leave'
-import fiancoIndex from '@/components/my/mysecondaryPage/fiancoIndex'
-import fiancoResult from '@/components/my/mysecondaryPage/fiancoResult'
-import fiancoDetails from '@/components/my/mysecondaryPage/fiancoDetails'
-import messageBoard from '@/components/my/mysecondaryPage/messageBoard'
-import realNameCard from '@/components/realNameCard/realNameCard'
-import siteList from '@/components/order/secondaryPage/siteList'
-import coachScheduling from '@/components/order/secondaryPage/coachScheduling'
-import groupCourseDetails from '@/components/order/secondaryPage/groupCourseDetails'
-import login from '@/components/login/login'
-import forgetpassword from '@/components/login/forgetpassword'
-import register from '@/components/login/register'
-import headAccount from '@/components//index/secondaryPage/headAccount'
-import personalDetails from '@/components/my/mysecondaryPage/personalDetails'
-import club from '@/components/dataOrigin/club'
-import branch from '@/components/dataOrigin/branch'
-import member from '@/components/dataOrigin/member'
-import description from '@/components/bindCard/description'
-import selectBindCard from '@/components/bindCard/selectBindCard'
+const index = () => import('@/components/index/index.vue')
+const orders = () => import('@/components/order/order.vue')
+const stadiumDetails = () => import('@/components/index/secondaryPage/stadiumDetails.vue')
+const ticketsOnline = () => import('@/components/index/secondaryPage/ticketsOnline.vue')
+const ticketRecord = () => import('@/components/index/secondaryPage/ticketRecord.vue')
+const ticketQrCode = () => import('@/components/index/secondaryPage/ticketQrCode.vue')
+const orderDetails = () => import('@/components/index/secondaryPage/orderDetails.vue')
+const onlineClass = () => import('@/components/index/secondaryPage/onlineClass.vue')
+const classDetails = () => import('@/components/index/secondaryPage/classDetails.vue')
+const moreCoach = () => import('@/components/index/secondaryPage/moreCoach.vue')
+const coachingCourse = () => import('@/components/index/secondaryPage/coachingCourse.vue')
+const courseDetails = () => import('@/components/index/secondaryPage/courseDetails.vue')
+const confirmPayment = () => import('@/components/confirmPayment/confirmPayment.vue')
+const succeed = () => import('@/components/confirmPayment/succeed.vue')
+const orderSite = () => import('@/components/order/order_child/orderSite.vue')
+const orderLeague = () => import('@/components/order/order_child/orderLeague.vue')
+const orderPersonal = () => import('@/components/order/order_child/orderPersonal.vue')
+const purchaseCard = () => import('@/components/purchaseCard/purchaseCard.vue')
+const myCentre = () => import('@/components/my/myCentre.vue')
+const cardRecharge = () => import('@/components/my/mysecondaryPage/cardRecharge')
+const myOrder = () => import('@/components/my/mysecondaryPage/myOrder')
+const myOrderSite = () => import('@/components/my/mysecondaryPage/myOrder_children/myOrderSite')
+const myOrderLeague = () => import('@/components/my/mysecondaryPage/myOrder_children/myOrderLeague')
+const myOrderPersonal = () => import('@/components/my/mysecondaryPage/myOrder_children/myOrderPersonal')
+const myPersonal = () => import('@/components/my/mysecondaryPage/myPersonal')
+const expenseCalendar = () => import('@/components/my/mysecondaryPage/expenseCalendar')
+const leave = () => import('@/components/my/mysecondaryPage/leave')
+const fiancoIndex = () => import('@/components/my/mysecondaryPage/fiancoIndex')
+const fiancoResult = () => import('@/components/my/mysecondaryPage/fiancoResult')
+const fiancoDetails = () => import('@/components/my/mysecondaryPage/fiancoDetails')
+const messageBoard = () => import('@/components/my/mysecondaryPage/messageBoard')
+const realNameCard = () => import('@/components/realNameCard/realNameCard')
+const siteList = () => import('@/components/order/secondaryPage/siteList')
+const coachScheduling = () => import('@/components/order/secondaryPage/coachScheduling')
+const groupCourseDetails = () => import('@/components/order/secondaryPage/groupCourseDetails')
+const login = () => import('@/components/login/login')
+const forgetpassword = () => import('@/components/login/forgetpassword')
+const register = () => import('@/components/login/register')
+const headAccount = () => import('@/components//index/secondaryPage/headAccount')
+const personalDetails = () => import('@/components/my/mysecondaryPage/personalDetails')
+const club = () => import('@/components/dataOrigin/club')
+const branch = () => import('@/components/dataOrigin/branch')
+const member = () => import('@/components/dataOrigin/member')
+const description = () => import('@/components/bindCard/description')
+const selectBindCard = () => import('@/components/bindCard/selectBindCard')
 
 Vue.use(Router)
 
@@ -300,7 +300,6 @@ export default new Router({
     }
   ],
   scrollBehavior(to, from, savedPosition) {
-    console.log(savedPosition)
     if (savedPosition) {
       return savedPosition
     } else {

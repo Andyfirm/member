@@ -1,7 +1,9 @@
 <template>
   <div id="order_container">
     <div class="top_h">
-      <div class="imgBox"><img :src="'./static/images/clubid' + clubId + '/logo/order-logo.jpg'" alt=""></div>
+      <div class="imgBox">
+        <img :src="'./static/images/clubid' + clubId + '/logo/order-logo.jpg'" alt>
+      </div>
       <h4>{{venue_name}}</h4>
     </div>
     <p>{{venuedetails}}</p>
@@ -9,7 +11,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'orderTop',
   data() {
@@ -17,7 +19,7 @@ export default {
       clubId: window.sessionStorage.getItem('clubId')
     }
   },
-   computed: {
+  computed: {
     ...mapState(['shopNumVuex', 'indexListShow']),
     venue_name() {
       return this.indexListShow[0].name

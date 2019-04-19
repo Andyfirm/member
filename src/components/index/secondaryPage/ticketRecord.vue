@@ -16,7 +16,7 @@
         <ul class="tabsUl wqp">
           <li class="dingdanbox" v-for="item of wqplist" :key="item.id">
             <div class="imgBox">
-              <img src alt>
+            <img :src="'./static/images/clubid' + clubId + '/ticket/' + item.picture" onerror="this.src='./static/images/default/ticketdefault.png'" alt="">
             </div>
             <div class="middle">
               <h6>{{item.ticket.name}}</h6>
@@ -38,7 +38,7 @@
         <ul class="tabsUl yqp">
           <li class="dingdanbox" v-for="item of yqplist" :key="item.id">
             <div class="imgBox">
-              <img src alt>
+            <img :src="'./static/images/clubid' + clubId + '/ticket/' + item.picture" onerror="this.src='./static/images/default/ticketdefault.png'" alt="">
             </div>
             <div class="middle">
               <h6>{{item.ticket.name}}</h6>
@@ -276,13 +276,17 @@ export default {
   height: 12rem;
 }
 .imgBox {
+  overflow: hidden;
   float: left;
   width: 20%;
   height: 1.34rem;
   padding: 0.1rem;
-  background-color: #7ECEF4;
   border-radius: 8px;
   box-sizing: border-box;
+}
+img {
+  display: block;
+  width: 100%;
 }
 .middle {
   float: left;
@@ -293,7 +297,7 @@ export default {
 .middle h6 {
   font-size: 0.34rem;
   font-weight: normal;
-  margin-bottom: 0.4rem;
+  /* margin-bottom: 0.4rem; */
 }
 .middle p {
   font-size: 0.28rem;
@@ -308,7 +312,7 @@ button {
   display: block;
   outline: none;
   border: 0;
-  margin: 0.8rem auto;
+  margin: 0.5rem auto 0rem;
   width: 1.2rem;
   height: 28px;
   color: #fff;

@@ -3,14 +3,20 @@
     <div class="content_box">
       <div class="content_top">
         <div class="imgBox">
-          <img :src="'./static/images/clubid' + clubId + '/sjkc/' + imgUrl" onerror="this.src='./static/images/default/imgfault.png'" alt>
+          <img
+            :src="'./static/images/clubid' + clubId + '/sjkc/' + imgUrl"
+            onerror="this.src='./static/images/default/imgfault.png'"
+            alt
+          >
         </div>
         <div class="text_right">
           <p>项目：{{obj.name}}</p>
-          <p>授课老师：
+          <p>
+            授课老师：
             <i>{{obj.teacher}}</i>
           </p>
-          <p>课程价格：
+          <p>
+            课程价格：
             <i>{{obj.discountPrice}}</i>
           </p>
         </div>
@@ -20,7 +26,7 @@
         <p>{{obj.courseDetails}}</p>
       </div>
     </div>
-      <button id="btn" @click="orderDetails(obj)">购买课程</button>
+    <button id="btn" @click="orderDetails(obj)">购买课程</button>
   </div>
 </template>
 
@@ -63,19 +69,22 @@ export default {
       }
     },
     async orderDetails(obj) {
-       const { data: res } = await this.$http.get('card/getCardByUser', {
+      const { data: res } = await this.$http.get('card/getCardByUser', {
         params: { shopNum: this.shopNum, token: this.token }
       })
       console.log(res)
       if (res.msg === 'success') {
-        if(res.data && res.data.length > 0) {
-          this.$router.push({name: 'orderDetails', query: {item: JSON.stringify(obj), type: 'course'}})
-        }else {
+        if (res.data && res.data.length > 0) {
+          this.$router.push({
+            name: 'orderDetails',
+            query: { item: JSON.stringify(obj), type: 'course' }
+          })
+        } else {
           this.$toast('您还没有会员卡，请您先购卡')
         }
-      }else {
+      } else {
         this.$toast(res.data)
-      } 
+      }
     }
   }
 }
