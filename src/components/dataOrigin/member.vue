@@ -70,7 +70,7 @@ export default {
         '&redirect_uri=' +
         location.href.split('#')[0] +
         '&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect'
-      window.location.href = url
+      window.location.replace(url)
     },
     // 获取token
     async getToken() {
